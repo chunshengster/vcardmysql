@@ -2,7 +2,7 @@
 require_once 'File/IMC.php';
 require_once 'class_vcard_db.php';
 
-define ( ERR_NO_SUCH_VCARD, - 11 );
+define ( 'ERR_NO_SUCH_VCARD', - 11 );
 
 /**
  *
@@ -10,7 +10,7 @@ define ( ERR_NO_SUCH_VCARD, - 11 );
  */
 class class_vCard {
 	//private static $db_config;
-	private static $obj_vcard_source;
+	private $obj_vcard_source;
 	private $_parse;
 	private $vCard_Explanatory_Properties;
 	private $vCard_Identification_Properties;
@@ -24,16 +24,16 @@ class class_vCard {
 
 	function __construct() {
 
-		$_parse = File_IMC::parse('vCard');
-		$obj_vcard_source = new class_vcard_db ();
-		if (! $obj_vcard_source) {
+		$this->_parse = File_IMC::parse('vCard');
+		$this->obj_vcard_source = new class_vcard_db ();
+		if (! ($this->obj_vcard_source instanceof PDO)) {
 			return 0;
 		}
 	}
 
 	function __destruct() {
-		if (self::$obj_vcard_source) {
-			unset ( self::$obj_vcard_source );
+		if ($this->obj_vcard_source) {
+			unset ( $this->obj_vcard_source );
 		}
 	}
 
@@ -159,11 +159,19 @@ class class_vCard {
 	 * @prarm text $vcard_text
 	 */
 	public function parse_vcard($vcard_text) {
-		if (! $this->_parse instanceof File_IMC) {
+		if (! ($this->_parse instanceof File_IMC_Parse_Vcard)) {
 			return NULL;
 		}
 		$data = $this->_parse->fromText($vcard_text);
-		return $data;
+		//print_r($data);
+
+		$this->set_VCard_Explanatory_Properties(array('UID'=>$data[0]['UID']['value'][0][0],
+													  'VERSION'=>$data[0]['VERSION']['value'][0][0],
+													  'REV'=>$data[0]['REV']['value'][0][0],
+													  'LANG'=>$data[0]['LANG']['value'][0][0]
+												));
+
+
 	}
 
 
