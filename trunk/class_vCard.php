@@ -165,10 +165,10 @@ class class_vCard {
 		$data = $this->_parse->fromText($vcard_text);
 		//print_r($data);
 
-		$this->set_VCard_Explanatory_Properties(array('UID'=>$data[0]['UID']['value'][0][0],
-													  'VERSION'=>$data[0]['VERSION']['value'][0][0],
-													  'REV'=>$data[0]['REV']['value'][0][0],
-													  'LANG'=>$data[0]['LANG']['value'][0][0]
+		$this->set_VCard_Explanatory_Properties(array('UID'=>$data['VCARD'][0]['UID'][0]['value'][0][0],
+													  'VERSION'=>$data['VCARD'][0]['VERSION'][0]['value'][0][0],
+													  'REV'=>$data['VCARD'][0]['REV'][0]['value'][0][0],
+													  'LANG'=>$data['VCARD'][0]['LANG'][0]['value'][0][0]
 												));
 
 
