@@ -7,12 +7,11 @@ define ( ERR_NO_SUCH_VCARD, - 11 );
 /**
  *
  * @author chunsheng
- *
  */
 class class_vCard {
 	//private static $db_config;
 	private static $obj_vcard_source;
-
+	private $_parse;
 	private $vCard_Explanatory_Properties;
 	private $vCard_Identification_Properties;
 	private $vCard_Delivery_Addressing_Properties_ADR;
@@ -22,7 +21,10 @@ class class_vCard {
 	private $vCard_Telecommunications_Addressing_Properties_Email;
 	private $vCard_Telecommunications_Addressing_Properties_Tel;
 
+
 	function __construct() {
+
+		$_parse = File_IMC::parse('vCard');
 		$obj_vcard_source = new class_vcard_db ();
 		if (! $obj_vcard_source) {
 			return 0;
@@ -153,7 +155,23 @@ class class_vCard {
 		$this->vCard_Telecommunications_Addressing_Properties_Tel = $vCard_Telecommunications_Addressing_Properties_Tel;
 	}
 
-	public function get_a_vcard_from_storage($key) {
+	/**
+	 * @prarm text $vcard_text
+	 */
+	public function parse_vcard($vcard_text) {
+		if (! $this->_parse instanceof File_IMC) {
+			return NULL;
+		}
+		$data = $this->_parse->fromText($vcard_text);
+		return $data;
+	}
+
+
+	/**
+	 *
+	 * @param $key = array('UID' => $UID) or array('idvCard_Explanatory_Properties' =>$idvCard_Explanatory_Properties)
+	 */
+	public function get_vcard_from_storage($key) {
 
 	}
 
@@ -215,6 +233,14 @@ class class_vCard {
 		}
 	}
 
+
+	/**
+	 *
+	 * @param unknown_type $vcard
+	 */
+	public function insert_vcard_property_into_storage($vcard) {
+		;
+	}
 
 
 	private static function checkExistVcardByUid($uid) {
