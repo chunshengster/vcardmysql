@@ -1,5 +1,7 @@
 <?php
-require_once 'File/IMC.php';
+//require_once 'File/IMC.php';
+require_once 'my_vcard_parse.php';
+require_once 'my_vcard_build.php';
 require_once 'class_vcard_db.php';
 
 define ( 'ERR_NO_SUCH_VCARD', - 11 );
@@ -12,7 +14,8 @@ class class_vCard {
 	//private static $db_config;
 	private $obj_vcard_source;
 	private $_parse;
-	private $vCard_Explanatory_Properties;
+	private $_builder;
+	private $vCard_Explanatory_Properties = array ('UID'=>'',);
 	private $vCard_Identification_Properties;
 	private $vCard_Delivery_Addressing_Properties_ADR;
 	private $vCard_Delivery_Addressing_Properties_LABEL;
@@ -21,11 +24,12 @@ class class_vCard {
 	private $vCard_Telecommunications_Addressing_Properties_Email;
 	private $vCard_Telecommunications_Addressing_Properties_Tel;
 
-
 	function __construct() {
 
-		$this->_parse = File_IMC::parse('vCard');
-		$this->obj_vcard_source = new class_vcard_db ();
+		$this->_parse = new my_vcard_parse;
+		$this->_builder  = new my_vcard_build;
+
+		$this->obj_vcard_source = new class_vcard_db ( );
 		if (! ($this->obj_vcard_source instanceof PDO)) {
 			return 0;
 		}
@@ -162,18 +166,21 @@ class class_vCard {
 		if (! ($this->_parse instanceof File_IMC_Parse_Vcard)) {
 			return NULL;
 		}
-		$data = $this->_parse->fromText($vcard_text);
+		$data = $this->_parse->fromText ( $vcard_text );
 		//print_r($data);
 
-		$this->set_VCard_Explanatory_Properties(array('UID'=>$data['VCARD'][0]['UID'][0]['value'][0][0],
-													  'VERSION'=>$data['VCARD'][0]['VERSION'][0]['value'][0][0],
-													  'REV'=>$data['VCARD'][0]['REV'][0]['value'][0][0],
-													  'LANG'=>$data['VCARD'][0]['LANG'][0]['value'][0][0]
-												));
 
+		$this->set_VCard_Explanatory_Properties ( array (
+												'UID' => $data ['VCARD'] [0] ['UID'] [0] ['value'] [0] [0],
+												'VERSION' => $data ['VCARD'] [0] ['VERSION'] [0] ['value'] [0] [0],
+												'REV' => $data ['VCARD'] [0] ['REV'] [0] ['value'] [0] [0],
+												'LANG' => $data ['VCARD'] [0] ['LANG'] [0] ['value'] [0] [0]
+												) );
+		$this->set_VCard_Identification_Properties ( array (
+												'FN'=>$data['VCARD'][0]['FN'][0][value][0][0],
+												) );
 
 	}
-
 
 	/**
 	 *
@@ -241,7 +248,6 @@ class class_vCard {
 		}
 	}
 
-
 	/**
 	 *
 	 * @param unknown_type $vcard
@@ -249,7 +255,6 @@ class class_vCard {
 	public function insert_vcard_property_into_storage($vcard) {
 		;
 	}
-
 
 	private static function checkExistVcardByUid($uid) {
 		if (0 != $count = self::$obj_vcard_source->checkExistVcardRecordByUid ( $uid )) {
@@ -259,13 +264,13 @@ class class_vCard {
 		}
 	}
 
-	public static function getVcardByIdentifiedUid($uid) {
-		if (! checkExistVcardByUid ( $uid )) {
-			return ERR_NO_SUCH_VCARD;
-		} else {
-			//return buildVcardByUid($uid);
-		}
-	}
+//	public static function getVcardByIdentifiedUid($uid) {
+//		if (! checkExistVcardByUid ( $uid )) {
+//			return ERR_NO_SUCH_VCARD;
+//		} else {
+//			//return buildVcardByUid($uid);
+//		}
+//	}
 }
 
 ?>
