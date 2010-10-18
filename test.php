@@ -31,7 +31,7 @@ $c = file_get_contents('./a.vcf');
 $b = new class_vCard();
 print $b->parse_vcard($c);
 //print_r($b->get_VCard_Explanatory_Properties());
-print $b->
+$b->print_vcard_data();
 
 
 
