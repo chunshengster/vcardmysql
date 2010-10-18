@@ -166,10 +166,12 @@ class class_vCard {
 		if (! ($this->_parse instanceof my_vcard_parse)) {
 			return NULL;
 		}
-		$data = $this->_parse->fromText ( $vcard_text );
-		//print_r($data);
-
-
+		if (!($this->_builder instanceof my_vcard_build)) {
+			return NULL;
+		}
+		$this->_parse->fromText ( $vcard_text );
+		$this->_builder->setFromArray($this->_parse->get_parse_data());
+/*
 		$this->set_VCard_Explanatory_Properties ( array (
 												'UID' => $data ['VCARD'] [0] ['UID'] [0] ['value'] [0] [0],
 												'VERSION' => $data ['VCARD'] [0] ['VERSION'] [0] ['value'] [0] [0],
@@ -179,7 +181,7 @@ class class_vCard {
 		$this->set_VCard_Identification_Properties ( array (
 												'FN'=>$data['VCARD'][0]['FN'][0][value][0][0],
 												) );
-
+*/
 	}
 
 	/**
@@ -191,7 +193,7 @@ class class_vCard {
 	}
 
 	public function print_vcard_data() {
-		print $this->_parse->get_vcard_data;
+		print_r( $this->_parse->get_parse_data());
 	}
 
 	/**
