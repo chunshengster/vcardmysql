@@ -32,6 +32,6 @@ $b = new class_vCard();
 //print $b->parse_vcard($c);
 //print_r($b->get_VCard_Explanatory_Properties());
 
-$b->_builder->setFromArray($b->_parse)
+
 
 ?>

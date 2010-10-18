@@ -20,7 +20,7 @@ final class my_vcard_build extends File_IMC_Build_Vcard {
 
 	}
 	public function setFromArray($source ) {
-		return parent::_setFromArray($source);
+		return parent::setFromArray($source);
 	}
 }
 
