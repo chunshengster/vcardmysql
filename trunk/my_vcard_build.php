@@ -5,11 +5,11 @@
  *
  *
  */
-require_once 'FILe/IMC.php';
+require_once 'File/IMC.php';
 final class my_vcard_build extends File_IMC_Build_Vcard {
 
 	function __construct() {
-		return parent::builder('vCard');
+		return File_IMC::build('vCard');
 
 	}
 
@@ -18,9 +18,6 @@ final class my_vcard_build extends File_IMC_Build_Vcard {
 	 */
 	function __destruct() {
 
-	}
-	public function setFromArray($source ) {
-		return parent::setFromArray($source);
 	}
 }
 

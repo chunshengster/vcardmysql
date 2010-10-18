@@ -26,7 +26,7 @@ class class_vCard {
 
 	function __construct() {
 
-		$this->_parse = new my_vcard_parse;
+		$this->_parse =  new my_vcard_parse;
 		$this->_builder  = new my_vcard_build;
 
 		$this->obj_vcard_source = new class_vcard_db ( );
@@ -163,7 +163,7 @@ class class_vCard {
 	 * @prarm text $vcard_text
 	 */
 	public function parse_vcard($vcard_text) {
-		if (! ($this->_parse instanceof File_IMC_Parse_Vcard)) {
+		if (! ($this->_parse instanceof my_vcard_parse)) {
 			return NULL;
 		}
 		$data = $this->_parse->fromText ( $vcard_text );
@@ -188,6 +188,10 @@ class class_vCard {
 	 */
 	public function get_vcard_from_storage($key) {
 
+	}
+
+	public function print_vcard_data() {
+		print $this->_parse->get_vcard_data;
 	}
 
 	/**
