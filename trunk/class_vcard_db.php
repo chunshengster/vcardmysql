@@ -96,6 +96,7 @@ class class_vcard_db {
 		return 1;
 	}
 */
+
 	/*
   	* @param: array('idvCard_Explanatory_Properties') or array('UID')
   	*

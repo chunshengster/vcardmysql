@@ -4,7 +4,7 @@ require_once 'my_vcard_parse.php';
 require_once 'my_vcard_build.php';
 require_once 'class_vcard_db.php';
 
-define ( 'ERR_NO_SUCH_VCARD', - 11 );
+//define ( 'ERR_NO_SUCH_VCARD', - 11 );
 
 /**
  *
@@ -13,9 +13,9 @@ define ( 'ERR_NO_SUCH_VCARD', - 11 );
 class class_vCard {
 	//private static $db_config;
 	private $obj_vcard_source;
-	private $_parse;
+	private $_parser;
 	private $_builder;
-	private $vCard_Explanatory_Properties = array ('UID'=>'',);
+	private $vCard_Explanatory_Properties;
 	private $vCard_Identification_Properties;
 	private $vCard_Delivery_Addressing_Properties_ADR;
 	private $vCard_Delivery_Addressing_Properties_LABEL;
@@ -26,8 +26,8 @@ class class_vCard {
 
 	function __construct() {
 
-		$this->_parse =  new my_vcard_parse;
-		$this->_builder  = new my_vcard_build;
+//		$this->_parse =  new my_vcard_parse;
+//		$this->_builder  = new my_vcard_build;
 
 		$this->obj_vcard_source = new class_vcard_db ( );
 		if (! ($this->obj_vcard_source instanceof PDO)) {
@@ -163,25 +163,83 @@ class class_vCard {
 	 * @prarm text $vcard_text
 	 */
 	public function parse_vcard($vcard_text) {
-		if (! ($this->_parse instanceof my_vcard_parse)) {
-			return NULL;
+		if (! ($this->_parser instanceof my_vcard_parse)) {
+			try {
+				$this->_parser = new my_vcard_parse;
+			} catch (Exception $e) {
+				return NULL;
+			}
 		}
+
 		if (!($this->_builder instanceof my_vcard_build)) {
-			return NULL;
+			try {
+				$this->_builder = new my_vcard_build;
+			} catch (Exception $e) {
+				return NULL;
+			}
 		}
-		$this->_parse->fromText ( $vcard_text );
+
+		$data = $this->_parser->fromText ( $vcard_text );
 		$this->_builder->setFromArray($this->_parse->get_parse_data());
-/*
-		$this->set_VCard_Explanatory_Properties ( array (
+
+		$this->set_VCard_Explanatory_Properties ( array(
+											'UID' => $this->_builder->getUniqueID(),
+											'REV' => $this->_builder->getRevision(),
+											'VERSION' => $this->_parser->getVersion(),
+											'LANGAGE' => $this->_builder->getLanguage(),
+											'CATEGORIES' => $this->_builder->getCategories(),
+											'PRODID' => $this->_builder->getProductID(),
+											'SORT-STRING' => $this->_builder->getSortString()
+											)
+
+											/*array (
 												'UID' => $data ['VCARD'] [0] ['UID'] [0] ['value'] [0] [0],
 												'VERSION' => $data ['VCARD'] [0] ['VERSION'] [0] ['value'] [0] [0],
 												'REV' => $data ['VCARD'] [0] ['REV'] [0] ['value'] [0] [0],
 												'LANG' => $data ['VCARD'] [0] ['LANG'] [0] ['value'] [0] [0]
-												) );
+												)*/
+												 );
 		$this->set_VCard_Identification_Properties ( array (
-												'FN'=>$data['VCARD'][0]['FN'][0][value][0][0],
+												'FN' => $this->_builder->getFormattedName(),
+												'N' => $this->_builder->getName(),
+												'NICKNAME' => $this->_builder->getNickname(),
+												'PHOTO' => $this->_builder->getPhoto(),
+												'PhotoType' => $this->_builder->getPhotoType(),
+												'BDAY' => $this->_builder->getBirthday(),
+												'URL' => $this->_builder->getURL(),
+												'SOUND'=> $this->_builder->getSound(),
+												'NOTE'=> $this->_builder->getNote()
 												) );
-*/
+		/*
+		 * there are more than one 'ADR' comp
+		*/
+		$this->set_VCard_Delivery_Addressing_Properties_ADR(
+												$this->_builder->getGroupComp('ADR')
+												);
+		/*
+		 * there are more than on 'LABLE' comp
+		 */
+		$this->set_VCard_Delivery_Addressing_Properties_LABEL(
+												$this->_builder->getGroupComp('LABEL')
+												);
+
+		$this->set_VCard_Telecommunications_Addressing_Properties_Tel(
+												$this->_builder->getGroupComp('Tel')
+												);
+		$this->set_VCard_Telecommunications_Addressing_Properties_Email(
+												$this->_builder->getGroupComp('Email')
+												);
+		$this->set_VCard_Organizational_Properties(array(
+
+												));
+		$this->set_VCard_Geographical_Properties(array(
+												'TZ' => $this->_builder->getTz(),
+												'GEO' => $this->_builder->getGeo()
+												));
+
+
+
+
 	}
 
 	/**
@@ -192,7 +250,7 @@ class class_vCard {
 
 	}
 
-	public function print_vcard_data() {
+	public function print_parse_data() {
 		print_r( $this->_parse->get_parse_data());
 	}
 
