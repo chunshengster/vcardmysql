@@ -20,7 +20,7 @@ final class my_vcard_parse extends File_IMC_Parse_Vcard{
 	function __destruct() {
 
 	}
-	public function get_vcard_data() {
+	public function get_parse_data() {
 //		print_r($this->data);
 		return $this->data['VCARD'];
 	}
