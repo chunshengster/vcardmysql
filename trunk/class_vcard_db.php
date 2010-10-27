@@ -60,6 +60,12 @@ class class_vcard_db {
 		self::$db_pass = $config_data ['vcard_db'] ['db_pass'];
 	}
 
+	private function _gen_uuid_from_mysql() {
+        $sql = "Select uuid() as uuid";
+        $uuid_array = self::$dbh->query($sql);
+        return $uuid_array['uuid'];
+	}
+
 	/*	public function get_vCard_Attr($attr_name, $key) {
 		if (! isset ( self::$attr_name )) {
 			print "Error ,tb_" . $attr_name . "\n<br>";
@@ -175,6 +181,37 @@ class class_vcard_db {
 		$sth->bindParam ( ':KEY', $key [key ( $key )] );
 		$sth->execute ();
 		return $sth->fetchAll ();
+	}
+
+	public function insert_vcard_data_into_db($vcard_comp,$vcard_data_array) {
+		if (!isset(self::$comp) or $comp == '') {
+			return NULL;
+		}
+		switch ($comp){
+			case self::vCard_Explanatory_Properties:
+				if ($vcard_data_array['UID'] == '' or !isset($vcard_data_array['UID'])) {
+				    $vcard_data_array['UID'] = $this->_gen_uuid_from_mysql();
+				}
+
+
+				return $vcard_data_array['UID'];
+				break;
+			case self::vCard_Identification_Properties:
+				break;
+			case self::vCard_Delivery_Addressing_Properties_ADR:
+				break;
+			case self::vCard_Delivery_Addressing_Properties_LABEL:
+				break;
+			case self::vCard_Geographical_Properties:
+				break;
+			case self::vCard_Organizational_Properties:
+				break;
+			case self::vCard_Telecommunications_Addressing_Properties_Tel:
+				break;
+			case self::vCard_Telecommunications_Addressing_Properties_Email:
+				break;
+		}
+
 	}
 
 	public static function checkExistVcardRecordByUid($uid) {

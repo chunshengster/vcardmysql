@@ -17,7 +17,7 @@ final class my_vcard_build extends File_IMC_Build_Vcard {
 	 *
 	 */
 	function __destruct() {
-
+		parent::__desctruct();
 	}
 	public function getLanguage() {
 		return $this->getMeta('LANGUAGE') .
@@ -92,7 +92,10 @@ final class my_vcard_build extends File_IMC_Build_Vcard {
 		return $this->getValue('TITLE', 0, 0);
 	}
 	public function getRole() {
-		$this->getValue('ROLE', 0, 0);
+		return $this->getValue('ROLE', 0, 0);
+	}
+	public function getAgent(){
+		return $this->getValue('AGENT', 0, 0);
 	}
 }
 

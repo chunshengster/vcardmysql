@@ -6,12 +6,14 @@ require_once 'class_vcard_db.php';
 
 //define ( 'ERR_NO_SUCH_VCARD', - 11 );
 
+
 /**
  *
  * @author chunsheng
  */
 class class_vCard {
 	//private static $db_config;
+//	private $_status = 'new';
 	private $obj_vcard_source;
 	private $_parser;
 	private $_builder;
@@ -26,13 +28,14 @@ class class_vCard {
 
 	function __construct() {
 
-//		$this->_parse =  new my_vcard_parse;
-//		$this->_builder  = new my_vcard_build;
-
-		$this->obj_vcard_source = new class_vcard_db ( );
-		if (! ($this->obj_vcard_source instanceof PDO)) {
+		//		$this->_parse =  new my_vcard_parse;
+		//		$this->_builder  = new my_vcard_build;
+		/*
+		$this->obj_vcard_source = new class_vcard_db ();
+		if (! ($this->obj_vcard_source instanceof class_vcard_db)) {
 			return 0;
 		}
+		*/
 	}
 
 	function __destruct() {
@@ -41,11 +44,21 @@ class class_vCard {
 		}
 	}
 
+	function change_vCard_Status_Properties($status) {
+		$status_array = array (
+			''
+		);
+		if (! in_array ( $status, $status_array )) {
+			return NULL;
+		}
+		$this->_status = $status;
+	}
+
 	/**
 	 * =======//@param $key = array('UID') || $key = array('idvCard_Explanatory_Properties')
 	 * @return the $vCard_Explanatory_Properties
 	 */
-	public function get_VCard_Explanatory_Properties() {
+	public function get_vCard_Explanatory_Properties() {
 		//		$this->vCard_Explanatory_Properties = self::$obj_vcard_source->get_vCard_Explanatory_Properties($key);
 		return $this->vCard_Explanatory_Properties;
 	}
@@ -54,7 +67,7 @@ class class_vCard {
 	 * @param array $vCard_Explanatory_Properties
 	 * @param field_type $vCard_Explanatory_Properties
 	 */
-	public function set_VCard_Explanatory_Properties($vCard_Explanatory_Properties) {
+	public function set_vCard_Explanatory_Properties($vCard_Explanatory_Properties) {
 		$this->vCard_Explanatory_Properties = $vCard_Explanatory_Properties;
 	}
 
@@ -63,7 +76,7 @@ class class_vCard {
 	 * ========     or array('idvCard_Identification_Properties')
 	 * @return the $vCard_Identification_Properties
 	 */
-	public function get_VCard_Identification_Properties($key) {
+	public function get_vCard_Identification_Properties($key) {
 		//		$this->vCard_Identification_Properties = self::$obj_vcard_source->get_vCard_Identification_Properties($key);
 		return $this->vCard_Identification_Properties;
 	}
@@ -71,126 +84,126 @@ class class_vCard {
 	/**
 	 * @param field_type $vCard_Identification_Properties
 	 */
-	public function set_VCard_Identification_Properties($vCard_Identification_Properties) {
+	public function set_vCard_Identification_Properties($vCard_Identification_Properties) {
 		$this->vCard_Identification_Properties = $vCard_Identification_Properties;
 	}
 
 	/**
 	 * @return the $vCard_Delivery_Addressing_Properties_ADR
 	 */
-	public function get_VCard_Delivery_Addressing_Properties_ADR() {
+	public function get_vCard_Delivery_Addressing_Properties_ADR() {
 		return $this->vCard_Delivery_Addressing_Properties_ADR;
 	}
 
 	/**
 	 * @param field_type $vCard_Delivery_Addressing_Properties_ADR
 	 */
-	public function set_VCard_Delivery_Addressing_Properties_ADR($vCard_Delivery_Addressing_Properties_ADR) {
+	public function set_vCard_Delivery_Addressing_Properties_ADR($vCard_Delivery_Addressing_Properties_ADR) {
 		$this->vCard_Delivery_Addressing_Properties_ADR = $vCard_Delivery_Addressing_Properties_ADR;
 	}
 
 	/**
 	 * @return the $vCard_Delivery_Addressing_Properties_LABEL
 	 */
-	public function get_VCard_Delivery_Addressing_Properties_LABEL() {
+	public function get_vCard_Delivery_Addressing_Properties_LABEL() {
 		return $this->vCard_Delivery_Addressing_Properties_LABEL;
 	}
 
 	/**
 	 * @param field_type $vCard_Delivery_Addressing_Properties_LABEL
 	 */
-	public function set_VCard_Delivery_Addressing_Properties_LABEL($vCard_Delivery_Addressing_Properties_LABEL) {
+	public function set_vCard_Delivery_Addressing_Properties_LABEL($vCard_Delivery_Addressing_Properties_LABEL) {
 		$this->vCard_Delivery_Addressing_Properties_LABEL = $vCard_Delivery_Addressing_Properties_LABEL;
 	}
 
 	/**
 	 * @return the $vCard_Geographical_Properties
 	 */
-	public function get_VCard_Geographical_Properties() {
+	public function get_vCard_Geographical_Properties() {
 		return $this->vCard_Geographical_Properties;
 	}
 
 	/**
 	 * @param field_type $vCard_Geographical_Properties
 	 */
-	public function set_VCard_Geographical_Properties($vCard_Geographical_Properties) {
+	public function set_vCard_Geographical_Properties($vCard_Geographical_Properties) {
 		$this->vCard_Geographical_Properties = $vCard_Geographical_Properties;
 	}
 
 	/**
 	 * @return the $vCard_Organizational_Properties
 	 */
-	public function get_VCard_Organizational_Properties() {
+	public function get_vCard_Organizational_Properties() {
 		return $this->vCard_Organizational_Properties;
 	}
 
 	/**
 	 * @param field_type $vCard_Organizational_Properties
 	 */
-	public function set_VCard_Organizational_Properties($vCard_Organizational_Properties) {
+	public function set_vCard_Organizational_Properties($vCard_Organizational_Properties) {
 		$this->vCard_Organizational_Properties = $vCard_Organizational_Properties;
 	}
 
 	/**
 	 * @return the $vCard_Telecommunications_Addressing_Properties_Email
 	 */
-	public function get_VCard_Telecommunications_Addressing_Properties_Email() {
+	public function get_vCard_Telecommunications_Addressing_Properties_Email() {
 		return $this->vCard_Telecommunications_Addressing_Properties_Email;
 	}
 
 	/**
 	 * @param field_type $vCard_Telecommunications_Addressing_Properties_Email
 	 */
-	public function set_VCard_Telecommunications_Addressing_Properties_Email($vCard_Telecommunications_Addressing_Properties_Email) {
+	public function set_vCard_Telecommunications_Addressing_Properties_Email($vCard_Telecommunications_Addressing_Properties_Email) {
 		$this->vCard_Telecommunications_Addressing_Properties_Email = $vCard_Telecommunications_Addressing_Properties_Email;
 	}
 
 	/**
 	 * @return the $vCard_Telecommunications_Addressing_Properties_Tel
 	 */
-	public function get_VCard_Telecommunications_Addressing_Properties_Tel() {
+	public function get_vCard_Telecommunications_Addressing_Properties_Tel() {
 		return $this->vCard_Telecommunications_Addressing_Properties_Tel;
 	}
 
 	/**
 	 * @param field_type $vCard_Telecommunications_Addressing_Properties_Tel
 	 */
-	public function set_VCard_Telecommunications_Addressing_Properties_Tel($vCard_Telecommunications_Addressing_Properties_Tel) {
+	public function set_vCard_Telecommunications_Addressing_Properties_Tel($vCard_Telecommunications_Addressing_Properties_Tel) {
 		$this->vCard_Telecommunications_Addressing_Properties_Tel = $vCard_Telecommunications_Addressing_Properties_Tel;
 	}
 
 	/**
 	 * @prarm text $vcard_text
 	 */
-	public function parse_vcard($vcard_text) {
+	public function parse_vCard($vcard_text) {
 		if (! ($this->_parser instanceof my_vcard_parse)) {
 			try {
-				$this->_parser = new my_vcard_parse;
-			} catch (Exception $e) {
+				$this->_parser = new my_vcard_parse ();
+			} catch ( Exception $e ) {
 				return NULL;
 			}
 		}
 
-		if (!($this->_builder instanceof my_vcard_build)) {
+		if (! ($this->_builder instanceof my_vcard_build)) {
 			try {
-				$this->_builder = new my_vcard_build;
-			} catch (Exception $e) {
+				$this->_builder = new my_vcard_build ();
+			} catch ( Exception $e ) {
 				return NULL;
 			}
 		}
 
 		$data = $this->_parser->fromText ( $vcard_text );
-		$this->_builder->setFromArray($this->_parse->get_parse_data());
+		$this->_builder->setFromArray ( $this->_parser->get_parse_data () );
 
-		$this->set_VCard_Explanatory_Properties ( array(
-											'UID' => $this->_builder->getUniqueID(),
-											'REV' => $this->_builder->getRevision(),
-											'VERSION' => $this->_parser->getVersion(),
-											'LANGAGE' => $this->_builder->getLanguage(),
-											'CATEGORIES' => $this->_builder->getCategories(),
-											'PRODID' => $this->_builder->getProductID(),
-											'SORT-STRING' => $this->_builder->getSortString()
-											)
+		$this->set_vCard_Explanatory_Properties ( array (
+			'UID' => $this->_builder->getUniqueID (),
+			'REV' => $this->_builder->getRevision (),
+			'VERSION' => $this->_parser->getVersion (),
+			'LANGAGE' => $this->_builder->getLanguage (),
+			'CATEGORIES' => $this->_builder->getCategories (),
+			'PRODID' => $this->_builder->getProductID (),
+			'SORT-STRING' => $this->_builder->getSortString ()
+		)
 
 											/*array (
 												'UID' => $data ['VCARD'] [0] ['UID'] [0] ['value'] [0] [0],
@@ -198,60 +211,49 @@ class class_vCard {
 												'REV' => $data ['VCARD'] [0] ['REV'] [0] ['value'] [0] [0],
 												'LANG' => $data ['VCARD'] [0] ['LANG'] [0] ['value'] [0] [0]
 												)*/
-												 );
-		$this->set_VCard_Identification_Properties ( array (
-												'FN' => $this->_builder->getFormattedName(),
-												'N' => $this->_builder->getName(),
-												'NICKNAME' => $this->_builder->getNickname(),
-												'PHOTO' => $this->_builder->getPhoto(),
-												'PhotoType' => $this->_builder->getPhotoType(),
-												'BDAY' => $this->_builder->getBirthday(),
-												'URL' => $this->_builder->getURL(),
-												'SOUND'=> $this->_builder->getSound(),
-												'NOTE'=> $this->_builder->getNote()
-												) );
+        );
+		$this->set_vCard_Identification_Properties ( array (
+			'FN' => $this->_builder->getFormattedName (),
+		    'N' => $this->_builder->getName (),
+		    'NICKNAME' => $this->_builder->getNickname (),
+		    'PHOTO' => $this->_builder->getPhoto (),
+		    'PhotoType' => $this->_builder->getPhotoType (),
+		    'BDAY' => $this->_builder->getBirthday (),
+		    'URL' => $this->_builder->getURL (),
+		    'SOUND' => $this->_builder->getSound (),
+		    'NOTE' => $this->_builder->getNote ()
+		) );
 		/*
 		 * there are more than one 'ADR' comp
 		*/
-		$this->set_VCard_Delivery_Addressing_Properties_ADR(
-												$this->_builder->getGroupComp('ADR')
-												);
+		$this->set_vCard_Delivery_Addressing_Properties_ADR ( $this->_builder->getGroupComp ( 'ADR' ) );
 		/*
 		 * there are more than on 'LABLE' comp
 		 */
-		$this->set_VCard_Delivery_Addressing_Properties_LABEL(
-												$this->_builder->getGroupComp('LABEL')
-												);
+		$this->set_vCard_Delivery_Addressing_Properties_LABEL ( $this->_builder->getGroupComp ( 'LABEL' ) );
 
-		$this->set_VCard_Telecommunications_Addressing_Properties_Tel(
-												$this->_builder->getGroupComp('Tel')
-												);
-		$this->set_VCard_Telecommunications_Addressing_Properties_Email(
-												$this->_builder->getGroupComp('Email')
-												);
-		$this->set_VCard_Organizational_Properties(array(
-
-												));
-		$this->set_VCard_Geographical_Properties(array(
-												'TZ' => $this->_builder->getTz(),
-												'GEO' => $this->_builder->getGeo()
-												));
-
-
-
-
+		$this->set_vCard_Telecommunications_Addressing_Properties_Tel ( $this->_builder->getGroupComp ( 'Tel' ) );
+		$this->set_vCard_Telecommunications_Addressing_Properties_Email ( $this->_builder->getGroupComp ( 'Email' ) );
+		$this->set_vCard_Organizational_Properties ( array (
+			'TITLE' => $this->_builder->getTitle (), 'ROLE' => $this->_builder->getRole (), 'LOGO' => $this->_builder->getLogo (), 'LogoType' => $this->_builder->getLogoType (), 'AGENT' => $this_builder->getAgent (), 'ORG' => $this->_builder->getOrg ()
+		) );
+		$this->set_vCard_Geographical_Properties ( array (
+			'TZ' => $this->_builder->getTz (), 'GEO' => $this->_builder->getGeo ()
+		) );
+		$this->_parser = NULL;
+		$this->_builder = NULL;
 	}
 
 	/**
 	 *
 	 * @param $key = array('UID' => $UID) or array('idvCard_Explanatory_Properties' =>$idvCard_Explanatory_Properties)
 	 */
-	public function get_vcard_from_storage($key) {
+	public function get_vCard_From_Storage($key) {
 
 	}
 
 	public function print_parse_data() {
-		print_r( $this->_parse->get_parse_data());
+		print_r ( $this->_parser->get_parse_data () );
 	}
 
 	/**
@@ -260,19 +262,25 @@ class class_vCard {
 	 * @return array
 	 */
 
-	public function get_vcard_property_from_storage($key) {
+	public function get_vCard_property_from_storage($key) {
 		$tmp_array = array ();
 		if (array_key_exists ( 'UID', $key )) {
-			$tmp_array = array ('UID' => $key ['UID'] );
+			$tmp_array = array (
+				'UID' => $key ['UID']
+			);
 		} elseif (array_key_exists ( 'idvCard_Explanatory_Properties', $key )) {
-			$tmp_array = array ('idvCard_Explanatory_Properties' => $key ['idvCard_Explanatory_Properties'] );
+			$tmp_array = array (
+				'idvCard_Explanatory_Properties' => $key ['idvCard_Explanatory_Properties']
+			);
 		}
 
-		if (! in_array ( $key ['property'], array ('vCard_Explanatory_Properties', 'vCard_Identification_Properties', 'vCard_Delivery_Addressing_Properties_ADR', 'vCard_Delivery_Addressing_Properties_LABEL', 'vCard_Geographical_Properties', 'vCard_Organizational_Properties', 'vCard_Telecommunications_Addressing_Properties_Email', 'vCard_Telecommunications_Addressing_Properties_Tel' ), true )) {
+		if (! in_array ( $key ['property'], array (
+			'vCard_Explanatory_Properties', 'vCard_Identification_Properties', 'vCard_Delivery_Addressing_Properties_ADR', 'vCard_Delivery_Addressing_Properties_LABEL', 'vCard_Geographical_Properties', 'vCard_Organizational_Properties', 'vCard_Telecommunications_Addressing_Properties_Email', 'vCard_Telecommunications_Addressing_Properties_Tel'
+		), true )) {
 			return NULL;
 		}
 		try {
-			$this->set_VCard_Explanatory_Properties ( self::$obj_vcard_source->get_vCard_Explanatory_Properties ( $tmp_array ) );
+			$this->set_vCard_Explanatory_Properties ( self::$obj_vcard_source->get_vCard_Explanatory_Properties ( $tmp_array ) );
 		} catch ( Exception $e ) {
 			print_r ( $e );
 		}
@@ -281,31 +289,45 @@ class class_vCard {
 				return $this->vCard_Explanatory_Properties;
 				break;
 			case 'vCard_Identification_Properties' :
-				$this->vCard_Identification_Properties = self::$obj_vcard_source->get_vCard_Identification_Properties ( array ('idvCard_Explanatory_Properties' => $this->vCard_Explanatory_Properties ['idvCard_Explanatory_Properties'] ) );
+				$this->vCard_Identification_Properties = self::$obj_vcard_source->get_vCard_Identification_Properties ( array (
+					'idvCard_Explanatory_Properties' => $this->vCard_Explanatory_Properties ['idvCard_Explanatory_Properties']
+				) );
 				return $this->vCard_Identification_Properties;
 				break;
 			case 'vCard_Delivery_Addressing_Properties_ADR' :
-				$this->vCard_Delivery_Addressing_Properties_ADR = self::$obj_vcard_source->get_vCard_Delivery_Addressing_Properties_ADR ( array ('idvCard_Explanatory_Properties' => $this->vCard_Explanatory_Properties ['idvCard_Explanatory_Properties'] ) );
+				$this->vCard_Delivery_Addressing_Properties_ADR = self::$obj_vcard_source->get_vCard_Delivery_Addressing_Properties_ADR ( array (
+					'idvCard_Explanatory_Properties' => $this->vCard_Explanatory_Properties ['idvCard_Explanatory_Properties']
+				) );
 				return $this->vCard_Delivery_Addressing_Properties_ADR;
 				break;
 			case 'vCard_Delivery_Addressing_Properties_LABEL' :
-				$this->vCard_Delivery_Addressing_Properties_LABEL = self::$obj_vcard_source->get_vCard_Delivery_Addressing_Properties_LABEL ( array ('idvCard_Explanatory_Properties' => $this->vCard_Explanatory_Properties ['idvCard_Explanatory_Properties'] ) );
+				$this->vCard_Delivery_Addressing_Properties_LABEL = self::$obj_vcard_source->get_vCard_Delivery_Addressing_Properties_LABEL ( array (
+					'idvCard_Explanatory_Properties' => $this->vCard_Explanatory_Properties ['idvCard_Explanatory_Properties']
+				) );
 				return $this->vCard_Delivery_Addressing_Properties_LABEL;
 				break;
 			case 'vCard_Geographical_Properties' :
-				$this->vCard_Geographical_Properties = self::$obj_vcard_source->get_vCard_Geographical_Properties ( array ('idvCard_Explanatory_Properties' => $this->vCard_Explanatory_Properties ['idvCard_Explanatory_Properties'] ) );
+				$this->vCard_Geographical_Properties = self::$obj_vcard_source->get_vCard_Geographical_Properties ( array (
+					'idvCard_Explanatory_Properties' => $this->vCard_Explanatory_Properties ['idvCard_Explanatory_Properties']
+				) );
 				return $this->vCard_Geographical_Properties;
 				break;
 			case 'vCard_Organizational_Properties' :
-				$this->vCard_Organizational_Properties = self::$obj_vcard_source->get_vCard_Organizational_Properties ( array ('idvCard_Explanatory_Properties' => $this->vCard_Explanatory_Properties ['idvCard_Explanatory_Properties'] ) );
+				$this->vCard_Organizational_Properties = self::$obj_vcard_source->get_vCard_Organizational_Properties ( array (
+					'idvCard_Explanatory_Properties' => $this->vCard_Explanatory_Properties ['idvCard_Explanatory_Properties']
+				) );
 				return $this->vCard_Organizational_Properties;
 				break;
 			case 'vCard_Telecommunications_Addressing_Properties_Email' :
-				$this->vCard_Telecommunications_Addressing_Properties_Email = self::$obj_vcard_source->get_vCard_Telecommunications_Addressing_Properties_Email ( array ('idvCard_Explanatory_Properties' => $this->vCard_Explanatory_Properties ['idvCard_Explanatory_Properties'] ) );
+				$this->vCard_Telecommunications_Addressing_Properties_Email = self::$obj_vcard_source->get_vCard_Telecommunications_Addressing_Properties_Email ( array (
+					'idvCard_Explanatory_Properties' => $this->vCard_Explanatory_Properties ['idvCard_Explanatory_Properties']
+				) );
 				return $this->vCard_Telecommunications_Addressing_Properties_Email;
 				break;
 			case 'vCard_Telecommunications_Addressing_Properties_Tel' :
-				$this->vCard_Telecommunications_Addressing_Properties_Tel = self::$obj_vcard_source->get_vCard_Telecommunications_Addressing_Properties_Tel ( array ('idvCard_Explanatory_Properties' => $this->vCard_Explanatory_Properties ['idvCard_Explanatory_Properties'] ) );
+				$this->vCard_Telecommunications_Addressing_Properties_Tel = self::$obj_vcard_source->get_vCard_Telecommunications_Addressing_Properties_Tel ( array (
+					'idvCard_Explanatory_Properties' => $this->vCard_Explanatory_Properties ['idvCard_Explanatory_Properties']
+				) );
 			default :
 				return $this;
 				break;
@@ -316,8 +338,43 @@ class class_vCard {
 	 *
 	 * @param unknown_type $vcard
 	 */
-	public function insert_vcard_property_into_storage($vcard) {
-		;
+	public function insert_vCard_Property_Into_Storage($vcard_text = '') {
+		if ($vcard_text !== '') {
+			$this->parse_vcard ( $vcard_text );
+		}
+		/*
+		if (! ($this->obj_vcard_source instanceof PDO)) {
+			$this->obj_vcard_source = new class_vcard_db ( );
+		}
+		*/
+		/*
+		private $vCard_Explanatory_Properties;
+		private $vCard_Identification_Properties;
+		private $vCard_Delivery_Addressing_Properties_ADR;
+		private $vCard_Delivery_Addressing_Properties_LABEL;
+		private $vCard_Geographical_Properties;
+		private $vCard_Organizational_Properties;
+		private $vCard_Telecommunications_Addressing_Properties_Email;
+		private $vCard_Telecommunications_Addressing_Properties_Tel;
+		*/
+		$this->insert_vCard_Explanatory_Properties;
+		$this->insert_vCard_Identification_Properties;
+		$this->insert_Delivery_Addressing_Properties_ADR;
+		$this->insert_Delivery_Addressing_Properties_LABEL;
+		$this->insert_Geographical_Properties;
+		$this->insert_Organizational_Properties;
+		$this->insert_Telecommunications_Addressing_Properties_Email;
+		$this->insert_Telecommunications_Addressing_Properties_Tel;
+	}
+
+	public function insert_vCard_Explanatory_Properties() {
+		/*
+		if (isset($this->vCard_Explanatory_Properties)) {
+		}
+		*/
+		$this->obj_vcard_source = new class_vcard_db;
+
+
 	}
 
 	private static function checkExistVcardByUid($uid) {
@@ -328,7 +385,7 @@ class class_vCard {
 		}
 	}
 
-//	public static function getVcardByIdentifiedUid($uid) {
+	//	public static function getVcardByIdentifiedUid($uid) {
 //		if (! checkExistVcardByUid ( $uid )) {
 //			return ERR_NO_SUCH_VCARD;
 //		} else {
