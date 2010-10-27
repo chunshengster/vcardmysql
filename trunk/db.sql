@@ -159,7 +159,8 @@ CREATE  TABLE IF NOT EXISTS `vCard_Organizational_Properties` (
   `ROLE` CHAR(128) NULL DEFAULT NULL ,
   `LOGO` BLOB NULL DEFAULT NULL ,
   `LogoType` ENUM('GIF','BMP','JPEG') NULL DEFAULT NULL ,
-  `ORG` CHAR(64) NULL DEFAULT NULL ,
+  `AGENT` BLOB NULL ,
+  `ORG` BLOB NULL DEFAULT NULL ,
   PRIMARY KEY (`idvCard_Organizational_Properties`, `vCard_Explanatory_Properties_idvCard_Explanatory_Properties`) ,
   CONSTRAINT `fk_vCard_Organizational_Properties_vCard_Explanatory_Properti1`
     FOREIGN KEY (`vCard_Explanatory_Properties_idvCard_Explanatory_Properties` )
