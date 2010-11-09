@@ -7,7 +7,7 @@
  * @ver
  */
 
-class class_vcard_db {
+class class_vcard_storage {
 	private static $vcard_db_para_file = "./config/config.ini";
 	public static $dbh = null;
 	public static $db_host = null;
@@ -16,6 +16,7 @@ class class_vcard_db {
 	public static $db_pass = null;
 	public static $db_driver = null;
 	public static $db_name = null;
+//	private static $storage_id;
 
 	private static $vCard_Explanatory_Properties = 'vCard_Explanatory_Properties';
 	private static $vCard_Identification_Properties = 'vCard_Identification_Properties';
@@ -47,6 +48,14 @@ class class_vcard_db {
 		} catch ( PDOException $err ) {
 			print_r ( $err );
 		}
+	}
+
+	public function is_alive() {
+	    if (self::$dbh->getAttribute(PDO::ATTR_CONNECTION_STATUS)>0) {
+	        return true;
+	    }else{
+	        return false;
+	    }
 	}
 
 	private static function getMysqlPara() {
@@ -183,20 +192,31 @@ class class_vcard_db {
 		return $sth->fetchAll ();
 	}
 
-	public function insert_vcard_data_into_db($vcard_comp,$vcard_data_array) {
-		if (!isset(self::$comp) or $comp == '') {
+	public function store_data($vcard_comp,$vcard_data_array,$gen_uid=false) {
+		if (!isset(self::$comp) or $vcard_comp == '') {
 			return NULL;
 		}
-		switch ($comp){
+		self::$dbh = self::getInstance();
+		switch ($vcard_comp){
 			case self::vCard_Explanatory_Properties:
 				if ($vcard_data_array['UID'] == '' or !isset($vcard_data_array['UID'])) {
-				    $vcard_data_array['UID'] = $this->_gen_uuid_from_mysql();
+				    if ($gen_uid == true) {
+			            $vcard_data_array['UID'] = $this->_gen_uuid_from_mysql();
+			        }else{
+			            return false;
+			        }
 				}
-
-
-				return $vcard_data_array['UID'];
+                $insert_sql = "INSERT INTO ". self::$vCard_Explanatory_Properties ." (`UID`,`VERSION`,`REV`,`LANG`,`CATEGORIES`,`PRODID`,`SORT-STRING`) VALUES (:UID,:VERSION,:REV,:LANG,:CATEGORIES,:PRODID,:SORT-STRING)" ;
+                $sth = self::$dbh->prepare($insert_sql);
+                try {
+                    $sth->execute($vcard_data_array);
+                } catch (Exception $e) {
+                    print_r($e);
+                }
+				return array('UID' => $vcard_data_array['UID'],'RESOURCE_ID' => PDO::lastInsertId());
 				break;
 			case self::vCard_Identification_Properties:
+
 				break;
 			case self::vCard_Delivery_Addressing_Properties_ADR:
 				break;
