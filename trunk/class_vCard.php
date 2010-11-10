@@ -430,11 +430,13 @@ class class_vCard {
     public function store_vCard_Delivery_Addressing_Properties_ADR() {
         $this->_get_storage_resource();
         $re_array = $this->obj_vcard_storage->store_data('vCard_Delivery_Addressing_Properties_ADR', array_merge($this->vCard_Delivery_Addressing_Properties_ADR, array('RESOURCE_ID' => $this->vcard_resource_id)));
+        return true;
     }
 
     public function store_vCard_Delivery_Addressing_Properties_LABEL() {
         $this->_get_storage_resource();
-        $this->obj_vcard_storage->store_data('vCard_Delivery_Addressing_Properties_LABEL', $this->vCard_Delivery_Addressing_Properties_LABEL);
+        $this->obj_vcard_storage->store_data('vCard_Delivery_Addressing_Properties_LABEL', array_merge($this->vCard_Delivery_Addressing_Properties_LABEL,array('RESOURCE_ID' => $this->vcard_resource_id)));
+        return true;
     }
 
     public function store_vCard_Geographical_Properties() {
