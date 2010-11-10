@@ -6,241 +6,286 @@
  * @date
  * @ver
  */
-
 class class_vcard_storage {
-	private static $vcard_db_para_file = "./config/config.ini";
-	public static $dbh = null;
-	public static $db_host = null;
-	public static $db_port = null;
-	public static $db_user = null;
-	public static $db_pass = null;
-	public static $db_driver = null;
-	public static $db_name = null;
+
+    private static $vcard_db_para_file = "./config/config.ini";
+    public static $dbh = null;
+    public static $db_host = null;
+    public static $db_port = null;
+    public static $db_user = null;
+    public static $db_pass = null;
+    public static $db_driver = null;
+    public static $db_name = null;
 //	private static $storage_id;
+    private static $vCard_Explanatory_Properties = 'vCard_Explanatory_Properties';
+    private static $vCard_Identification_Properties = 'vCard_Identification_Properties';
+    private static $vCard_Delivvery_Addressing_Properties_ADR = 'vCard_Delivery_Addressing_Properties_ADR';
+    private static $vCard_Delivvery_Addressing_Properties_LABEL = 'vCard_Delivery_Addressing_Properties_LABEL';
+    private static $vCard_Geographical_Properties = 'vCard_Geographical_Properties';
+    private static $vCard_Organizational_Properties = 'vCard_Organizational_Properties';
+    private static $vCard_Telecommunications_Addressing_Properties_Email = 'vCard_Telecommunications_Addressing_Properties_Email';
+    private static $vCard_Telecommunications_Addressing_Properties_Tel = 'vCard_Telecommunications_Addressing_Properties_Tel';
 
-	private static $vCard_Explanatory_Properties = 'vCard_Explanatory_Properties';
-	private static $vCard_Identification_Properties = 'vCard_Identification_Properties';
-	private static $vCard_Delivvery_Addressing_Properties_ADR = 'vCard_Delivery_Addressing_Properties_ADR';
-	private static $vCard_Delivvery_Addressing_Properties_LABEL = 'vCard_Delivery_Addressing_Properties_LABEL';
-	private static $vCard_Geographical_Properties = 'vCard_Geographical_Properties';
-	private static $vCard_Organizational_Properties = 'vCard_Organizational_Properties';
-	private static $vCard_Telecommunications_Addressing_Properties_Email = 'vCard_Telecommunications_Addressing_Properties_Email';
-	private static $vCard_Telecommunications_Addressing_Properties_Tel = 'vCard_Telecommunications_Addressing_Properties_Tel';
+    function __construct() {
+        self::getMysqlPara ();
+        self::$dbh = self::getInstance ();
+    }
 
-	function __construct() {
-		self::getMysqlPara ();
-		self::$dbh = self::getInstance ();
-	}
+    function __destruct() {
+        if (self::$dbh) {
+            unset(self::$dbh);
+        }
+    }
 
-	function __destruct() {
-		if(self::$dbh){
-			unset ( self::$dbh );
-		}
-	}
+    private static function getInstance() {
+        $dsn = self::$db_driver . ":host=" . self::$db_host . ":" . self::$db_port . ";dbname=" . self::$db_name;
+        print $dsn;
+        print "<br>\n";
+        try {
+            $dbh = new PDO($dsn, self::$db_user, self::$db_pass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES UTF8"));
+            return $dbh;
+        } catch (PDOException $err) {
+            print_r($err);
+        }
+    }
 
-	private static function getInstance() {
-		$dsn = self::$db_driver . ":host=" . self::$db_host . ":" . self::$db_port . ";dbname=" . self::$db_name;
-		print $dsn;
-		print "<br>\n";
-		try {
-			$dbh = new PDO ( $dsn, self::$db_user, self::$db_pass, array (PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES UTF8" ) );
-			return $dbh;
-		} catch ( PDOException $err ) {
-			print_r ( $err );
-		}
-	}
+    public function is_alive() {
+        if (self::$dbh->getAttribute(PDO::ATTR_CONNECTION_STATUS) > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
-	public function is_alive() {
-	    if (self::$dbh->getAttribute(PDO::ATTR_CONNECTION_STATUS)>0) {
-	        return true;
-	    }else{
-	        return false;
-	    }
-	}
+    private static function getMysqlPara() {
+        $config_data = parse_ini_file(self::$vcard_db_para_file, 'vcard_db');
 
-	private static function getMysqlPara() {
-		$config_data = parse_ini_file ( self::$vcard_db_para_file, 'vcard_db' );
+        self::$db_driver = $config_data ['vcard_db'] ['driver'];
+        self::$db_host = $config_data ['vcard_db'] ['mysql_host'];
+        self::$db_port = $config_data ['vcard_db'] ['mysql_port'];
+        self::$db_name = $config_data ['vcard_db'] ['db_name'];
+        self::$db_user = $config_data ['vcard_db'] ['db_user'];
+        self::$db_pass = $config_data ['vcard_db'] ['db_pass'];
+    }
 
-		self::$db_driver = $config_data ['vcard_db'] ['driver'];
-		self::$db_host = $config_data ['vcard_db'] ['mysql_host'];
-		self::$db_port = $config_data ['vcard_db'] ['mysql_port'];
-		self::$db_name = $config_data ['vcard_db'] ['db_name'];
-		self::$db_user = $config_data ['vcard_db'] ['db_user'];
-		self::$db_pass = $config_data ['vcard_db'] ['db_pass'];
-	}
+    private function _gen_uuid() {
 
-	private function _gen_uuid_from_mysql() {
         $sql = "Select uuid() as uuid";
         $uuid_array = self::$dbh->query($sql);
+
+        //$uuid = uuid_create(UUID_TYPE_RANDOM);
         return $uuid_array['uuid'];
-	}
+    }
 
-	/*	public function get_vCard_Attr($attr_name, $key) {
-		if (! isset ( self::$attr_name )) {
-			print "Error ,tb_" . $attr_name . "\n<br>";
-			return NULL;
-		}
-		switch ($attr_name) {
-			case self::$vCard_Explanatory_Properties :
-				$sql = '';
-				break;
-			case self::$vCard_Identification_Properties :
-				$sql = '';
-				break;
-			case self::$vCard_Telecommunications_Addressing_Properties_Tel :
-				$sql = '';
-				break;
-			case self::$vCard_Telecommunications_Addressing_Properties_Email :
-				$sql = '';
-				break;
-			case self::$vCard_Delivvery_Addressing_Properties_LABEL :
-				$sql = '';
-				break;
-			case self::$vCard_Delivvery_Addressing_Properties_ADR :
-				$sql = '';
-				break;
-			case self::$vCard_Organizational_Properties :
-				$sql = '';
-				break;
-			case self::$vCard_Geographical_Properties :
-				$sql = '';
-				break;
-			default :
-				return NULL;
-		}
-		return 1;
-	}
-*/
+    /* 	public function get_vCard_Attr($attr_name, $key) {
+      if (! isset ( self::$attr_name )) {
+      print "Error ,tb_" . $attr_name . "\n<br>";
+      return NULL;
+      }
+      switch ($attr_name) {
+      case self::$vCard_Explanatory_Properties :
+      $sql = '';
+      break;
+      case self::$vCard_Identification_Properties :
+      $sql = '';
+      break;
+      case self::$vCard_Telecommunications_Addressing_Properties_Tel :
+      $sql = '';
+      break;
+      case self::$vCard_Telecommunications_Addressing_Properties_Email :
+      $sql = '';
+      break;
+      case self::$vCard_Delivvery_Addressing_Properties_LABEL :
+      $sql = '';
+      break;
+      case self::$vCard_Delivvery_Addressing_Properties_ADR :
+      $sql = '';
+      break;
+      case self::$vCard_Organizational_Properties :
+      $sql = '';
+      break;
+      case self::$vCard_Geographical_Properties :
+      $sql = '';
+      break;
+      default :
+      return NULL;
+      }
+      return 1;
+      }
+     */
 
-	/*
-  	* @param: array('idvCard_Explanatory_Properties') or array('UID')
-  	*
-  	*/
-	public function get_vCard_Explanatory_Properties($key) {
-		//        $sql = '';
-		if (key ( $key ) !== 'idvCard_Explanatory_Properties' or key ( $key ) !== 'UID') {
-			return NULL;
-		}
-		return self::_get_vcard_data_from_db ( 'vCard_Explanatory_Properties', $key );
-		/*
-		$sql = "Select * From " . self::$vCard_Explanatory_Properties . " Where " . key ( $key ) . " = :KEY";
-		$sth = self::$dbh->prepare ( $sql );
-		$sth->bindParam ( ':KEY', $key [key ( $key )] );
-		$sth->execute ();
-		return $sth->fetchAll ();
-    */
-	}
+    /*
+     * @param: array('idvCard_Explanatory_Properties') or array('UID')
+     *
+     */
 
-	/*
+    public function get_vCard_Explanatory_Properties($key) {
+        //        $sql = '';
+        if (key($key) !== 'idvCard_Explanatory_Properties' or key($key) !== 'UID') {
+            return NULL;
+        }
+        return self::_get_vcard_data_from_db('vCard_Explanatory_Properties', $key);
+        /*
+          $sql = "Select * From " . self::$vCard_Explanatory_Properties . " Where " . key ( $key ) . " = :KEY";
+          $sth = self::$dbh->prepare ( $sql );
+          $sth->bindParam ( ':KEY', $key [key ( $key )] );
+          $sth->execute ();
+          return $sth->fetchAll ();
+         */
+    }
+
+    /*
      * @param array('vCard_Explanatory_Properties_idvCard_Explanatory_Properties')
      *      or array('idvCard_Identification_Properties')
      */
-	public function get_vCard_Identification_Properties($key) {
-		if (key ( $key ) !== 'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' or $key ( $key ) !== 'idvCard_Identification_Properties') {
-			return NULL;
-		}
-		return self::_get_vcard_data_from_db ( 'vCard_Identification_Properties', $key );
-	}
 
-	public function get_vCard_Telecommunications_Addressing_Properties_Tel($key) {
-		if (key ( $key ) !== 'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' or key ( $key ) !== 'idvCard_Telecommunications_Addressing_Properties_Tel') {
-			return NULL;
-		}
-		return self::_get_vcard_data_from_db ( 'vCard_Telecommunications_Addressing_Properties_Tel', $key );
-	}
+    public function get_vCard_Identification_Properties($key) {
+        if (key($key) !== 'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' or $key($key) !== 'idvCard_Identification_Properties') {
+            return NULL;
+        }
+        return self::_get_vcard_data_from_db('vCard_Identification_Properties', $key);
+    }
 
-	public function get_vCard_Telecommunications_Addressing_Properties_Email($key) {
-		if (key ( $key ) !== 'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' or key ( $key ) !== 'idvCard_Telecommunications_Addressing_Properties_Email') {
-			return NULL;
-		}
-		return self::_get_vcard_data_from_db ( 'vCard_Telecommunications_Addressing_Properties_Email', $key );
-	}
+    public function get_vCard_Telecommunications_Addressing_Properties_Tel($key) {
+        if (key($key) !== 'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' or key($key) !== 'idvCard_Telecommunications_Addressing_Properties_Tel') {
+            return NULL;
+        }
+        return self::_get_vcard_data_from_db('vCard_Telecommunications_Addressing_Properties_Tel', $key);
+    }
 
-	public function get_vCard_Delivvery_Addressing_Properties_LABEL($key) {
-		if (key ( $key ) !== 'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' or key ( $key ) !== 'idvCard_Delivery_Addressing_Properties_LABEL') {
-			return NULL;
-		}
-		return self::_get_vcard_data_from_db ( 'vCard_Delivery_Addressing_Properties_LABEL', $key );
-	}
+    public function get_vCard_Telecommunications_Addressing_Properties_Email($key) {
+        if (key($key) !== 'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' or key($key) !== 'idvCard_Telecommunications_Addressing_Properties_Email') {
+            return NULL;
+        }
+        return self::_get_vcard_data_from_db('vCard_Telecommunications_Addressing_Properties_Email', $key);
+    }
 
-	public function get_vCard_Delivvery_Addressing_Properties_ADR($key) {
-		if (key ( $key ) !== 'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' or key ( $key ) !== 'idvCard_Delivery_Addressing_Properties_ADR') {
-			return NULL;
-		}
-		return self::_get_vcard_data_from_db ( 'vCard_Delivery_Addressing_Properties_ADR', $key );
-	}
+    public function get_vCard_Delivvery_Addressing_Properties_LABEL($key) {
+        if (key($key) !== 'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' or key($key) !== 'idvCard_Delivery_Addressing_Properties_LABEL') {
+            return NULL;
+        }
+        return self::_get_vcard_data_from_db('vCard_Delivery_Addressing_Properties_LABEL', $key);
+    }
 
-	public function get_vCard_Organizational_Properties($key) {
-		if (key ( $key ) !== 'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' or key ( $key ) !== 'idvCard_Organizational_Properties') {
-			return NULL;
-		}
-		return self::_get_vcard_data_from_db ( 'vCard_Organizational_Properties', $key );
-	}
+    public function get_vCard_Delivvery_Addressing_Properties_ADR($key) {
+        if (key($key) !== 'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' or key($key) !== 'idvCard_Delivery_Addressing_Properties_ADR') {
+            return NULL;
+        }
+        return self::_get_vcard_data_from_db('vCard_Delivery_Addressing_Properties_ADR', $key);
+    }
 
-	public function get_vCard_Geographical_Properties($key) {
-		if (key ( $key ) !== 'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' or key ( $key ) !== 'idvCard_Geographical_Properties') {
-			return NULL;
-		}
-		return self::_get_vcard_data_from_db ( 'vCard_Geographical_Properties', $key );
-	}
+    public function get_vCard_Organizational_Properties($key) {
+        if (key($key) !== 'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' or key($key) !== 'idvCard_Organizational_Properties') {
+            return NULL;
+        }
+        return self::_get_vcard_data_from_db('vCard_Organizational_Properties', $key);
+    }
 
-	private static function _get_vcard_data_from_db($table, $key) {
-		$sql = "Select * From " . $table . " Where " . key ( $key ) . " = :KEY";
-		$sth = self::$dbh->prepare ( $sql );
-		$sth->bindParam ( ':KEY', $key [key ( $key )] );
-		$sth->execute ();
-		return $sth->fetchAll ();
-	}
+    public function get_vCard_Geographical_Properties($key) {
+        if (key($key) !== 'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' or key($key) !== 'idvCard_Geographical_Properties') {
+            return NULL;
+        }
+        return self::_get_vcard_data_from_db('vCard_Geographical_Properties', $key);
+    }
 
-	public function store_data($vcard_comp,$vcard_data_array,$gen_uid=false) {
-		if (!isset(self::$comp) or $vcard_comp == '') {
-			return NULL;
-		}
-		self::$dbh = self::getInstance();
-		switch ($vcard_comp){
-			case self::vCard_Explanatory_Properties:
-				if ($vcard_data_array['UID'] == '' or !isset($vcard_data_array['UID'])) {
-				    if ($gen_uid == true) {
-			            $vcard_data_array['UID'] = $this->_gen_uuid_from_mysql();
-			        }else{
-			            return false;
-			        }
-				}
-                $insert_sql = "INSERT INTO ". self::$vCard_Explanatory_Properties ." (`UID`,`VERSION`,`REV`,`LANG`,`CATEGORIES`,`PRODID`,`SORT-STRING`) VALUES (:UID,:VERSION,:REV,:LANG,:CATEGORIES,:PRODID,:SORT-STRING)" ;
+    private static function _get_vcard_data_from_db($table, $key) {
+        $sql = "Select * From " . $table . " Where " . key($key) . " = :KEY";
+        $sth = self::$dbh->prepare($sql);
+        $sth->bindParam(':KEY', $key [key($key)]);
+        $sth->execute();
+        return $sth->fetchAll();
+    }
+
+    public function get_vcard_id_by_uid($uid = null) {
+        if ($uid == null) {
+            return null;
+        }
+        if (strlen($uid) == 36) {
+            /**
+             * todo: check if $uid is UUID
+             */
+            $select_sql = "SELECT idvCard_Explanatory_Properties FROM " . self::$vCard_Explanatory_Properties . "WHERE UID = " . $uid;
+            $sth = self::$dbh->execute($select_sql);
+            return $sth->fetchAll();
+        }
+    }
+
+    public function store_data($vcard_comp, $vcard_data_array, $gen_uid=false) {
+        if (!isset(self::$comp) or $vcard_comp == '') {
+            return NULL;
+        }
+        self::$dbh = self::getInstance();
+        switch ($vcard_comp) {
+            case self::vCard_Explanatory_Properties:
+                if ($vcard_data_array['UID'] == '' or !isset($vcard_data_array['UID'])) {
+                    if ($gen_uid == true) {
+                        $vcard_data_array['UID'] = $this->_gen_uuid();
+                    } else {
+                        return false;
+                    }
+                }
+                $insert_sql = "INSERT INTO " . self::$vCard_Explanatory_Properties . " (`UID`,`VERSION`,`REV`,`LANG`,`CATEGORIES`,`PRODID`,`SORT-STRING`) VALUES (:UID,:VERSION,:REV,:LANG,:CATEGORIES,:PRODID,:SORT-STRING)";
                 $sth = self::$dbh->prepare($insert_sql);
                 try {
                     $sth->execute($vcard_data_array);
                 } catch (Exception $e) {
                     print_r($e);
                 }
-				return array('UID' => $vcard_data_array['UID'],'RESOURCE_ID' => PDO::lastInsertId());
-				break;
-			case self::vCard_Identification_Properties:
+                return array('UID' => $vcard_data_array['UID'], 'RESOURCE_ID' => PDO::lastInsertId());
+                break;
+            case self::vCard_Identification_Properties:
+                if (is_null($vcard_data_array['RESOURCE_ID'])) {
+                    return false;
+                }
+                $insert_sql = "INSERT INTO " . self::$vCard_Identification_Properties . " (`vCard_Explanatory_Properties_idvCard_Explanatory_Properties`,`N`,`FN`,`NICKNAME`,`PHOTO`,`PhotoType`,`BDAY`,`URL`,`SOUND`,`NOTE`) VALUES (:RESOURCE_ID,:N,:FN,:NICKNAME,:PHOTO,:PhotoType,:BDAY,:URL,:SOUND,:NOTE) ";
+                $sth = self::$dbh->prepare($insert_sql);
+                try {
+                    $sth->execute($vcard_data_array);
+                } catch (Exception $e) {
+                    print_r($e->getMessage());
+                }
+                return array('RESOURCE_ID' => $vcard_data_array['RESOURCE_ID']);
+                break;
+            case self::vCard_Delivery_Addressing_Properties_ADR:
+                if (is_null($vcard_data_array['RESOURCE_ID'])) {
+                    return false;
+                }
+                $insert_sql = "INSERT INTO " . self::$vCard_Delivvery_Addressing_Properties_ADR . " (`vCard_Explanatory_Properties_idvCard_Explanatory_Properties`,`ADR`,`AdrType`) VALUES (:RESOURCE_ID,:ADR,:AdrType)";
+                $sth = self::$dbh->prepare($insert_sql);
+                $_tmp = $vcard_data_array['RESOURCE_ID'];
+                unset($vcard_data_array['RESOURCE_ID']);
+                foreach ($vcard_data_array as $vcard_r) {
+                    $vcard_r['RESOURCE_ID'] = $_tmp;
+                    try {
+                        $sth->execute($vcard_r);
+                    } catch (Exception $e) {
+                        print_r($e->getMessage());
+                    }
+                }
+                return array('RESOURCE_ID' => $_tmp);
+                break;
+            case self::vCard_Delivery_Addressing_Properties_LABEL:
+                
+                break;
+            case self::vCard_Geographical_Properties:
+                break;
+            case self::vCard_Organizational_Properties:
+                break;
+            case self::vCard_Telecommunications_Addressing_Properties_Tel:
+                break;
+            case self::vCard_Telecommunications_Addressing_Properties_Email:
+                break;
+        }
+    }
 
-				break;
-			case self::vCard_Delivery_Addressing_Properties_ADR:
-				break;
-			case self::vCard_Delivery_Addressing_Properties_LABEL:
-				break;
-			case self::vCard_Geographical_Properties:
-				break;
-			case self::vCard_Organizational_Properties:
-				break;
-			case self::vCard_Telecommunications_Addressing_Properties_Tel:
-				break;
-			case self::vCard_Telecommunications_Addressing_Properties_Email:
-				break;
-		}
+    public static function checkExistVcardRecordByUid($uid) {
+        $FindUidSql = "SELECT count(UID) FROM " . self::$vCard_Explanatory_Properties . " WHERE UID = :UID";
+        $sth = self::$dbh->prepare($FindUidSql);
+        $sth->bindParam(':UID', $uid);
+        $sth->execute();
+        return $sth->rowCount();
+    }
 
-	}
-
-	public static function checkExistVcardRecordByUid($uid) {
-		$FindUidSql = "SELECT count(UID) FROM " . self::$vCard_Explanatory_Properties . " WHERE UID = :UID";
-		$sth = self::$dbh->prepare ( $FindUidSql );
-		$sth->bindParam ( ':UID', $uid );
-		$sth->execute ();
-		return $sth->rowCount ();
-	}
 }
 
 ?>
