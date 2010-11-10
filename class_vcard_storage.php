@@ -265,7 +265,22 @@ class class_vcard_storage {
                 return array('RESOURCE_ID' => $_tmp);
                 break;
             case self::vCard_Delivery_Addressing_Properties_LABEL:
-                
+                if(is_null($vcard_data_array['RESOURCE_ID'])){
+                    return false;
+                }
+                $insert_sql = "INSERT INTO ". self::$vCard_Delivvery_Addressing_Properties_LABEL . " (`vCard_Explanatory_Properties_idvCard_Explanatory_Properties`,`LABEL`,`LabelType`,) VALUES(:RESOURCE_ID,:LABEL,:LabelType)";
+                $sth = self::$dbh->prepare($insert_sql);
+                $_tmp = $vcard_data_array['RESOURCE_ID'];
+                unset($vcard_data_array['RESOURCE_ID']);
+                foreach ($vcard_data_array as $vcard_r) {
+                    $vcard_r['RESOURCE_ID'] = $_tmp;
+                    try {
+                        $sth->execute($vcard_r);
+                    } catch (Exception $e) {
+                        print_r($e->getMessage());
+                    }
+                }
+                return array('RESOURCE_ID' => $_tmp);
                 break;
             case self::vCard_Geographical_Properties:
                 break;
