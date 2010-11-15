@@ -51,11 +51,18 @@ print $b->parse_vcard($c);
 $b->print_parse_data();
 */
 
-$parse = File_IMC::parse ( 'vcard' );
-$card_info = $parse->fromFile ( './a.vcf' );
+//$parse = File_IMC::parse ( 'vcard' );
+//$card_info = $parse->fromFile ( './a.vcf' );
+//
+//$builder = File_IMC::build ( 'vcard' );
+//$builder->setFromArray ( $card_info['vcard'] );
+//$builder->getAddress();
 
-$builder = File_IMC::build ( 'vcard' );
-$builder->setFromArray ( $card_info['vcard'] );
-$builder->getAddress();
+require_once 'class_vCard.php';
+$obj_vcard = new class_vCard();
+$c = file_get_contents('./a.vcf');
+$obj_vcard->parse_vcard($c);
+print_r($obj_vcard);
+
 
 ?>
