@@ -57,12 +57,26 @@ $b->print_parse_data();
 //$builder = File_IMC::build ( 'vcard' );
 //$builder->setFromArray ( $card_info['vcard'] );
 //$builder->getAddress();
-
+/**
 require_once 'class_vCard.php';
 $obj_vcard = new class_vCard();
 $c = file_get_contents('./a.vcf');
 $obj_vcard->parse_vcard($c);
 print_r($obj_vcard);
+ *
+ */
+
+$str = 'one|two|three|four';
+
+// positive limit
+print_r(explode('|', $str, 2));
+
+print_r(explode('|', $str,1));
+
+// negative limit (since PHP 5.1)
+print_r(explode('|', $str, -1));
+
+
 
 
 ?>

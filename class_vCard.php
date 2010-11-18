@@ -139,6 +139,11 @@ class class_vCard {
      * @param field_type $vCard_Delivery_Addressing_Properties_ADR
      */
     public function set_vCard_Delivery_Addressing_Properties_ADR($vCard_Delivery_Addressing_Properties_ADR) {
+        /**
+        echo "Test ::::::: \n";
+        print_r($vCard_Delivery_Addressing_Properties_ADR);
+         * 
+         */
         $this->vCard_Delivery_Addressing_Properties_ADR = $vCard_Delivery_Addressing_Properties_ADR;
     }
 
@@ -233,7 +238,9 @@ class class_vCard {
         }
 
         $data = $this->_parser->fromText($vcard_text);
-        $this->_builder->setFromArray($this->_parser->get_parse_data());
+//        print_r($this->_parser->get_parse_data());
+        @$this->_builder->setFromArray($this->_parser->get_parse_data());
+//        print_r($this->_builder);
 
         $this->set_vCard_Explanatory_Properties(array(
             'UID' => $this->_builder->getUniqueID(),
