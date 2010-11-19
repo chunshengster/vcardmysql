@@ -103,10 +103,17 @@ final class my_vcard_build extends File_IMC_Build_Vcard {
         return $this->getValue('TZ', 0, 0);
     }
 
+
+    /**
+     * there is a bug in FILE_IMC_BUILD_VCARD , in function getGeo();
+     */
     public function getGeo() {
-        return $this->getValue('GEO', 0, FILE_IMC_VCARD_GEO_LAT, 0) . ';' .
-        $this->getValue('GEO', 0, FILE_IMC_VCARD_GEO_LON, 0);
+        
+        return $this->getValue('GEO', 0, FILE_IMC::VCARD_GEO_LAT, 0) . ';' .
+        $this->getValue('GEO', 0, FILE_IMC::VCARD_GEO_LON, 0);
+       
     }
+
 
     public function getLogo() {
         return $this->getValue('LOGO', 0, 0);
@@ -166,6 +173,31 @@ final class my_vcard_build extends File_IMC_Build_Vcard {
 
     public function getNote() {
         return $this->getValue('NOTE', 0, 0);
+    }
+
+    public function getCategories(){
+        return $this->getValue('CATEGORIES', 0, 0);
+    }
+
+    public function getUniqueID() {
+        return  $this->getValue('UID', 0, 0);
+    }
+
+    public function getRevision() {
+        return $this->getValue('REV', 0, 0);
+
+    }
+
+    public function getVersion() {
+        return $this->getValue('VERSION', 0);
+    }
+
+    public function getProductID() {
+        return $this->getValue('PRODID', 0, 0);
+    }
+
+    public function getSortString() {
+        return $this->getValue('SORT-STRING', 0, 0);
     }
 
 }
