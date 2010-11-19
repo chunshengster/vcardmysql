@@ -140,9 +140,9 @@ class class_vCard {
      */
     public function set_vCard_Delivery_Addressing_Properties_ADR($vCard_Delivery_Addressing_Properties_ADR) {
         /**
-        echo "Test ::::::: \n";
-        print_r($vCard_Delivery_Addressing_Properties_ADR);
-         * 
+          echo "Test ::::::: \n";
+          print_r($vCard_Delivery_Addressing_Properties_ADR);
+         *
          */
         $this->vCard_Delivery_Addressing_Properties_ADR = $vCard_Delivery_Addressing_Properties_ADR;
     }
@@ -156,6 +156,7 @@ class class_vCard {
 
     /**
      * @param field_type $vCard_Delivery_Addressing_Properties_LABEL
+     * @todo Label may have some format problem .
      */
     public function set_vCard_Delivery_Addressing_Properties_LABEL($vCard_Delivery_Addressing_Properties_LABEL) {
         $this->vCard_Delivery_Addressing_Properties_LABEL = $vCard_Delivery_Addressing_Properties_LABEL;
@@ -172,6 +173,7 @@ class class_vCard {
      * @param field_type $vCard_Geographical_Properties
      */
     public function set_vCard_Geographical_Properties($vCard_Geographical_Properties) {
+//        print_r($vCard_Geographical_Properties);
         $this->vCard_Geographical_Properties = $vCard_Geographical_Properties;
     }
 
@@ -275,7 +277,7 @@ class class_vCard {
          */
         $this->set_vCard_Delivery_Addressing_Properties_ADR($this->_builder->getGroupComp('ADR'));
         /*
-         * there are more than on 'LABLE' comp
+         * there are more than one 'LABLE' comp
          */
         $this->set_vCard_Delivery_Addressing_Properties_LABEL($this->_builder->getGroupComp('LABEL'));
 
@@ -287,6 +289,7 @@ class class_vCard {
         $this->set_vCard_Geographical_Properties(array(
             'TZ' => $this->_builder->getTz(), 'GEO' => $this->_builder->getGeo()
         ));
+//        print_r($this->_builder->getGeo());
         $this->_parser = NULL;
         $this->_builder = NULL;
     }
