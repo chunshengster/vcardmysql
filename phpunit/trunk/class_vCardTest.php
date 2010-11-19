@@ -32,9 +32,8 @@ class class_vCardTest extends PHPUnit_Framework_TestCase {
      * This method is called after a test is executed.
      */
     protected function tearDown() {
-
+        
     }
-
 
     public function test__destruct() {
         // Remove the following lines when you implement this test.
@@ -42,14 +41,27 @@ class class_vCardTest extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @todo Implement testGet_vCard_Explanatory_Properties().
+     * Implement testGet_vCard_Explanatory_Properties().
      */
-//    public function testGet_vCard_Explanatory_Properties() {
-//        // Remove the following lines when you implement this test.
-//        $this->object->get_vCard_Explanatory_Properties();
-//        print_r($this->object);
-//
-//    }
+    public function testGet_vCard_Explanatory_Properties() {
+        // Remove the following lines when you implement this test.
+        $vcard_tmp = array(
+            'UID' => '46464646646464654654646464646464646456464646',
+            'REV' => '20101013111111',
+            'VERSION' => '3.0',
+            'LANGAGE' => '',
+            'CATEGORIES' => '',
+            'PRODID' => '',
+            'SORT-STRING' => ''
+        );
+        /**
+          $this->object->get_vCard_Explanatory_Properties();
+       
+        print_r($this->object->get_vCard_Explanatory_Properties());
+         *
+         */
+        $this->assertEquals($vcard_tmp, $this->object->get_vCard_Explanatory_Properties());
+    }
 
     /**
      * @todo Implement testSet_vCard_Explanatory_Properties().
@@ -107,9 +119,6 @@ class class_vCardTest extends PHPUnit_Framework_TestCase {
                 'Type' => 'domaaaa,postalaaaa'
             )
         );
-//        print_r($vcard_tmp);
-        echo "：：：：：：：Get_vCard_Delivery_Addressing_Properties_ADR <br> \n";
-//        print_r($this->object->get_vCard_Delivery_Addressing_Properties_ADR());
         $this->assertEquals($vcard_tmp, $this->object->get_vCard_Delivery_Addressing_Properties_ADR());
     }
 
@@ -128,10 +137,15 @@ class class_vCardTest extends PHPUnit_Framework_TestCase {
      */
     public function testGet_vCard_Delivery_Addressing_Properties_LABEL() {
         // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
+        $vcard_tmp = array(
+            array(
+                'LABEL' => ( 'Mr.John Q. Public\, Esq.\n        Mail Drop\: TNE QB\n123 Main Street\nAny Town\, CA  91921-1234        \nU.S.A.'),
+                'LabelType' => 'dom,home,postal,parcel'
+            )
         );
+        $this->assertEquals($this->object->get_vCard_Delivery_Addressing_Properties_LABEL(), $vcard_tmp);
     }
+
 //
     /**
      * @todo Implement testSet_vCard_Delivery_Addressing_Properties_LABEL().
@@ -144,14 +158,18 @@ class class_vCardTest extends PHPUnit_Framework_TestCase {
 //    }
 
     /**
-     * @todo Implement testGet_vCard_Geographical_Properties().
+     *  Implement testGet_vCard_Geographical_Properties().
+     *  there is a bug in FILE_IMC_BUILD_VCARD , in function getGeo();
      */
-//    public function testGet_vCard_Geographical_Properties() {
-//        // Remove the following lines when you implement this test.
-//        $this->markTestIncomplete(
-//                'This test has not been implemented yet.'
-//        );
-//    }
+    public function testGet_vCard_Geographical_Properties() {
+        // Remove the following lines when you implement this test.
+        $vcard_tmp = array(
+            'TZ' => '-05\:00\; EST\; Raleigh/North America',
+            'GEO'=>'37.386013;-122.082932'
+        );
+        print_r($this->object->get_vCard_Geographical_Properties());
+        $this->assertEquals($vcard_tmp, $this->object->get_vCard_Geographical_Properties());
+    }
 
     /**
      * @todo Implement testSet_vCard_Geographical_Properties().
@@ -164,14 +182,15 @@ class class_vCardTest extends PHPUnit_Framework_TestCase {
 //    }
 
     /**
-     * @todo Implement testGet_vCard_Organizational_Properties().
+     * Implement testGet_vCard_Organizational_Properties().
      */
-//    public function testGet_vCard_Organizational_Properties() {
-//        // Remove the following lines when you implement this test.
-//        $this->markTestIncomplete(
-//                'This test has not been implemented yet.'
-//        );
-//    }
+    public function testGet_vCard_Organizational_Properties() {
+
+
+        $this->markTestIncomplete(
+                'This test has not been implemented yet.'
+        );
+    }
 
     /**
      * @todo Implement testSet_vCard_Organizational_Properties().
@@ -186,12 +205,12 @@ class class_vCardTest extends PHPUnit_Framework_TestCase {
     /**
      * @todo Implement testGet_vCard_Telecommunications_Addressing_Properties_Email().
      */
-//    public function testGet_vCard_Telecommunications_Addressing_Properties_Email() {
-//        // Remove the following lines when you implement this test.
-//        $this->markTestIncomplete(
-//                'This test has not been implemented yet.'
-//        );
-//    }
+    public function testGet_vCard_Telecommunications_Addressing_Properties_Email() {
+        // Remove the following lines when you implement this test.
+        $this->markTestIncomplete(
+                'This test has not been implemented yet.'
+        );
+    }
 
     /**
      * @todo Implement testSet_vCard_Telecommunications_Addressing_Properties_Email().
@@ -206,12 +225,12 @@ class class_vCardTest extends PHPUnit_Framework_TestCase {
     /**
      * @todo Implement testGet_vCard_Telecommunications_Addressing_Properties_Tel().
      */
-//    public function testGet_vCard_Telecommunications_Addressing_Properties_Tel() {
-//        // Remove the following lines when you implement this test.
-//        $this->markTestIncomplete(
-//                'This test has not been implemented yet.'
-//        );
-//    }
+    public function testGet_vCard_Telecommunications_Addressing_Properties_Tel() {
+        // Remove the following lines when you implement this test.
+        $this->markTestIncomplete(
+                'This test has not been implemented yet.'
+        );
+    }
 
     /**
      * @todo Implement testSet_vCard_Telecommunications_Addressing_Properties_Tel().

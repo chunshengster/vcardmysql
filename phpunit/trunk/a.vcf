@@ -15,5 +15,10 @@ TEL;TYPE=WORK:18601318701
 TEL;TYPE=WORK;TYPE=FAX:01066505674
 ADR;TYPE=WORK,dom,home,postal,parcel:;;西城区西单北大街甲133号中国联通951房间;;;100032;
 ADR;TYPE=domaaaa;TYPE=postalaaaa:;;北京市西城区2222222222;;;123456;
+LABEL;TYPE=dom,home,postal,parcel:Mr.John Q. Public, Esq.\n
+         Mail Drop: TNE QB\n123 Main Street\nAny Town, CA  91921-1234
+         \nU.S.A.
 ORG:联通新时讯通信有限公司;移动互联网事业部
+TZ;VALUE=text:-05:00; EST; Raleigh/North America
+GEO:37.386013;-122.082932
 END:VCARD
