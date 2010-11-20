@@ -266,7 +266,7 @@ class class_vCard {
             'N' => $this->_builder->getName(),
             'NICKNAME' => $this->_builder->getNickname(),
             'PHOTO' => $this->_builder->getPhoto(),
-            'PhotoType' => $this->_builder->getPhotoType(),
+            'PhotoType' => $this->_builder->getType('PHOTO'),
             'BDAY' => $this->_builder->getBirthday(),
             'URL' => $this->_builder->getURL(),
             'SOUND' => $this->_builder->getSound(),
@@ -284,7 +284,7 @@ class class_vCard {
         $this->set_vCard_Telecommunications_Addressing_Properties_Tel($this->_builder->getGroupComp('Tel'));
         $this->set_vCard_Telecommunications_Addressing_Properties_Email($this->_builder->getGroupComp('Email'));
         $this->set_vCard_Organizational_Properties(array(
-            'TITLE' => $this->_builder->getTitle(), 'ROLE' => $this->_builder->getRole(), 'LOGO' => $this->_builder->getLogo(), 'LogoType' => $this->_builder->getLogoType(), 'AGENT' => $this->_builder->getAgent(), 'ORG' => $this->_builder->getOrg()
+            'TITLE' => $this->_builder->getTitle(), 'ROLE' => $this->_builder->getRole(), 'LOGO' => $this->_builder->getLogo(), 'LogoType' => $this->_builder->getType('LOGO'), 'AGENT' => $this->_builder->getAgent(), 'ORG' => $this->_builder->getOrg()
         ));
         $this->set_vCard_Geographical_Properties(array(
             'TZ' => $this->_builder->getTz(), 'GEO' => $this->_builder->getGeo()

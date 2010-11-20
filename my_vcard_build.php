@@ -24,7 +24,7 @@ final class my_vcard_build extends File_IMC_Build_Vcard {
         return $this->getValue('LANGUAGE', 0, 0);
     }
 
-    protected function getType($comp, $iter = 0) {
+    public function getType($comp, $iter = 0) {
         $type = $this->getParam($comp, $iter);
         $type = explode('=', $type, 2);
         return $type[1];
@@ -33,21 +33,29 @@ final class my_vcard_build extends File_IMC_Build_Vcard {
     public function getBirthday() {
         return $this->getValue('BDAY', 0, 0);
     }
-
+/*
     public function getAdrType($iter = 0) {
         return $this->getType('ADR', $iter);
     }
+ * 
+ */
 
     public function getAdrValue($iter = 0) {
-        return $this->getValue('ADR', $iter, FILE_IMC::VCARD_ADR_POB) . ';' .
-        $this->getValue('ADR', $iter, FILE_IMC::VCARD_ADR_EXTEND) . ';' .
-        $this->getValue('ADR', $iter, FILE_IMC::VCARD_ADR_STREET) . ';' .
-        $this->getValue('ADR', $iter, FILE_IMC::VCARD_ADR_LOCALITY) . ';' .
-        $this->getValue('ADR', $iter, FILE_IMC::VCARD_ADR_REGION) . ';' .
-        $this->getValue('ADR', $iter, FILE_IMC::VCARD_ADR_POSTCODE) . ';' .
-        $this->getValue('ADR', $iter, FILE_IMC::VCARD_ADR_COUNTRY);
+        return parent::getValue('ADR', $iter, FILE_IMC::VCARD_ADR_POB) . ';' .
+        parent::getValue('ADR', $iter, FILE_IMC::VCARD_ADR_EXTEND) . ';' .
+        parent::getValue('ADR', $iter, FILE_IMC::VCARD_ADR_STREET) . ';' .
+        parent::getValue('ADR', $iter, FILE_IMC::VCARD_ADR_LOCALITY) . ';' .
+        parent::getValue('ADR', $iter, FILE_IMC::VCARD_ADR_REGION) . ';' .
+        parent::getValue('ADR', $iter, FILE_IMC::VCARD_ADR_POSTCODE) . ';' .
+        parent::getValue('ADR', $iter, FILE_IMC::VCARD_ADR_COUNTRY);
     }
 
+    public function  getValue($comp, $iter = 0, $part = 0, $rept = null) {
+        if($comp === 'ADR'){return $this->getAdrValue($iter);}
+        return parent::getValue($comp, $iter, $part, $rept);
+    }
+    
+/**
     public function getLabelType($iter = 0) {
         return $this->getType('LABEL', $iter);
     }
@@ -55,6 +63,8 @@ final class my_vcard_build extends File_IMC_Build_Vcard {
     public function getLabelValue($iter = 0) {
         return $this->getValue('LABEL', $iter, 0);
     }
+ *
+ */
 
     public function getCompCount($comp) {
         if (is_array($this->value[$comp]) or isset($this->value[$comp])) {
@@ -78,6 +88,9 @@ final class my_vcard_build extends File_IMC_Build_Vcard {
             if ($comp_count > 0) {
                 switch ($comp) {
                     case 'LABEL':
+                        /**
+                         * @todo there may be some thing wrong in this case;
+                         */
                         for ($i = 0; $i < $comp_count; $i++) {
                             array_push($r_array, array(strtoupper($comp) => $this->getValue($comp, $i, 0), ucfirst(strtolower($comp)) . 'Type' => $this->getType($comp, $i)));
                         }
@@ -85,7 +98,13 @@ final class my_vcard_build extends File_IMC_Build_Vcard {
                         break;
                     case 'ADR':
                         for ($i = 0; $i < $comp_count; $i++) {
-                            array_push($r_array, array(strtoupper($comp) => $this->getAdrValue($i) , 'Type' => $this->getType($comp, $i)));
+                            array_push($r_array, array(strtoupper($comp) => $this->getValue($comp, $i, 0), ucfirst(strtolower($comp)) . 'Type' => $this->getType($comp, $i)));
+                        }
+                        return $r_array;
+                        break;
+                    case 'EMAIL':
+                        for ($i = 0; $i < $comp_count; $i++) {
+                            array_push($r_array, array(strtoupper($comp) => $this->getValue($comp, $i, 0), ucfirst(strtolower($comp)) . 'Type' => $this->getType($comp, $i)));
                         }
                         return $r_array;
                         break;
@@ -122,10 +141,12 @@ final class my_vcard_build extends File_IMC_Build_Vcard {
     public function getOrg() {
         return $this->getValue('ORG', 0, 0);
     }
-
+/**
     public function getLogoType() {
-        return $this->getMeta('LOGO');
+        return $this->getType('LOGO');
     }
+ *
+ */
 
     public function getTitle() {
         return $this->getValue('TITLE', 0, 0);
@@ -159,9 +180,12 @@ final class my_vcard_build extends File_IMC_Build_Vcard {
         return $this->getValue('PHOTO', 0, 0);
     }
 
+    /*
     public function getPhotoType() {
         return $this->getType('PHOTO');
     }
+     * 
+     */
 
     public function getURL() {
         return $this->getValue('URL', 0, 0);
