@@ -141,6 +141,10 @@ class class_vCardTest extends PHPUnit_Framework_TestCase {
             array(
                 'LABEL' => ( 'Mr.John Q. Public\, Esq.\n        Mail Drop\: TNE QB\n123 Main Street\nAny Town\, CA  91921-1234        \nU.S.A.'),
                 'LabelType' => 'dom,home,postal,parcel'
+            ),
+            array(
+                'LABEL' => ( '测试label'),
+                'LabelType' => 'parcel'
             )
         );
         $this->assertEquals($this->object->get_vCard_Delivery_Addressing_Properties_LABEL(), $vcard_tmp);
@@ -212,7 +216,7 @@ class class_vCardTest extends PHPUnit_Framework_TestCase {
      */
     public function testGet_vCard_Telecommunications_Addressing_Properties_Email() {
         $vcard_tmp = array();
-        print_r($this->object);
+//        print_r($this->object);
         print_r($this->object->get_vCard_Telecommunications_Addressing_Properties_Email());
     }
 
@@ -230,10 +234,12 @@ class class_vCardTest extends PHPUnit_Framework_TestCase {
      * @todo Implement testGet_vCard_Telecommunications_Addressing_Properties_Tel().
      */
     public function testGet_vCard_Telecommunications_Addressing_Properties_Tel() {
-        // Remove the following lines when you implement this test.
+        print_r($this->object->get_vCard_Telecommunications_Addressing_Properties_Tel());
+        /*
         $this->markTestIncomplete(
                 'This test has not been implemented yet.'
         );
+         */
     }
 
     /**

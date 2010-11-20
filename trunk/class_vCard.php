@@ -281,8 +281,8 @@ class class_vCard {
          */
         $this->set_vCard_Delivery_Addressing_Properties_LABEL($this->_builder->getGroupComp('LABEL'));
 
-        $this->set_vCard_Telecommunications_Addressing_Properties_Tel($this->_builder->getGroupComp('Tel'));
-        $this->set_vCard_Telecommunications_Addressing_Properties_Email($this->_builder->getGroupComp('Email'));
+        $this->set_vCard_Telecommunications_Addressing_Properties_Tel($this->_builder->getGroupComp('TEL'));
+        $this->set_vCard_Telecommunications_Addressing_Properties_Email($this->_builder->getGroupComp('EMAIL'));
         $this->set_vCard_Organizational_Properties(array(
             'TITLE' => $this->_builder->getTitle(), 'ROLE' => $this->_builder->getRole(), 'LOGO' => $this->_builder->getLogo(), 'LogoType' => $this->_builder->getType('LOGO'), 'AGENT' => $this->_builder->getAgent(), 'ORG' => $this->_builder->getOrg()
         ));

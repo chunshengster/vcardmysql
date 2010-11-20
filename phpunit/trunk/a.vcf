@@ -25,6 +25,7 @@ item2.X-ABLabel:_$!<Spouse>!$_
 LABEL;TYPE=dom,home,postal,parcel:Mr.John Q. Public, Esq.\n
          Mail Drop: TNE QB\n123 Main Street\nAny Town, CA  91921-1234
          \nU.S.A.
+LABEL;TYPE=parcel:测试label
 ORG:联通新时讯通信有限公司;移动互联网事业部
 TZ;VALUE=text:-05:00; EST; Raleigh/North America
 GEO:37.386013;-122.082932
