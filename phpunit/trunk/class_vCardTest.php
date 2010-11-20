@@ -56,8 +56,8 @@ class class_vCardTest extends PHPUnit_Framework_TestCase {
         );
         /**
           $this->object->get_vCard_Explanatory_Properties();
-       
-        print_r($this->object->get_vCard_Explanatory_Properties());
+
+          print_r($this->object->get_vCard_Explanatory_Properties());
          *
          */
         $this->assertEquals($vcard_tmp, $this->object->get_vCard_Explanatory_Properties());
@@ -79,13 +79,13 @@ class class_vCardTest extends PHPUnit_Framework_TestCase {
     public function testGet_vCard_Identification_Properties() {
         // Remove the following lines when you implement this test.
         $vcard_tmp = array(
-            'FN' => '于淇',
-            'N' => '于;淇;;;',
-            'NICKNAME' => '于淇,齐齐',
+            'FN' => '王春生',
+            'N' => '王;春生;;;',
+            'NICKNAME' => '平凡的香草',
             'PHOTO' => '',
             'PhotoType' => '',
-            'BDAY' => '',
-            'URL' => '',
+            'BDAY' => '1981-04-18',
+            'URL' => 'http\://www.muduo.net',
             'SOUND' => '',
             'NOTE' => ''
         );
@@ -111,15 +111,15 @@ class class_vCardTest extends PHPUnit_Framework_TestCase {
             Array
                 (
                 'ADR' => ';;西城区西单北大街甲133号中国联通951房间;;;100032;',
-                'Type' => 'WORK,dom,home,postal,parcel',
+                'AdrType' => 'WORK,dom,home,postal,parcel',
             ),
             Array
                 (
                 'ADR' => ';;北京市西城区2222222222;;;123456;',
-                'Type' => 'domaaaa,postalaaaa'
+                'AdrType' => 'domaaaa,postalaaaa'
             )
         );
-        $this->assertEquals($vcard_tmp, $this->object->get_vCard_Delivery_Addressing_Properties_ADR());
+        $this->assertEquals($this->object->get_vCard_Delivery_Addressing_Properties_ADR(), $vcard_tmp);
     }
 
     /**
@@ -165,7 +165,7 @@ class class_vCardTest extends PHPUnit_Framework_TestCase {
         // Remove the following lines when you implement this test.
         $vcard_tmp = array(
             'TZ' => '-05\:00\; EST\; Raleigh/North America',
-            'GEO'=>'37.386013;-122.082932'
+            'GEO' => '37.386013;-122.082932'
         );
         print_r($this->object->get_vCard_Geographical_Properties());
         $this->assertEquals($vcard_tmp, $this->object->get_vCard_Geographical_Properties());
@@ -185,11 +185,16 @@ class class_vCardTest extends PHPUnit_Framework_TestCase {
      * Implement testGet_vCard_Organizational_Properties().
      */
     public function testGet_vCard_Organizational_Properties() {
-
-
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
+        $vcard_tmp = array(
+            'TITLE' => '资深架构师',
+            'ROLE'  => '',
+            'LOGO'  => '',
+            'LogoType' => '',
+            'AGENT' =>'',
+            'ORG'   => '联通新时讯通信有限公司 unIcom中国联通'
         );
+//        print_r($this->object->get_vCard_Organizational_Properties());
+        $this->assertEquals($this->object->get_vCard_Organizational_Properties(), $vcard_tmp);
     }
 
     /**
@@ -203,13 +208,12 @@ class class_vCardTest extends PHPUnit_Framework_TestCase {
 //    }
 
     /**
-     * @todo Implement testGet_vCard_Telecommunications_Addressing_Properties_Email().
+     * Implement testGet_vCard_Telecommunications_Addressing_Properties_Email().
      */
     public function testGet_vCard_Telecommunications_Addressing_Properties_Email() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
+        $vcard_tmp = array();
+        print_r($this->object);
+        print_r($this->object->get_vCard_Telecommunications_Addressing_Properties_Email());
     }
 
     /**

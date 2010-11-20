@@ -2,19 +2,26 @@ BEGIN:VCARD
 VERSION:3.0
 REV:20101013111111
 UID:46464646646464654654646464646464646456464646
-LANG:zh_CN
-FN:于淇
-N:于;淇;;;
-NICKNAME:于淇,齐齐
-EMAIL;TYPE=INTERNET:yuq@wo.com.cn
-EMAIL;TYPE=INTERNET:yuq@wo.com.cnyuqil0@chinaunicom.cn
-TEL;TYPE=CELL:+8615101010899
-TEL;TYPE=CELL:18601318701
-TEL;TYPE=WORK:01016505664
-TEL;TYPE=WORK:18601318701
-TEL;TYPE=WORK;TYPE=FAX:01066505674
+FN:王春生
+N:王;春生;;;
+NICKNAME:平凡的香草
+EMAIL;TYPE=INTERNET:chunshengster@gmail.com
+EMAIL;TYPE=INTERNET;TYPE=WORK:chunge@wo.com.cn
+EMAIL;TYPE=INTERNET;TYPE=HOME:18601108092@wo.com.cn.wangchsh@uninewspace.com
+TEL;TYPE=WORK;TYPE=FAX:(010)66505674
+TEL;TYPE=WORK:01066505725
+TEL;TYPE=CELL:18601108092
+TEL;TYPE=CELL:13810154053
 ADR;TYPE=WORK,dom,home,postal,parcel:;;西城区西单北大街甲133号中国联通951房间;;;100032;
-ADR;TYPE=domaaaa;TYPE=postalaaaa:;;北京市西城区2222222222;;;123456;
+ADR;TYPE=domaaaa,postalaaaa:;;北京市西城区2222222222;;;123456;
+ORG:联通新时讯通信有限公司 unIcom中国联通
+TITLE:资深架构师
+BDAY:1981-04-18
+URL;TYPE=HOME:http\://www.muduo.net
+item1.URL:http\://www.muduo.net/?8974
+item1.X-ABLabel:BLOG
+item2.X-ABRELATEDNAMES:xofjdl
+item2.X-ABLabel:_$!<Spouse>!$_
 LABEL;TYPE=dom,home,postal,parcel:Mr.John Q. Public, Esq.\n
          Mail Drop: TNE QB\n123 Main Street\nAny Town, CA  91921-1234
          \nU.S.A.
