@@ -58,7 +58,9 @@ class class_vCard {
       }
      */
     private function _get_storage_resource() {
-        if (!$this->obj_vcard_storage->is_alive()) {
+        echo ">>>>>".__CLASS__.__METHOD__.__LINE__."\n";
+        if (!($this->obj_vcard_storage instanceof class_vcard_storage) or !$this->obj_vcard_storage->is_alive()) {
+            echo ">>>>>".__CLASS__.__METHOD__.__LINE__."\n";
             $this->obj_vcard_storage = new class_vcard_storage;
         }
     }
@@ -303,7 +305,11 @@ class class_vCard {
     }
 
     public function print_parse_data() {
-        print_r($this->_parser->get_parse_data());
+        try{
+            print_r($this->_parser->get_parse_data());
+        } catch (Exception $e){
+            print_r($e->getMessage());
+        }
     }
 
     /**
@@ -421,7 +427,11 @@ class class_vCard {
           if (isset($this->vCard_Explanatory_Properties)) {
           }
          */
+        echo ">>>>". __CLASS__.':'.__METHOD__.':'.__LINE__."\n";
+        
         $this->_get_storage_resource();
+        echo "\n>>>>>".__CLASS__.':'.__METHOD__.':'.__LINE__."\n";
+        
         $re_array = $this->obj_vcard_storage->store_data('vCard_Explanatory_Properties', $this->vCard_Explanatory_Properties, $gen_uid);
         if ($re_array['UID'] !== '' and $this->vCard_Explanatory_Properties['UID'] == '') {
             $this->vCard_Explanatory_Properties['UID'] = $re_array['UID'];
@@ -480,13 +490,6 @@ class class_vCard {
         }
     }
 
-    //	public static function getVcardByIdentifiedUid($uid) {
-//		if (! checkExistVcardByUid ( $uid )) {
-//			return ERR_NO_SUCH_VCARD;
-//		} else {
-//			//return buildVcardByUid($uid);
-//		}
-//	}
 }
 
 ?>
