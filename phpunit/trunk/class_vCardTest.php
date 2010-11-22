@@ -274,14 +274,12 @@ class class_vCardTest extends PHPUnit_Framework_TestCase {
 //    }
 
     /**
-     * @todo Implement testPrint_parse_data().
+     *  Implement testPrint_parse_data().
      */
-//    public function testPrint_parse_data() {
-//        // Remove the following lines when you implement this test.
-//        $this->markTestIncomplete(
-//                'This test has not been implemented yet.'
-//        );
-//    }
+    public function testPrint_parse_data() {
+//        $this->object->print_parse_data();
+        $this->markTestSkipped();
+    }
 
     /**
      * @todo Implement testGet_vCard_property_from_storage().
@@ -304,14 +302,13 @@ class class_vCardTest extends PHPUnit_Framework_TestCase {
 //    }
 
     /**
-     * @todo Implement testStore_vCard_Explanatory_Properties().
+     * Implement testStore_vCard_Explanatory_Properties().
      */
-//    public function testStore_vCard_Explanatory_Properties() {
-//        // Remove the following lines when you implement this test.
-//        $this->markTestIncomplete(
-//                'This test has not been implemented yet.'
-//        );
-//    }
+    public function testStore_vCard_Explanatory_Properties() {
+        
+        print_r($this->object->get_vCard_Explanatory_Properties());
+        $this->object->store_vCard_Explanatory_Properties();
+    }
 
     /**
      * @todo Implement testStore_vCard_Identification_Properties().
