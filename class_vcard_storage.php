@@ -39,8 +39,8 @@ class class_vcard_storage {
 
     private static function getInstance() {
         $dsn = self::$db_driver . ":host=" . self::$db_host . ";port=" . self::$db_port . ";dbname=" . self::$db_name;
-        echo  __CLASS__.__METHOD__.__LINE__. "\n";
-        echo "\n".$dsn."\n";
+        echo __CLASS__ . __METHOD__ . __LINE__ . "\n";
+        echo "\n" . $dsn . "\n";
         try {
             $dbh = new PDO($dsn, self::$db_user, self::$db_pass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES UTF8"));
             return $dbh;
@@ -197,7 +197,7 @@ class class_vcard_storage {
     }
 
     public function get_vcard_id_by_uid($uid) {
-        if ($uid == '' or !isset ($uid)) {
+        if ($uid == '' or !isset($uid)) {
             return false;
         }
         if (strlen($uid) == 36) {
@@ -212,11 +212,9 @@ class class_vcard_storage {
     }
 
     public function store_data($vcard_comp, $vcard_data_array, $gen_uid=false) {
-
         if (!isset($vcard_comp) or $vcard_comp == '') {
             return false;
         }
-
         if ($vcard_data_array['UID'] == '' or !isset($vcard_data_array['UID'])) {
             if ($gen_uid == true) {
                 $vcard_data_array['UID'] = $this->_gen_uuid();
@@ -224,21 +222,26 @@ class class_vcard_storage {
                 return false;
             }
         }
-        
+        if ($gen_uid == true) {
+            $vcard_exist = $this->check_vcard_exist_via_uid($vcard_data_array['UID']);
+        }
         $this->dbh = self::getInstance();
         print_r($vcard_data_array);
         switch ($vcard_comp) {
             case self::$vCard_Explanatory_Properties:
-                
-                //Importent: 'SORTSTRING',for PDO does not work with 'SORT-STRING'
-                $insert_sql = "INSERT INTO " . self::$vCard_Explanatory_Properties . " (`UID`,`VERSION`,`REV`,`LANG`,`CATEGORIES`,`PRODID`,`SORT-STRING`) VALUES (:UID,:VERSION,:REV,:LANG,:CATEGORIES,:PRODID,:SORTSTRING)";
-                echo "\n".$insert_sql."\n";
-                $sth = $this->dbh->prepare($insert_sql);
-                /*
-                foreach ($vcard_data_array as $key => $value) {
-                    echo ">>>".$key.':'.$value."\n";
-                    $sth->bindParam(':'."$key", $value);
+                if (!$vcard_exist) {
+                    //Importent: 'SORTSTRING',for PDO does not work with 'SORT-STRING'
+                    $store_sql = "INSERT INTO " . self::$vCard_Explanatory_Properties . " (`UID`,`VERSION`,`REV`,`LANG`,`CATEGORIES`,`PRODID`,`SORT-STRING`) VALUES (:UID,:VERSION,:REV,:LANG,:CATEGORIES,:PRODID,:SORTSTRING)";
+                } else {
+                    $store_sql = "UPDATE " . self::$vCard_Explanatory_Properties . " SET `VERSION` = :VERSION,`REV` = :REV,`LANG` = :LANG,`CATEGORIES` = :CATEGORIES,`PRODID` = :PRODID,`SORT-STRING` = :SORTSTRING  WHERE UID = :UID";
                 }
+                echo "\n" . $store_sql . "\n";
+                $sth = $this->dbh->prepare($store_sql);
+                /*
+                  foreach ($vcard_data_array as $key => $value) {
+                  echo ">>>".$key.':'.$value."\n";
+                  $sth->bindParam(':'."$key", $value);
+                  }
                  */
                 $sth->bindParam(':UID', $vcard_data_array['UID']);
                 $sth->bindParam(':VERSION', $vcard_data_array['VERSION']);
@@ -248,17 +251,21 @@ class class_vcard_storage {
                 $sth->bindParam(':PRODID', $vcard_data_array['PRODID']);
                 $sth->bindParam(':SORTSTRING', $vcard_data_array['SORT-STRING']);
                 // SORTSTRING,for pdo does not work with 'SORT-STRING'
-                echo "\n>>>>".__CLASS__.__METHOD__.__LINE__."\n";
+                echo "\n>>>>" . __CLASS__ . __METHOD__ . __LINE__ . "\n";
                 try {
                     $sth->execute();
-                } catch (Exception $e) {
+                } catch (PDOException $e) {
                     print_r($e->getMessage());
                 }
-                return array('UID' => $vcard_data_array['UID'], 'RESOURCE_ID' => $this->dbh->lastInsertId());
-                break;
+                return array('UID' => $vcard_data_array['UID'], 'RESOURCE_ID' => isset($this->dbh->lastInsertId()) ? $this->dbh->lastInsertId() : null);
+
             case self::$vCard_Identification_Properties:
-                $insert_sql = "INSERT INTO " . self::$vCard_Identification_Properties . " (`vCard_Explanatory_Properties_idvCard_Explanatory_Properties`,`N`,`FN`,`NICKNAME`,`PHOTO`,`PhotoType`,`BDAY`,`URL`,`SOUND`,`NOTE`) VALUES (:RESOURCE_ID,:N,:FN,:NICKNAME,:PHOTO,:PhotoType,:BDAY,:URL,:SOUND,:NOTE) ";
-                $sth = $this->dbh->prepare($insert_sql);
+                if (!$vcard_exist) {
+                    $store_sql = "INSERT INTO " . self::$vCard_Identification_Properties . " (`vCard_Explanatory_Properties_idvCard_Explanatory_Properties`,`N`,`FN`,`NICKNAME`,`PHOTO`,`PhotoType`,`BDAY`,`URL`,`SOUND`,`NOTE`) VALUES (:RESOURCE_ID,:N,:FN,:NICKNAME,:PHOTO,:PhotoType,:BDAY,:URL,:SOUND,:NOTE) ";
+                } else {
+                    $store_sql = "UPDATE " . self::$vCard_Identification_Properties . " SET `N` = :N,,`FN` = :FN,`NICKNAME` = :NICKNAME,`PHOTO` = :PHOTO,`PhotoType` = :PhotoType,`BDAY` = :BDAY,`URL` = :URL,`SOUND` = :SOUND,`NOTE` = :NOTE where `vCard_Explanatory_Properties_idvCard_Explanatory_Properties` = :RESOURCE_ID ";
+                }
+                $sth = $this->dbh->prepare($store_sql);
                 try {
                     $sth->execute($vcard_data_array);
                 } catch (Exception $e) {
@@ -266,9 +273,16 @@ class class_vcard_storage {
                 }
                 return array('RESOURCE_ID' => $vcard_data_array['RESOURCE_ID']);
                 break;
-            case self::$vCard_Delivery_Addressing_Properties_ADR:
 
-                $insert_sql = "INSERT INTO " . self::$vCard_Delivvery_Addressing_Properties_ADR . " (`vCard_Explanatory_Properties_idvCard_Explanatory_Properties`,`ADR`,`AdrType`) VALUES (:RESOURCE_ID,:ADR,:AdrType)";
+            case self::$vCard_Delivery_Addressing_Properties_ADR:
+                if (!$vcard_exist) {
+                    $store_sql = "INSERT INTO " . self::$vCard_Delivvery_Addressing_Properties_ADR . " (`vCard_Explanatory_Properties_idvCard_Explanatory_Properties`,`ADR`,`AdrType`) VALUES (:RESOURCE_ID,:ADR,:AdrType)";
+                } else {
+                    /**
+                     * @todo “ADR 可以有多个条目，更新策略要独立设计”
+                     */
+                    $store_sql = "";
+                }
                 $sth = $this->dbh->prepare($insert_sql);
                 $_tmp = $vcard_data_array['RESOURCE_ID'];
                 unset($vcard_data_array['RESOURCE_ID']);
@@ -282,10 +296,19 @@ class class_vcard_storage {
                 }
                 return array('RESOURCE_ID' => $_tmp);
                 break;
+                
             case self::$vCard_Delivery_Addressing_Properties_LABEL:
 
-                $insert_sql = "INSERT INTO " . self::$vCard_Delivvery_Addressing_Properties_LABEL . " (`vCard_Explanatory_Properties_idvCard_Explanatory_Properties`,`LABEL`,`LabelType`,) VALUES(:RESOURCE_ID,:LABEL,:LabelType)";
-                $sth = $this->dbh->prepare($insert_sql);
+                if(!$vcard_exist ){
+                    $store_sql = "INSERT INTO " . self::$vCard_Delivvery_Addressing_Properties_LABEL . " (`vCard_Explanatory_Properties_idvCard_Explanatory_Properties`,`LABEL`,`LabelType`,) VALUES(:RESOURCE_ID,:LABEL,:LabelType)";
+                } else{
+                    /**
+                     * @todo ADR Lable 会有多条记录，
+                     */
+                    $store_sql = "";
+                }
+                
+                $sth = $this->dbh->prepare($store_sql);
                 $_tmp = $vcard_data_array['RESOURCE_ID'];
                 unset($vcard_data_array['RESOURCE_ID']);
                 foreach ($vcard_data_array as $vcard_r) {
@@ -298,6 +321,7 @@ class class_vcard_storage {
                 }
                 return array('RESOURCE_ID' => $_tmp);
                 break;
+                
             case self::$vCard_Geographical_Properties:
 
                 $insert_sql = "INSERT INTO " . self::$vCard_Geographical_Properties . " (`vCard_Explanatory_Properties_idvCard_Explanatory_Properties`,`TZ`,`GEO`) VALUES (:RESOURCE_ID,:TZ,:GEO)";
@@ -353,12 +377,15 @@ class class_vcard_storage {
         }
     }
 
-    public static function checkExistVcardRecordByUid($uid) {
+    public static function check_vcard_exist_via_uid($uid = null) {
+        if ($uid == null) {
+            return false;
+        }
         $FindUidSql = "SELECT count(UID) FROM " . self::$vCard_Explanatory_Properties . " WHERE UID = :UID";
         $sth = $this->dbh->prepare($FindUidSql);
         $sth->bindParam(':UID', $uid);
         $sth->execute();
-        return $sth->rowCount();
+        return $sth->rowCount() > 0 ? true : false;
     }
 
 }
