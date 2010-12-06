@@ -236,7 +236,11 @@ class class_vcard_storage {
                     $store_sql = "UPDATE " . self::$vCard_Explanatory_Properties . " SET `VERSION` = :VERSION,`REV` = :REV,`LANG` = :LANG,`CATEGORIES` = :CATEGORIES,`PRODID` = :PRODID,`SORT-STRING` = :SORTSTRING  WHERE UID = :UID";
                 }
                 echo "\n" . $store_sql . "\n";
-                $sth = $this->dbh->prepare($store_sql);
+                try{
+                    $sth = $this->dbh->prepare($store_sql);
+                }  catch (Exception $e){
+                    echo $e->getMessage();
+                }
                 /*
                   foreach ($vcard_data_array as $key => $value) {
                   echo ">>>".$key.':'.$value."\n";
@@ -257,7 +261,8 @@ class class_vcard_storage {
                 } catch (PDOException $e) {
                     print_r($e->getMessage());
                 }
-                return array('UID' => $vcard_data_array['UID'], 'RESOURCE_ID' => isset($this->dbh->lastInsertId()) ? $this->dbh->lastInsertId() : null);
+                $id = $this->dbh->lastInsertId();
+                return array('UID' => $vcard_data_array['UID'], 'RESOURCE_ID' => isset($id) ? $id : null);
 
             case self::$vCard_Identification_Properties:
                 if (!$vcard_exist) {
@@ -303,7 +308,7 @@ class class_vcard_storage {
                     $store_sql = "INSERT INTO " . self::$vCard_Delivvery_Addressing_Properties_LABEL . " (`vCard_Explanatory_Properties_idvCard_Explanatory_Properties`,`LABEL`,`LabelType`,) VALUES(:RESOURCE_ID,:LABEL,:LabelType)";
                 } else{
                     /**
-                     * @todo ADR Lable 会有多条记录，
+                     * @todo ADR Lable 会有多条记录，更新策略需要进行设计
                      */
                     $store_sql = "";
                 }
@@ -323,27 +328,50 @@ class class_vcard_storage {
                 break;
                 
             case self::$vCard_Geographical_Properties:
-
-                $insert_sql = "INSERT INTO " . self::$vCard_Geographical_Properties . " (`vCard_Explanatory_Properties_idvCard_Explanatory_Properties`,`TZ`,`GEO`) VALUES (:RESOURCE_ID,:TZ,:GEO)";
-                $sth = $this->dbh->prepare($insert_sql);
+                if(!$vcard_exist){
+                    /**
+                     * :RESOURCE_ID change to :RESOURCEID
+                     */
+                    $store_sql = "INSERT INTO " . self::$vCard_Geographical_Properties . " (`vCard_Explanatory_Properties_idvCard_Explanatory_Properties`,`TZ`,`GEO`) VALUES (:RESOURCEID,:TZ,:GEO)";
+                }else{
+                    $store_sql = "UPDATE ". self::$vCard_Geographical_Properties . " SET TZ = :TZ , GEO = :GEO where vCard_Explanatory_Properties_idvCard_Explanatory_Properties = :RESOURCEID";
+                }
+                $sth = $this->dbh->prepare($store_sql);
+                $sth->bindParam(':RESOURCEID', $vcard_data_array['RESOURCE_ID']);
+                $sth->bindParam(':TZ', $vcard_data_array['TZ']);
+                $sth->bindParam(':GEO', $vcard_data_array['GEO']);
+                
                 try {
-                    $sth->execute($vcard_data_array);
+                    $sth->execute();
                 } catch (Exception $e) {
                     print_r($e->getMessage());
                 }
                 return array('RESOURCE_ID' => $vcard_data_array['RESOURCE_ID']);
                 break;
+                
             case self::$vCard_Organizational_Properties:
+                if(!$vcard_exist){
+                    $store_sql = "INSERT INTO " . self::$vCard_Organizational_Properties . " (`vCard_Explanatory_Properties_idvCard_Explanatory_Properties` ,`TITLE` ,`ROLE` ,`LOGO` ,`LogoType` ,`ORG`) VALUES (:RESOURCEID,:TITLE,:ROLE,:LOGO,:LogoType,:ORG)";
+                }else{
+                    $store_sql = "UPDATE ".self::$vCard_Organizational_Properties. " SET `TITLE` = :TITLE ,`ROLE` = :ROLE ,`LOGO` = :LOGO ,`LogoType` = :LogoType ,`ORG` = :ORG WHERE vCard_Explanatory_Properties_idvCard_Explanatory_Properties = :RESOURCEID";
+                }
+                
+                $sth = $this->dbh->prepare($store_sql);
+                $sth->bindParam(':TITLE', $vcard_data_array['TITLE']);
+                $sth->bindParam(':ROLE', $vcard_data_array['ROLE']);
+                $sth->bindParam(':LOGO', $vcard_data_array['LOGO']);
+                $sth->bindParam(':LogoType', $vcard_data_array['LogoType']);
+                $sth->bindParam(':ORG', $vcard_data_array['ORG']);
+                $sth->bindParam(':RESOURCEID', $vcard_data_array['RESOURCE_ID']);
 
-                $insert_sql = "INSERT INTO " . self::$vCard_Organizational_Properties . " (`vCard_Explanatory_Properties_idvCard_Explanatory_Properties` ,`TITLE` ,`ROLE` ,`LOGO` ,`LogoType` ,`ORG`) VALUES (:RESOURCE_ID,:TITLE,:ROLE,:LOGO,:LogoType,:ORG)";
-                $sth = $this->dbh->prepare($insert_sql);
                 try {
-                    $sth->execute($vcard_data_array);
+                    $sth->execute();
                 } catch (Exception $e) {
                     print_r($e->getMessage());
                 }
                 return array('RESOURCE_ID' => $vcard_data_array['RESOURCE_ID']);
                 break;
+            
             case self::$vCard_Telecommunications_Addressing_Properties_Tel:
                 $insert_sql = "INSERT INTO " . self::$vCard_Telecommunications_Addressing_Properties_Tel . " (`vCard_Explanatory_Properties_idvCard_Explanatory_Properties`, `TEL` ,`TelType`) VALUES (:RESOURCE_ID, :TEL, :TelType)";
                 $sth = $this->dbh->prepare($insert_sql);
@@ -359,6 +387,7 @@ class class_vcard_storage {
                 }
                 return array('RESOURCE_ID' => $vcard_data_array['RESOURCE_ID']);
                 break;
+                
             case self::$vCard_Telecommunications_Addressing_Properties_Email:
                 $insert_sql = "INSERT INTO " . self::$vCard_Telecommunications_Addressing_Properties_Email . " (`vCard_Explanatory_Properties_idvCard_Explanatory_Properties`, `EMAIL`, `EmailType`) VALUES (:RESOURCE_ID, :EMAIL, :EMAIL)";
                 $sth = $this->dbh->prepare($insert_sql);
