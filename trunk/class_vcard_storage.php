@@ -28,7 +28,7 @@ class class_vcard_storage {
 
     function __construct() {
         self::getMysqlPara ();
-        $this->dbh = self::getInstance ();
+        self::getInstance ();
     }
 
     function __destruct() {
@@ -42,8 +42,8 @@ class class_vcard_storage {
         echo __CLASS__ . __METHOD__ . __LINE__ . "\n";
         echo "\n" . $dsn . "\n";
         try {
-            $dbh = new PDO($dsn, self::$db_user, self::$db_pass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES UTF8"));
-            return $dbh;
+            $this->dbh = new PDO($dsn, self::$db_user, self::$db_pass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES UTF8"));
+            return $this->dbh;
         } catch (PDOException $e) {
             print_r($e->getMessage());
         }
