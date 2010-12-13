@@ -297,7 +297,7 @@ class class_vCard {
     }
 
     /**
-     *
+     * @todo 
      * @param $key = array('UID' => $UID) or array('idvCard_Explanatory_Properties' =>$idvCard_Explanatory_Properties)
      */
     public function get_vCard_From_Storage($key) {
@@ -313,7 +313,7 @@ class class_vCard {
     }
 
     /**
-     *
+     * @todo 从 vcard_storage 中取出对应的vcard 数据
      * @param array('UID' => $UID,'idvCard_Explanatory_Properties' =>$idvCard_Explanatory_Properties,'property'='' )
      * @return array
      */
@@ -488,6 +488,22 @@ class class_vCard {
         } else {
             return 0;
         }
+    }
+
+    /**
+     *  通过 vcard_id () 取得某个vcard的摘要信息
+     * @param <bigint> $vcard_id
+     * @return <array> $vacar_summary{ 'Rev'=>,……}
+     */
+    public function get_vCard_Summary($vcard_id) {
+        $this->_get_storage_resource();
+        $key = array('idvCard_Explanatory_Properties'=>$vcard_id,'property'=>'vCard_Explanatory_Properties');
+        
+        $re_array = $this->get_vCard_property_from_storage($key);
+        /**
+         * @todo 将此处的debuglog打印出来
+         */
+        return array('mod'=>$re_array['REV'],'flags'=>1);
     }
 
 }
