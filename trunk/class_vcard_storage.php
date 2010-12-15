@@ -222,7 +222,7 @@ class class_vcard_storage {
                 return false;
             }
         }
-        if ($gen_uid == true) {
+        if ($gen_uid !== true) {
             $vcard_exist = $this->check_vcard_exist_via_uid($vcard_data_array['UID']);
         }
         $this->dbh = self::getInstance();
@@ -241,12 +241,7 @@ class class_vcard_storage {
                 }  catch (Exception $e){
                     echo $e->getMessage();
                 }
-                /*
-                  foreach ($vcard_data_array as $key => $value) {
-                  echo ">>>".$key.':'.$value."\n";
-                  $sth->bindParam(':'."$key", $value);
-                  }
-                 */
+                
                 $sth->bindParam(':UID', $vcard_data_array['UID']);
                 $sth->bindParam(':VERSION', $vcard_data_array['VERSION']);
                 $sth->bindParam(':REV', $vcard_data_array['REV']);
@@ -265,16 +260,36 @@ class class_vcard_storage {
                 return array('UID' => $vcard_data_array['UID'], 'RESOURCE_ID' => isset($id) ? $id : null);
 
             case self::$vCard_Identification_Properties:
-                if (!$vcard_exist) {
-                    $store_sql = "INSERT INTO " . self::$vCard_Identification_Properties . " (`vCard_Explanatory_Properties_idvCard_Explanatory_Properties`,`N`,`FN`,`NICKNAME`,`PHOTO`,`PhotoType`,`BDAY`,`URL`,`SOUND`,`NOTE`) VALUES (:RESOURCE_ID,:N,:FN,:NICKNAME,:PHOTO,:PhotoType,:BDAY,:URL,:SOUND,:NOTE) ";
-                } else {
-                    $store_sql = "UPDATE " . self::$vCard_Identification_Properties . " SET `N` = :N,,`FN` = :FN,`NICKNAME` = :NICKNAME,`PHOTO` = :PHOTO,`PhotoType` = :PhotoType,`BDAY` = :BDAY,`URL` = :URL,`SOUND` = :SOUND,`NOTE` = :NOTE where `vCard_Explanatory_Properties_idvCard_Explanatory_Properties` = :RESOURCE_ID ";
+                if ((!$vcard_exist) && (!isset($vcard_data_array['RESOURCE_ID']) && isset($vcard_data_array['V_ID']))) {
+                    $vcard_data_array['RESOURCE_ID'] = $vcard_data_array['V_ID'];
+                    $store_sql = "INSERT INTO " . self::$vCard_Identification_Properties . " (`vCard_Explanatory_Properties_idvCard_Explanatory_Properties`,`N`,`FN`,`NICKNAME`,`PHOTO`,`PhotoType`,`BDAY`,`URL`,`SOUND`,`NOTE`) VALUES (:RESOURCEID,:N,:FN,:NICKNAME,:PHOTO,:PhotoType,:BDAY,:URL,:SOUND,:NOTE) ";
+                } elseif($vcard_exist && isset($vcard_data_array['RESOURCE_ID'])) {
+                    $store_sql = "UPDATE " . self::$vCard_Identification_Properties . " SET `N` = :N,,`FN` = :FN,`NICKNAME` = :NICKNAME,`PHOTO` = :PHOTO,`PhotoType` = :PhotoType,`BDAY` = :BDAY,`URL` = :URL,`SOUND` = :SOUND,`NOTE` = :NOTE where `idvCard_Identification_Properties` = :RESOURCEID ";
+                }else{
+                    return false;
                 }
-                $sth = $this->dbh->prepare($store_sql);
+                try{
+                    $sth = $this->dbh->prepare($store_sql);
+                }catch (Exception $e){
+                    print_r($e->getMessage());
+                }
+                $sth->bindParam(':RESOURCEID',$vcard_data_array['RESOURCE_ID']);
+                $sth->bindParam(':N',$vcard_data_array['N']);
+                $sth->bindParam(':FN',$vcard_data_array['FN']);
+                $sth->bindParam(':NICKNAME',$vcard_data_array['NICKNAME']);
+                $sth->bindParam(':PHOTO',$vcard_data_array['PHOTO']);
+                $sth->bindParam(':PhotoType',$vcard_data_array['PhotoType']);
+                $sth->bindParam(':BDAY',$vcard_data_array['BDAY']);
+                $sth->bindParam(':URL',$vcard_data_array['URL']);
+                $sth->bindParam(':SOUND',$vcard_data_array['SOUND']);
+                $sth->bindParam(':NOTE',$vcard_data_array['NOTE']);
                 try {
-                    $sth->execute($vcard_data_array);
+                    $sth->execute();
                 } catch (Exception $e) {
                     print_r($e->getMessage());
+                }
+                if ((!$vcard_exist) && (!isset($vcard_data_array['RESOURCE_ID']) && isset($vcard_data_array['V_ID']))) {
+                    $vcard_data_array['RESOURCE_ID'] = $this->dbh->lastInsertId();
                 }
                 return array('RESOURCE_ID' => $vcard_data_array['RESOURCE_ID']);
                 break;
