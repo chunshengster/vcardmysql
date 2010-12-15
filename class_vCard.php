@@ -15,7 +15,7 @@ class class_vCard {
     //private static $db_config;
 //	private $_status = 'new';
     private $obj_vcard_storage;
-    private $vcard_resource_id;
+//    private $vcard_resource_id;
     private $_parser;
     private $_builder;
     private $vCard_Explanatory_Properties;
@@ -37,7 +37,7 @@ class class_vCard {
           return 0;
           }
          */
-        $this->vcard_resource_id = null;
+//        $this->vcard_resource_id = null;
     }
 
     function __destruct() {
@@ -66,10 +66,10 @@ class class_vCard {
     }
 
     private function _get_vcard_resource_id_from_storage() {
-        if (!isset($this->vcard_resource_id) or (is_null($this->vcard_resource_id))) {
+        if (!isset($this->vCard_Explanatory_Properties['RESOURCE_ID']) or (is_null($this->vCard_Explanatory_Properties['RESOURCE_ID']))) {
             $this->_get_storage_resource();
-            $this->vcard_resource_id = $this->obj_vcard_storage->get_vcard_id_by_uid($this->vCard_Explanatory_Properties['UID']);
-            return $this->vcard_resource_id;
+            $this->vCard_Explanatory_Properties['RESOURCE_ID'] = $this->obj_vcard_storage->get_vcard_id_by_uid($this->vCard_Explanatory_Properties['UID']);
+            return $this->vCard_Explanatory_Properties['RESOURCE_ID'];
         }
     }
 
@@ -436,25 +436,29 @@ class class_vCard {
         if ($re_array['UID'] !== '' and $this->vCard_Explanatory_Properties['UID'] == '') {
             $this->vCard_Explanatory_Properties['UID'] = $re_array['UID'];
         }
-        $this->vcard_resource_id = $re_array['RESOURCE_ID'];
+        /**
+         * 修正数据结构，每个结构分块都返回并记录该条在数据库中的id
+         */
+        $this->vCard_Explanatory_Properties['RESOURCE_ID'] = $re_array['RESOURCE_ID'];
+
         return $this->vCard_Explanatory_Properties['UID'];
     }
 
     public function store_vCard_Identification_Properties() {
         $this->_get_storage_resource();
-        $re_array = $this->obj_vcard_storage->store_data('vCard_Identification_Properties', array_merge($this->vCard_Identification_Properties, array('RESOURCE_ID' => $this->vcard_resource_id)));
+        $re_array = $this->obj_vcard_storage->store_data('vCard_Identification_Properties', array_merge($this->vCard_Identification_Properties, array('V_ID' => $this->vCard_Explanatory_Properties['RESOURCE_ID'])));
         return $re_array['RESOURCE_ID'];
     }
 
     public function store_vCard_Delivery_Addressing_Properties_ADR() {
         $this->_get_storage_resource();
-        $re_array = $this->obj_vcard_storage->store_data('vCard_Delivery_Addressing_Properties_ADR', array_merge($this->vCard_Delivery_Addressing_Properties_ADR, array('RESOURCE_ID' => $this->vcard_resource_id)));
+        $re_array = $this->obj_vcard_storage->store_data('vCard_Delivery_Addressing_Properties_ADR', array_merge($this->vCard_Delivery_Addressing_Properties_ADR, array('V_ID' => $this->vCard_Explanatory_Properties['RESOURCE_ID'])));
         return $re_array['RESOURCE_ID'];
     }
 
     public function store_vCard_Delivery_Addressing_Properties_LABEL() {
         $this->_get_storage_resource();
-        $re_array = $this->obj_vcard_storage->store_data('vCard_Delivery_Addressing_Properties_LABEL', array_merge($this->vCard_Delivery_Addressing_Properties_LABEL, array('RESOURCE_ID' => $this->vcard_resource_id)));
+        $re_array = $this->obj_vcard_storage->store_data('vCard_Delivery_Addressing_Properties_LABEL', array_merge($this->vCard_Delivery_Addressing_Properties_LABEL, array('RESOURCE_ID' => $this->vCard_Explanatory_Properties['RESOURCE_ID'])));
         return $re_array['RESOURCE_ID'];
     }
 
