@@ -51,7 +51,7 @@ class class_vCardTest extends PHPUnit_Framework_TestCase {
     public function testGet_vCard_Explanatory_Properties() {
         // Remove the following lines when you implement this test.
         $vcard_tmp = array(
-            'UID' => '46464646646464654654646464646464646456464646',
+            'UID' => '46464646646464654654646464646',
             'REV' => '20101013111111',
             'VERSION' => '3.0',
             'LANGAGE' => '',
@@ -115,9 +115,10 @@ class class_vCardTest extends PHPUnit_Framework_TestCase {
             Array
                 (
                 'ADR' => ';;北京市西城区2222222222;;;123456;',
-                'AdrType' => 'domaaaa,postalaaaa'
+                'AdrType' => 'dom,postal'
             )
         );
+        echo var_export($this->object->get_vCard_Delivery_Addressing_Properties_ADR(),true);
         $this->assertEquals($this->object->get_vCard_Delivery_Addressing_Properties_ADR(), $vcard_tmp);
     }
 
@@ -146,6 +147,7 @@ class class_vCardTest extends PHPUnit_Framework_TestCase {
                 'LabelType' => 'parcel'
             )
         );
+         echo var_export($this->object->get_vCard_Delivery_Addressing_Properties_LABEL(),true);
         $this->assertEquals($this->object->get_vCard_Delivery_Addressing_Properties_LABEL(), $vcard_tmp);
     }
 
@@ -216,7 +218,8 @@ class class_vCardTest extends PHPUnit_Framework_TestCase {
     public function testGet_vCard_Telecommunications_Addressing_Properties_Email() {
         //$vcard_tmp = array();
 //        print_r($this->object);
-        print_r($this->object->get_vCard_Telecommunications_Addressing_Properties_Email());
+//        print_r($this->object->get_vCard_Telecommunications_Addressing_Properties_Email());
+         echo var_export($this->object->get_vCard_Telecommunications_Addressing_Properties_Email(),true);
         $this->markTestSkipped('This test has been implemented!\n');
     }
 
@@ -234,7 +237,8 @@ class class_vCardTest extends PHPUnit_Framework_TestCase {
      * @todo Implement testGet_vCard_Telecommunications_Addressing_Properties_Tel().
      */
     public function testGet_vCard_Telecommunications_Addressing_Properties_Tel() {
-        print_r($this->object->get_vCard_Telecommunications_Addressing_Properties_Tel());
+//        print_r($this->object->get_vCard_Telecommunications_Addressing_Properties_Tel());
+         echo var_export($this->object->get_vCard_Telecommunications_Addressing_Properties_Tel(),true);
         $this->markTestSkipped('This test has been implemented!\n');
         /*
         $this->markTestIncomplete(
