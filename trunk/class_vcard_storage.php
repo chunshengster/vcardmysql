@@ -5,6 +5,7 @@
  * use mysql for vCard backend
  * @date
  * @ver
+ * @todo 存储层需要增加逻辑：入库时检查vcard标准中同一分类的条目是否已经存在，如果存在则增加逻辑
  */
 class class_vcard_storage {
 
@@ -57,7 +58,7 @@ class class_vcard_storage {
         return true;
     }
 
-    private function is_alive() {
+    public function is_alive() {
         if ($this->dbh instanceof PDO) {
             if ($this->dbh->getAttribute(PDO::ATTR_CONNECTION_STATUS) > 0) {
                 return true;
@@ -217,11 +218,22 @@ class class_vcard_storage {
              * todo: check if $uid is UUID
              */
             $this->_gen_mysql_resource();
-            $select_sql = "SELECT idvCard_Explanatory_Properties FROM " . self::$vCard_Explanatory_Properties . "WHERE UID = " . $uid;
-            $sth = $this->dbh->execute($select_sql);
-            return $sth->fetchAll();
+            $select_sql = "SELECT idvCard_Explanatory_Properties FROM " . self::$vCard_Explanatory_Properties . " WHERE UID = :UID";
+
+            try {
+                $sth = $this->dbh->prepare($select_sql);
+            } catch (Exception $exc) {
+                echo $exc->getTraceAsString();
+            }
+            $sth->bindParam(':UID', $uid);
+            try {
+                $sth->execute();
+            } catch (Exception $exc) {
+                echo $exc->getTraceAsString();
+            }
+            return $sth->fetchColumn();
         }
-        return NULL;
+        return null;
     }
 
     public function store_data($vcard_comp, $vcard_data_array, $gen_uid=false) {
@@ -469,7 +481,7 @@ class class_vcard_storage {
                             $new_record = false;
                             $store_sql = "UPDATE " . self::$vCard_Delivery_Addressing_Properties_LABEL . " SET LABEL=:LABEL ,LabelType=:LabelType WHERE idvCard_Delivery_Addressing_Properties_LABEL=:RESOURCEID";
                         }
-                        echo '>>>>>>$store_sql:'.var_export($store_sql,true)."\n";
+                        echo '>>>>>>$store_sql:' . var_export($store_sql, true) . "\n";
                         try {
                             $sth = $this->dbh->prepare($store_sql);
                         } catch (Exception $e) {
@@ -486,11 +498,11 @@ class class_vcard_storage {
                         if ($new_record) {
                             $re[$k]['RESOURCE_ID'] = $this->dbh->lastInsertId();
                         } else {
-                            echo '>>>>>>$t_vcard_data:' . var_export($t_vcard_data,true);
+                            echo '>>>>>>$t_vcard_data:' . var_export($t_vcard_data, true);
                             $re[$k]['RESOURCE_ID'] = $t_vcard_data['RESOURCE_ID'];
                         }
                     }
-                    echo '>>>>>>$t_vcard_data:' . var_export($re,true);
+                    echo '>>>>>>$t_vcard_data:' . var_export($re, true);
                     return $re;
                 } else {
                     return false;

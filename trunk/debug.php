@@ -1,6 +1,5 @@
 <?php
 
-
 global $debugstr;
 
 function debug($str) {
@@ -10,18 +9,15 @@ function debug($str) {
 
 function getDebugInfo() {
     global $debugstr;
-    
+
     return $debugstr;
 }
 
-function debugLog($message) {
-    @$fp = fopen(__DIR__ . "/debug.txt","a");
+function debugLog($message_list) {
+    @$fp = fopen(__DIR__ . "/debug.txt", "a");
     @$date = strftime("%x %X");
-    if (is_array($message)) {
-        @fwrite($fp, "$date [" . getmypid() . "]" . implode(':', $message) . "\n");
-    }  else {
-        @fwrite($fp, "$date [" . getmypid() . "]" .$message);
-    }
+     $message_array = func_get_args ();
+    @fwrite($fp, "$date [" . getmypid() . "]" . implode(':', $message_array) . "\n");
     @fclose($fp);
 }
 

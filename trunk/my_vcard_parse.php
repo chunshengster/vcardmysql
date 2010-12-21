@@ -13,10 +13,6 @@ final class my_vcard_parse extends File_IMC_Parse_Vcard{
 
 	}
 
-	/**
-	 *
-	 */
-
 	function __destruct() {
 
 	}
