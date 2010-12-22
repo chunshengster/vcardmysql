@@ -347,7 +347,7 @@ class class_vCard {
                 debugLog(__FILE__, __METHOD__, __LINE__, var_export($this->get_vCard_Identification_Properties(), true));
                 return $this->vCard_Identification_Properties;
                 break;
-                
+
             case 'vCard_Geographical_Properties' :
                 if (array_key_exists('idvCard_Explanatory_Properties', $key)) {
                     $tmp_array = array(
@@ -381,36 +381,85 @@ class class_vCard {
                 } else {
                     return null;
                 }
-                $this->set_vCard_Organizational_Properties( $this->obj_vcard_storage->get_vCard_Organizational_Properties($tmp_array));
+                $this->set_vCard_Organizational_Properties($this->obj_vcard_storage->get_vCard_Organizational_Properties($tmp_array));
                 return $this->vCard_Organizational_Properties;
                 break;
-            
-            case 'vCard_Delivery_Addressing_Properties_ADR' :
 
-                $this->vCard_Delivery_Addressing_Properties_ADR = $this->obj_vcard_storage->get_vCard_Delivery_Addressing_Properties_ADR(array(
-                            'idvCard_Explanatory_Properties' => $this->vCard_Explanatory_Properties ['idvCard_Explanatory_Properties']
-                        ));
+            case 'vCard_Delivery_Addressing_Properties_ADR' :
+                if (array_key_exists('idvCard_Explanatory_Properties', $key)) {
+                    $tmp_array = array(
+                        'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' => $key['idvCard_Explanatory_Properties'],
+                    );
+                } elseif (array_key_exists('RESOURCE_ID', $key)) {
+                    $tmp_array = array(
+                        'idvCard_Delivery_Addressing_Properties_ADR' => $key['RESOURCE_ID']
+                    );
+                } elseif (isset($key['vCard_Explanatory_Properties_idvCard_Explanatory_Properties'])) {
+                    $tmp_array = $key;
+                } else {
+                    return null;
+                }
+
+                $this->set_vCard_Delivery_Addressing_Properties_ADR($this->obj_vcard_storage->get_vCard_Delivery_Addressing_Properties_ADR($tmp_array));
                 return $this->vCard_Delivery_Addressing_Properties_ADR;
                 break;
-            
+
             case 'vCard_Delivery_Addressing_Properties_LABEL' :
-                $this->vCard_Delivery_Addressing_Properties_LABEL = $this->obj_vcard_storage->get_vCard_Delivery_Addressing_Properties_LABEL(array(
-                            'idvCard_Explanatory_Properties' => $this->vCard_Explanatory_Properties ['idvCard_Explanatory_Properties']
-                        ));
+                if (array_key_exists('idvCard_Explanatory_Properties', $key)) {
+                    $tmp_array = array(
+                        'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' => $key['idvCard_Explanatory_Properties'],
+                    );
+                } elseif (array_key_exists('RESOURCE_ID', $key)) {
+                    $tmp_array = array(
+                        'idvCard_Delivery_Addressing_Properties_LABEL' => $key['RESOURCE_ID']
+                    );
+                } elseif (isset($key['vCard_Explanatory_Properties_idvCard_Explanatory_Properties'])) {
+                    $tmp_array = $key;
+                } else {
+                    return null;
+                }
+
+                $this->set_vCard_Delivery_Addressing_Properties_LABEL($this->obj_vcard_storage->get_vCard_Delivery_Addressing_Properties_LABEL($tmp_array));
                 return $this->vCard_Delivery_Addressing_Properties_LABEL;
                 break;
 
 
+            case 'vCard_Telecommunications_Addressing_Properties_Tel' :
+                if (array_key_exists('idvCard_Explanatory_Properties', $key)) {
+                    $tmp_array = array(
+                        'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' => $key['idvCard_Explanatory_Properties'],
+                    );
+                } elseif (array_key_exists('RESOURCE_ID', $key)) {
+                    $tmp_array = array(
+                        'idvCard_Telecommunications_Addressing_Properties_Tel' => $key['RESOURCE_ID']
+                    );
+                } elseif (isset($key['vCard_Explanatory_Properties_idvCard_Explanatory_Properties'])) {
+                    $tmp_array = $key;
+                } else {
+                    return null;
+                }
+                $this->set_vCard_Telecommunications_Addressing_Properties_Tel( $this->obj_vcard_storage->get_vCard_Telecommunications_Addressing_Properties_Tel($tmp_array));
+                return $this->vCard_Telecommunications_Addressing_Properties_Tel;
+                break;
+
             case 'vCard_Telecommunications_Addressing_Properties_Email' :
-                $this->vCard_Telecommunications_Addressing_Properties_Email = $this->obj_vcard_storage->get_vCard_Telecommunications_Addressing_Properties_Email(array(
-                            'idvCard_Explanatory_Properties' => $this->vCard_Explanatory_Properties ['idvCard_Explanatory_Properties']
-                        ));
+                if (array_key_exists('idvCard_Explanatory_Properties', $key)) {
+                    $tmp_array = array(
+                        'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' => $key['idvCard_Explanatory_Properties'],
+                    );
+                } elseif (array_key_exists('RESOURCE_ID', $key)) {
+                    $tmp_array = array(
+                        'idvCard_Telecommunications_Addressing_Properties_Email' => $key['RESOURCE_ID']
+                    );
+                } elseif (isset($key['vCard_Explanatory_Properties_idvCard_Explanatory_Properties'])) {
+                    $tmp_array = $key;
+                } else {
+                    return null;
+                }
+                $this->set_vCard_Telecommunications_Addressing_Properties_Email($this->obj_vcard_storage->get_vCard_Telecommunications_Addressing_Properties_Email($tmp_array));
                 return $this->vCard_Telecommunications_Addressing_Properties_Email;
                 break;
-            case 'vCard_Telecommunications_Addressing_Properties_Tel' :
-                $this->vCard_Telecommunications_Addressing_Properties_Tel = $this->obj_vcard_storage->get_vCard_Telecommunications_Addressing_Properties_Tel(array(
-                            'idvCard_Explanatory_Properties' => $this->vCard_Explanatory_Properties ['idvCard_Explanatory_Properties']
-                        ));
+
             default :
                 return $this;
                 break;
