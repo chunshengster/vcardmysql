@@ -302,73 +302,77 @@ class class_vCardTest extends PHPUnit_Framework_TestCase {
     /**
      * Implement testStore_vCard_Explanatory_Properties().
      */
-    public function testStore_vCard_Explanatory_Properties() {
-
-        echo var_export($this->object->get_vCard_Explanatory_Properties(),true);
-        $re = $this->object->store_vCard_Explanatory_Properties();
-
-        echo var_export($this->object->get_vCard_Explanatory_Properties(),ture);
-    }
+//    public function testStore_vCard_Explanatory_Properties() {
+//
+//        echo var_export($this->object->get_vCard_Explanatory_Properties(),true);
+//        $re = $this->object->store_vCard_Explanatory_Properties();
+//
+//        echo var_export($this->object->get_vCard_Explanatory_Properties(),ture);
+//    }
 
     /**
      * @todo Implement testStore_vCard_Identification_Properties().
      */
-    public function testStore_vCard_Identification_Properties() {
-        // Remove the following lines when you implement this test.
-        echo var_export($this->object->get_vCard_Identification_Properties(),true);
-        $re = $this->object->store_vCard_Identification_Properties();
-        echo var_export($re,true);
-        echo var_export($this->object->get_vCard_Identification_Properties(),ture);
-
-    }
+//    public function testStore_vCard_Identification_Properties() {
+//        // Remove the following lines when you implement this test.
+//        echo var_export($this->object->get_vCard_Identification_Properties(),true);
+//        $re = $this->object->store_vCard_Identification_Properties();
+//        echo var_export($re,true);
+//        echo var_export($this->object->get_vCard_Identification_Properties(),ture);
+//
+//    }
 
     /**
      * @todo Implement testStore_vCard_Delivery_Addressing_Properties_ADR().
      */
-    public function testStore_vCard_Delivery_Addressing_Properties_ADR() {
-        // Remove the following lines when you implement this test.
-        echo var_export($this->object->get_vCard_Delivery_Addressing_Properties_ADR(),true);
-        $re = $this->object->store_vCard_Delivery_Addressing_Properties_ADR();
-        echo var_export($re,true);
-        echo var_export($this->object->get_vCard_Delivery_Addressing_Properties_ADR(),true);
-
-    }
+//    public function testStore_vCard_Delivery_Addressing_Properties_ADR() {
+//        // Remove the following lines when you implement this test.
+//        echo var_export($this->object->get_vCard_Delivery_Addressing_Properties_ADR(),true);
+//        $re = $this->object->store_vCard_Delivery_Addressing_Properties_ADR();
+//        echo var_export($re,true);
+//        echo var_export($this->object->get_vCard_Delivery_Addressing_Properties_ADR(),true);
+//
+//    }
 
     /**
      * @todo Implement testStore_vCard_Delivery_Addressing_Properties_LABEL().
      */
-    public function testStore_vCard_Delivery_Addressing_Properties_LABEL() {
-        // Remove the following lines when you implement this test.
-        echo var_export($this->object->get_vCard_Delivery_Addressing_Properties_LABEL(),true);
-        $re = $this->object->store_vCard_Delivery_Addressing_Properties_LABEL();
-        echo var_export($re,true);
-        echo var_export($this->object->get_vCard_Delivery_Addressing_Properties_LABEL(),true);
-    }
+//    public function testStore_vCard_Delivery_Addressing_Properties_LABEL() {
+//        // Remove the following lines when you implement this test.
+//        echo var_export($this->object->get_vCard_Delivery_Addressing_Properties_LABEL(),true);
+//        $re = $this->object->store_vCard_Delivery_Addressing_Properties_LABEL();
+//        echo var_export($re,true);
+//        echo var_export($this->object->get_vCard_Delivery_Addressing_Properties_LABEL(),true);
+//    }
 
     /**
      * @todo Implement testStore_vCard_Geographical_Properties().
      */
-    public function testStore_vCard_Geographical_Properties() {
-        // Remove the following lines when you implement this test.
-        echo var_export($this->object->get_vCard_Geographical_Properties(),true);
-        $re = $this->object->store_vCard_Geographical_Properties();
-        echo var_export($re,true);
-        echo var_export($this->object->get_vCard_Geographical_Properties(),true);
-    }
+//    public function testStore_vCard_Geographical_Properties() {
+//        // Remove the following lines when you implement this test.
+//        echo var_export($this->object->get_vCard_Geographical_Properties(),true);
+//        $re = $this->object->store_vCard_Geographical_Properties();
+//        echo var_export($re,true);
+//        echo var_export($this->object->get_vCard_Geographical_Properties(),true);
+//    }
 
     /**
      * @todo Implement testStore_vCard_Organizational_Properties().
      */
+    /**
     public function testStore_vCard_Organizational_Properties() {
         // Remove the following lines when you implement this test.
         echo var_export($this->object->get_vCard_Organizational_Properties(),true);
         $re = $this->object->store_vCard_Organizational_Properties();
         echo var_export($this->object->get_vCard_Organizational_Properties(),true);
     }
+     *
+     */
 
     /**
      * @todo Implement testStore_vCard_Telecommunications_Addressing_Properties_Email().
      */
+    /**
     public function testStore_vCard_Telecommunications_Addressing_Properties_Email() {
 
         echo var_export($this->object->get_vCard_Telecommunications_Addressing_Properties_Email(),true);
@@ -376,15 +380,40 @@ class class_vCardTest extends PHPUnit_Framework_TestCase {
         echo var_export($re,true);
         echo var_export($this->object->get_vCard_Telecommunications_Addressing_Properties_Email(),true);
     }
+     *
+     */
 
     /**
      * @todo Implement testStore_vCard_Telecommunications_Addressing_Properties_Tel().
      */
+    /**
     public function testStore_vCard_Telecommunications_Addressing_Properties_Tel() {
         echo var_export($this->object->get_vCard_Telecommunications_Addressing_Properties_Tel(),true);
         $re = $this->object->store_vCard_Telecommunications_Addressing_Properties_Tel();
         echo var_export($re,true);
         echo var_export($this->object->get_vCard_Telecommunications_Addressing_Properties_Tel(),true);
+    }
+     *
+     */
+
+    /**
+     * @todo implement testget_vCard_property_from_storage
+     */
+    public function testget_vCard_property_from_storage() {
+        $key = array(
+            //'UID'=>'bc441260-e692-11df-97aa-000c294ea794',
+            'idvCard_Explanatory_Properties' => 10,
+            //'property'=>'vCard_Explanatory_Properties'
+//            'property' =>'vCard_Identification_Properties',
+//             'property' =>'vCard_Geographical_Properties',
+               'property' =>'vCard_Organizational_Properties'
+            );
+        $re = $this->object->get_vCard_property_from_storage($key);
+//        echo var_export($re,true);
+        //echo var_export($this->object->get_vCard_Explanatory_Properties(),true);
+//        echo var_export($this->object->get_vCard_Identification_Properties());
+//        echo var_export($this->object->get_vCard_Geographical_Properties(),true);
+        echo var_export($this->object->get_vCard_Organizational_Properties(),true);
     }
 }
 
