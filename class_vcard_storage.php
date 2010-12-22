@@ -133,17 +133,27 @@ class class_vcard_storage {
 
     public function get_vCard_Explanatory_Properties($key) {
         //        $sql = '';
-        if (key($key) !== 'idvCard_Explanatory_Properties' or key($key) !== 'UID') {
+        debugLog(__FILE, __METHOD__, __LINE__, var_export($key, true));
+        if (key($key) !== 'idvCard_Explanatory_Properties' and key($key) !== 'UID') {
             return NULL;
         }
-        return self::_get_vcard_data_from_db('vCard_Explanatory_Properties', $key);
-        /*
-          $sql = "Select * From " . self::$vCard_Explanatory_Properties . " Where " . key ( $key ) . " = :KEY";
-          $sth = $this->dbh->prepare ( $sql );
-          $sth->bindParam ( ':KEY', $key [key ( $key )] );
-          $sth->execute ();
-          return $sth->fetchAll ();
-         */
+        $re = $this->_get_vcard_data_from_db('vCard_Explanatory_Properties', $key);
+        debugLog(__FILE__, __METHOD__, __LINE__, var_export($re, true));
+        if (count($re) > 1) {
+            /**
+             * @todo 系统中应该只存在一份 Explanatory properties，如果有多份，需要…………
+             */
+        }
+        return array(
+            'UID' => $re[0]['UID'],
+            'VERSION' => $re[0]['VERSION'],
+            'REV' => $re[0]['REV'],
+            'LANG' => $re[0]['LANG'],
+            'CATEGORIES' => $re[0]['CATEGORIES'],
+            'PRODID' => $re[0]['PRODID'],
+            'SORT-STRING' => $re[0]['SORT-STRING'],
+            'RESOURCE_ID' => $re[0]['idvCard_Explanatory_Properties']
+        );
     }
 
     /*
@@ -152,61 +162,113 @@ class class_vcard_storage {
      */
 
     public function get_vCard_Identification_Properties($key) {
-        if (key($key) !== 'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' or $key($key) !== 'idvCard_Identification_Properties') {
+        debugLog(__FILE__, __METHOD__, __LINE__, var_export($key, true));
+        if (key($key) !== 'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' and key($key) !== 'idvCard_Identification_Properties') {
             return NULL;
         }
-        return self::_get_vcard_data_from_db('vCard_Identification_Properties', $key);
-    }
 
-    public function get_vCard_Telecommunications_Addressing_Properties_Tel($key) {
-        if (key($key) !== 'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' or key($key) !== 'idvCard_Telecommunications_Addressing_Properties_Tel') {
-            return NULL;
+        $re = $this->_get_vcard_data_from_db('vCard_Identification_Properties', $key);
+        debugLog(__FILE, __METHOD__, __LINE__, var_export($re, true));
+        if (count($re) > 1 or $re == false) {
+            /**
+             * @todo 系统中应该只存在一份 identification properties，如果有多份，需要…………
+             */
+            debugLog(__FILE__, __METHOD__, __LINE__, var_export($re, true));
         }
-        return self::_get_vcard_data_from_db('vCard_Telecommunications_Addressing_Properties_Tel', $key);
-    }
-
-    public function get_vCard_Telecommunications_Addressing_Properties_Email($key) {
-        if (key($key) !== 'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' or key($key) !== 'idvCard_Telecommunications_Addressing_Properties_Email') {
-            return NULL;
-        }
-        return self::_get_vcard_data_from_db('vCard_Telecommunications_Addressing_Properties_Email', $key);
-    }
-
-    public function get_vCard_Delivery_Addressing_Properties_LABEL($key) {
-        if (key($key) !== 'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' or key($key) !== 'idvCard_Delivery_Addressing_Properties_LABEL') {
-            return NULL;
-        }
-        return self::_get_vcard_data_from_db('vCard_Delivery_Addressing_Properties_LABEL', $key);
-    }
-
-    public function get_vCard_Delivery_Addressing_Properties_ADR($key) {
-        if (key($key) !== 'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' or key($key) !== 'idvCard_Delivery_Addressing_Properties_ADR') {
-            return NULL;
-        }
-        return self::_get_vcard_data_from_db('vCard_Delivery_Addressing_Properties_ADR', $key);
-    }
-
-    public function get_vCard_Organizational_Properties($key) {
-        if (key($key) !== 'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' or key($key) !== 'idvCard_Organizational_Properties') {
-            return NULL;
-        }
-        return self::_get_vcard_data_from_db('vCard_Organizational_Properties', $key);
+        return array(
+            'N' => $re[0]['N'],
+            'FN' => $re[0]['FN'],
+            'PHOTO' => $re[0]['PHOTO'],
+            'PhotoType' => $re[0]['PhotoType'],
+            'BDAY' => $re[0]['BDAY'],
+            'URL' => $re[0]['URL'],
+            'SOUND' => $re[0]['SOUND'],
+            'NOTE' => $re[0]['NOTE'],
+            'NICKNAME' => $re[0]['NICKNAME'],
+            'RESOURCE_ID' => $re[0]['idvCard_Identification_Properties']
+        );
     }
 
     public function get_vCard_Geographical_Properties($key) {
-        if (key($key) !== 'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' or key($key) !== 'idvCard_Geographical_Properties') {
+        debugLog(__FILE__, __METHOD__, __LINE__, var_export($key, true));
+        if (key($key) !== 'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' and key($key) !== 'idvCard_Geographical_Properties') {
             return NULL;
         }
-        return self::_get_vcard_data_from_db('vCard_Geographical_Properties', $key);
+        $re = $this->_get_vcard_data_from_db('vCard_Geographical_Properties', $key);
+        
+        if (count($re) > 1 or $re == false) {
+            /**
+             * @todo 系统中应该只存在一份 Geographical properties，如果有多份，需要…………
+             */
+        }
+        debugLog(__FILE__, __METHOD__, __LINE__, var_export($re, true));
+        return array(
+            'TZ' => $re[0]['TZ'],
+            'GEO' => $re[0]['GEO'],
+             'RESOURCE_ID' => $re[0]['idvCard_Geographical_Properties']
+        );
+
+//        return $this->_get_vcard_data_from_db('vCard_Geographical_Properties', $key);
     }
 
-    private static function _get_vcard_data_from_db($table, $key) {
+    public function get_vCard_Organizational_Properties($key) {
+        debugLog(__FILE__, __METHOD__, __LINE__, var_export($key, true));
+        if (key($key) !== 'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' and key($key) !== 'idvCard_Organizational_Properties') {
+            return NULL;
+        }
+        $re = $this->_get_vcard_data_from_db('vCard_Organizational_Properties', $key);
+        if (count($re) > 1 or $re == false) {
+            /**
+             * @todo 系统中应该只存在一份 Organizational properties，如果有多份，需要…………
+             */
+        }
+        debugLog(__FILE__, __METHOD__, __LINE__, var_export($re, true));
+        return array(
+            'TITLE' =>$re[0]['TITLE'],
+            'ROLE' =>$re[0]['ROLE'],
+            'LOGO' =>$re[0]['LOGO'],
+            'LogoType' =>$re[0]['LogoType'],
+            'ORG' =>$re[0]['ORG'],
+             'RESOURCE_ID' =>$re[0]['idvCard_Organizational_Properties']
+        );
+    }
+
+    public function get_vCard_Telecommunications_Addressing_Properties_Tel($key) {
+        if (key($key) !== 'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' and key($key) !== 'idvCard_Telecommunications_Addressing_Properties_Tel') {
+            return NULL;
+        }
+        return $this->_get_vcard_data_from_db('vCard_Telecommunications_Addressing_Properties_Tel', $key);
+    }
+
+    public function get_vCard_Telecommunications_Addressing_Properties_Email($key) {
+        if (key($key) !== 'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' and key($key) !== 'idvCard_Telecommunications_Addressing_Properties_Email') {
+            return NULL;
+        }
+        return $this->_get_vcard_data_from_db('vCard_Telecommunications_Addressing_Properties_Email', $key);
+    }
+
+    public function get_vCard_Delivery_Addressing_Properties_LABEL($key) {
+        if (key($key) !== 'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' and key($key) !== 'idvCard_Delivery_Addressing_Properties_LABEL') {
+            return NULL;
+        }
+        return $this->_get_vcard_data_from_db('vCard_Delivery_Addressing_Properties_LABEL', $key);
+    }
+
+    public function get_vCard_Delivery_Addressing_Properties_ADR($key) {
+        if (key($key) !== 'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' and key($key) !== 'idvCard_Delivery_Addressing_Properties_ADR') {
+            return NULL;
+        }
+        return $this->_get_vcard_data_from_db('vCard_Delivery_Addressing_Properties_ADR', $key);
+    }
+
+    private function _get_vcard_data_from_db($table, $key) {
         $this->_gen_mysql_resource();
         $sql = "Select * From " . $table . " Where " . key($key) . " = :KEY";
         $sth = $this->dbh->prepare($sql);
-        $sth->bindParam(':KEY', $key [key($key)]);
+        $sth->bindParam(':KEY', $key[key($key)]);
+        debugLog(__FILE__, __METHOD__, __LINE__, var_export($sth, true));
         $sth->execute();
-        return $sth->fetchAll();
+        return $sth->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function get_vcard_id_by_uid($uid) {
@@ -238,7 +300,7 @@ class class_vcard_storage {
 
     public function store_data($vcard_comp, $vcard_data_array, $gen_uid=false) {
 
-        echo __FILE__ . __METHOD__ . __LINE__ . var_export($vcard_comp, true) . var_export($vcard_data_array, true);
+        debugLog(__FILE__, __METHOD__, __LINE__, var_export($vcard_comp, true), var_export($vcard_data_array, true));
         if (!isset($vcard_comp) or $vcard_comp == '') {
             return false;
         }
