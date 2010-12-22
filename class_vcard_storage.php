@@ -434,7 +434,7 @@ class class_vcard_storage {
                     echo '>>>>>>>> return false  ' . __FILE__ . __METHOD__ . __LINE__ . "\n";
                     return false;
                 }
-                echo "\n" . $store_sql . "\n";
+                debugLog(__FILE__,__METHOD__,__LINE__,'$store_sql',$store_sql);
                 try {
                     $sth = $this->dbh->prepare($store_sql);
                 } catch (Exception $e) {
