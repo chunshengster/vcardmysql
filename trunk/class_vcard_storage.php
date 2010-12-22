@@ -195,7 +195,7 @@ class class_vcard_storage {
             return NULL;
         }
         $re = $this->_get_vcard_data_from_db('vCard_Geographical_Properties', $key);
-        
+
         if (count($re) > 1 or $re == false) {
             /**
              * @todo 系统中应该只存在一份 Geographical properties，如果有多份，需要…………
@@ -205,7 +205,7 @@ class class_vcard_storage {
         return array(
             'TZ' => $re[0]['TZ'],
             'GEO' => $re[0]['GEO'],
-             'RESOURCE_ID' => $re[0]['idvCard_Geographical_Properties']
+            'RESOURCE_ID' => $re[0]['idvCard_Geographical_Properties']
         );
 
 //        return $this->_get_vcard_data_from_db('vCard_Geographical_Properties', $key);
@@ -224,41 +224,81 @@ class class_vcard_storage {
         }
         debugLog(__FILE__, __METHOD__, __LINE__, var_export($re, true));
         return array(
-            'TITLE' =>$re[0]['TITLE'],
-            'ROLE' =>$re[0]['ROLE'],
-            'LOGO' =>$re[0]['LOGO'],
-            'LogoType' =>$re[0]['LogoType'],
-            'ORG' =>$re[0]['ORG'],
-             'RESOURCE_ID' =>$re[0]['idvCard_Organizational_Properties']
+            'TITLE' => $re[0]['TITLE'],
+            'ROLE' => $re[0]['ROLE'],
+            'LOGO' => $re[0]['LOGO'],
+            'LogoType' => $re[0]['LogoType'],
+            'ORG' => $re[0]['ORG'],
+            'RESOURCE_ID' => $re[0]['idvCard_Organizational_Properties']
         );
     }
 
-    public function get_vCard_Telecommunications_Addressing_Properties_Tel($key) {
-        if (key($key) !== 'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' and key($key) !== 'idvCard_Telecommunications_Addressing_Properties_Tel') {
-            return NULL;
-        }
-        return $this->_get_vcard_data_from_db('vCard_Telecommunications_Addressing_Properties_Tel', $key);
-    }
-
-    public function get_vCard_Telecommunications_Addressing_Properties_Email($key) {
-        if (key($key) !== 'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' and key($key) !== 'idvCard_Telecommunications_Addressing_Properties_Email') {
-            return NULL;
-        }
-        return $this->_get_vcard_data_from_db('vCard_Telecommunications_Addressing_Properties_Email', $key);
-    }
-
-    public function get_vCard_Delivery_Addressing_Properties_LABEL($key) {
-        if (key($key) !== 'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' and key($key) !== 'idvCard_Delivery_Addressing_Properties_LABEL') {
-            return NULL;
-        }
-        return $this->_get_vcard_data_from_db('vCard_Delivery_Addressing_Properties_LABEL', $key);
-    }
-
     public function get_vCard_Delivery_Addressing_Properties_ADR($key) {
+        debugLog(__FILE__, __METHOD__, __LINE__, var_export($key, true));
         if (key($key) !== 'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' and key($key) !== 'idvCard_Delivery_Addressing_Properties_ADR') {
             return NULL;
         }
-        return $this->_get_vcard_data_from_db('vCard_Delivery_Addressing_Properties_ADR', $key);
+        $re = $this->_get_vcard_data_from_db('vCard_Delivery_Addressing_Properties_ADR', $key);
+        debugLog(__FILE__, __METHOD__, __LINE__, var_export($re, true));
+        $re_array = array();
+        foreach ($re as $k => $val) {
+            $re_array[$k]['ADR'] = $val['ADR'];
+            $re_array[$k]['AdrType'] = $val['AdrType'];
+            $re_array[$k]['RESOURCE_ID'] = $val['idvCard_Delivery_Addressing_Properties_ADR'];
+        }
+        debugLog(__FILE__, __METHOD__, __LINE__, var_export($re_array, true));
+        return $re_array;
+    }
+
+    public function get_vCard_Delivery_Addressing_Properties_LABEL($key) {
+        debugLog(__FILE__, __METHOD__, __LINE__, var_export($key, true));
+        if (key($key) !== 'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' and key($key) !== 'idvCard_Delivery_Addressing_Properties_LABEL') {
+            return NULL;
+        }
+        $re = $this->_get_vcard_data_from_db('vCard_Delivery_Addressing_Properties_LABEL', $key);
+        debugLog(__FILE__, __METHOD__, __LINE__, var_export($re, true));
+        $re_array = array();
+        foreach ($re as $k => $val) {
+            $re_array[$k]['LABEL'] = $val['LABEL'];
+            $re_array[$k]['LabelType'] = $val['LabelType'];
+            $re_array[$k]['RESOURCE_ID'] = $val['idvCard_Delivery_Addressing_Properties_LABEL'];
+        }
+        debugLog(__FILE__, __METHOD__, __LINE__, var_export($re_array, true));
+        return $re_array;
+    }
+
+    public function get_vCard_Telecommunications_Addressing_Properties_Tel($key) {
+        debugLog(__FILE__, __METHOD__, __LINE__, var_export($key, true));
+        if (key($key) !== 'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' and key($key) !== 'idvCard_Telecommunications_Addressing_Properties_Tel') {
+            return NULL;
+        }
+        $re = $this->_get_vcard_data_from_db('vCard_Telecommunications_Addressing_Properties_Tel', $key);
+        debugLog(__FILE__, __METHOD__, __LINE__, var_export($re, true));
+        $re_array = array();
+        foreach ($re as $k => $val) {
+            $re_array[$k]['TEL'] = $val['TEL'];
+            $re_array[$k]['TelType'] = $val['TelType'];
+            $re_array[$k]['RESOURCE_ID'] = $val['idvCard_Telecommunications_Addressing_Properties_Tel'];
+        }
+        debugLog(__FILE__, __METHOD__, __LINE__, var_export($re_array, true));
+        return $re_array;
+    }
+
+    public function get_vCard_Telecommunications_Addressing_Properties_Email($key) {
+        debugLog(__FILE__, __METHOD__, __LINE__, var_export($key, true));
+        if (key($key) !== 'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' and key($key) !== 'idvCard_Telecommunications_Addressing_Properties_Email') {
+            return NULL;
+        }
+        $re = $this->_get_vcard_data_from_db('vCard_Telecommunications_Addressing_Properties_Email', $key);
+        debugLog(__FILE__, __METHOD__, __LINE__, var_export($re, true));
+        $re_array = array();
+        foreach ($re as $k => $val) {
+            $re_array[$k]['EMAIL'] = $val['EMAIL'];
+            $re_array[$k]['EmailType'] = $val['EmailType'];
+            $re_array[$k]['RESOURCE_ID'] = $val['idvCard_Telecommunications_Addressing_Properties_Email'];
+        }
+        debugLog(__FILE__, __METHOD__, __LINE__, var_export($re_array, true));
+        return $re_array;
     }
 
     private function _get_vcard_data_from_db($table, $key) {
@@ -277,7 +317,7 @@ class class_vcard_storage {
         }
         if (strlen($uid) == 36) {
             /**
-             * todo: check if $uid is UUID
+             * todo: 调整检查$uid的算法
              */
             $this->_gen_mysql_resource();
             $select_sql = "SELECT idvCard_Explanatory_Properties FROM " . self::$vCard_Explanatory_Properties . " WHERE UID = :UID";
@@ -670,12 +710,12 @@ class class_vcard_storage {
         echo implode(':', array(__FILE__, __METHOD__, __LINE__, 'uid:', $uid)) . "\n";
         $this->_gen_mysql_resource();
         $FindUidSql = "SELECT `idvCard_Explanatory_Properties` FROM " . self::$vCard_Explanatory_Properties . " WHERE UID = :UID";
-        echo ">>>>>" . $FindUidSql . "\n";
+//        echo ">>>>>" . $FindUidSql . "\n";
         $sth = $this->dbh->prepare($FindUidSql);
         $sth->bindParam(':UID', $uid);
         $sth->execute();
         $re = $sth->fetchColumn();
-        echo ">>>>>>" . var_export($re, true) . "\n";
+//        echo ">>>>>>" . var_export($re, true) . "\n";
         if ($re > 0) {
             return $re;
         } else {

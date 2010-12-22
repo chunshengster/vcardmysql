@@ -2103,3 +2103,435 @@
     'ORG' => '联通新时讯通信有限公司 unIcom中国联通',
   ),
 )
+12/22/10 12:59:53 [7024]E:\xinshixun\Code\wo_vCard\trunk\class_vCard.php:class_vCard::get_vCard_property_from_storage:299:array (
+  'idvCard_Explanatory_Properties' => 10,
+  'property' => 'idvCard_Delivery_Addressing_Properties_ADR',
+)
+12/22/10 13:01:50 [7404]E:\xinshixun\Code\wo_vCard\trunk\class_vCard.php:class_vCard::get_vCard_property_from_storage:299:array (
+  'idvCard_Explanatory_Properties' => 10,
+  'property' => 'vCard_Delivery_Addressing_Properties_ADR',
+)
+12/22/10 13:01:50 [7404]E:\xinshixun\Code\wo_vCard\trunk\class_vcard_storage.php:class_vcard_storage::get_vCard_Delivery_Addressing_Properties_ADR:237:array (
+  'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' => 10,
+)
+12/22/10 13:01:50 [7404]E:\xinshixun\Code\wo_vCard\trunk\class_vcard_storage.php:class_vcard_storage::_get_vcard_data_from_db:277:PDOStatement::__set_state(array(
+   'queryString' => 'Select * From vCard_Delivery_Addressing_Properties_ADR Where vCard_Explanatory_Properties_idvCard_Explanatory_Properties = :KEY',
+))
+12/22/10 13:01:50 [7404]E:\xinshixun\Code\wo_vCard\trunk\class_vcard_storage.php:class_vcard_storage::get_vCard_Delivery_Addressing_Properties_ADR:243:array (
+  0 => 
+  array (
+    'idvCard_Delivery_Addressing_Properties_ADR' => '10',
+    'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' => '10',
+    'ADR' => ';;西城区西单北大街甲133号中国联通951房间;;;100032;',
+    'AdrType' => 'DOM,POSTAL,PARCEL,HOME,WORK',
+  ),
+  1 => 
+  array (
+    'idvCard_Delivery_Addressing_Properties_ADR' => '11',
+    'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' => '10',
+    'ADR' => ';;北京市西城区2222222222;;;123456;',
+    'AdrType' => 'DOM,POSTAL',
+  ),
+)
+12/22/10 13:09:31 [4872]E:\xinshixun\Code\wo_vCard\trunk\class_vCard.php:class_vCard::get_vCard_property_from_storage:299:array (
+  'idvCard_Explanatory_Properties' => 10,
+  'property' => 'vCard_Delivery_Addressing_Properties_ADR',
+)
+12/22/10 13:09:31 [4872]E:\xinshixun\Code\wo_vCard\trunk\class_vcard_storage.php:class_vcard_storage::get_vCard_Delivery_Addressing_Properties_ADR:237:array (
+  'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' => 10,
+)
+12/22/10 13:09:31 [4872]E:\xinshixun\Code\wo_vCard\trunk\class_vcard_storage.php:class_vcard_storage::_get_vcard_data_from_db:284:PDOStatement::__set_state(array(
+   'queryString' => 'Select * From vCard_Delivery_Addressing_Properties_ADR Where vCard_Explanatory_Properties_idvCard_Explanatory_Properties = :KEY',
+))
+12/22/10 13:09:31 [4872]E:\xinshixun\Code\wo_vCard\trunk\class_vcard_storage.php:class_vcard_storage::get_vCard_Delivery_Addressing_Properties_ADR:242:array (
+  0 => 
+  array (
+    'idvCard_Delivery_Addressing_Properties_ADR' => '10',
+    'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' => '10',
+    'ADR' => ';;西城区西单北大街甲133号中国联通951房间;;;100032;',
+    'AdrType' => 'DOM,POSTAL,PARCEL,HOME,WORK',
+  ),
+  1 => 
+  array (
+    'idvCard_Delivery_Addressing_Properties_ADR' => '11',
+    'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' => '10',
+    'ADR' => ';;北京市西城区2222222222;;;123456;',
+    'AdrType' => 'DOM,POSTAL',
+  ),
+)
+12/22/10 13:09:31 [4872]E:\xinshixun\Code\wo_vCard\trunk\class_vcard_storage.php:class_vcard_storage::get_vCard_Delivery_Addressing_Properties_ADR:249:array (
+  0 => 
+  array (
+    'ADR' => ';;西城区西单北大街甲133号中国联通951房间;;;100032;',
+    'AdrType' => 'DOM,POSTAL,PARCEL,HOME,WORK',
+    'RESOURCE_ID' => '10',
+  ),
+  1 => 
+  array (
+    'ADR' => ';;北京市西城区2222222222;;;123456;',
+    'AdrType' => 'DOM,POSTAL',
+    'RESOURCE_ID' => '11',
+  ),
+)
+
+12/22/10 13:10:54 [2784]E:\xinshixun\Code\wo_vCard\trunk\class_vCard.php:class_vCard::get_vCard_property_from_storage:299:array (
+  'idvCard_Explanatory_Properties' => 6,
+  'property' => 'vCard_Delivery_Addressing_Properties_ADR',
+)
+12/22/10 13:10:54 [2784]E:\xinshixun\Code\wo_vCard\trunk\class_vcard_storage.php:class_vcard_storage::get_vCard_Delivery_Addressing_Properties_ADR:237:array (
+  'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' => 6,
+)
+12/22/10 13:10:54 [2784]E:\xinshixun\Code\wo_vCard\trunk\class_vcard_storage.php:class_vcard_storage::_get_vcard_data_from_db:284:PDOStatement::__set_state(array(
+   'queryString' => 'Select * From vCard_Delivery_Addressing_Properties_ADR Where vCard_Explanatory_Properties_idvCard_Explanatory_Properties = :KEY',
+))
+12/22/10 13:10:54 [2784]E:\xinshixun\Code\wo_vCard\trunk\class_vcard_storage.php:class_vcard_storage::get_vCard_Delivery_Addressing_Properties_ADR:242:array (
+  0 => 
+  array (
+    'idvCard_Delivery_Addressing_Properties_ADR' => '3',
+    'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' => '6',
+    'ADR' => ';;西城区西单北大街甲133号中国联通951房间;;;100032;',
+    'AdrType' => 'DOM,POSTAL,PARCEL,HOME,WORK',
+  ),
+  1 => 
+  array (
+    'idvCard_Delivery_Addressing_Properties_ADR' => '4',
+    'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' => '6',
+    'ADR' => ';;北京市西城区2222222222;;;123456;',
+    'AdrType' => 'DOM,POSTAL',
+  ),
+  2 => 
+  array (
+    'idvCard_Delivery_Addressing_Properties_ADR' => '5',
+    'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' => '6',
+    'ADR' => ';;西城区西单北大街甲133号中国联通951房间;;;100032;',
+    'AdrType' => 'DOM,POSTAL,PARCEL,HOME,WORK',
+  ),
+  3 => 
+  array (
+    'idvCard_Delivery_Addressing_Properties_ADR' => '6',
+    'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' => '6',
+    'ADR' => ';;西城区西单北大街甲133号中国联通951房间;;;100032;',
+    'AdrType' => 'DOM,POSTAL,PARCEL,HOME,WORK',
+  ),
+  4 => 
+  array (
+    'idvCard_Delivery_Addressing_Properties_ADR' => '7',
+    'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' => '6',
+    'ADR' => ';;西城区西单北大街甲133号中国联通951房间;;;100032;',
+    'AdrType' => 'DOM,POSTAL,PARCEL,HOME,WORK',
+  ),
+  5 => 
+  array (
+    'idvCard_Delivery_Addressing_Properties_ADR' => '8',
+    'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' => '6',
+    'ADR' => ';;西城区西单北大街甲133号中国联通951房间;;;100032;',
+    'AdrType' => 'DOM,POSTAL,PARCEL,HOME,WORK',
+  ),
+  6 => 
+  array (
+    'idvCard_Delivery_Addressing_Properties_ADR' => '9',
+    'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' => '6',
+    'ADR' => ';;西城区西单北大街甲133号中国联通951房间;;;100032;',
+    'AdrType' => 'DOM,POSTAL,PARCEL,HOME,WORK',
+  ),
+)
+12/22/10 13:10:54 [2784]E:\xinshixun\Code\wo_vCard\trunk\class_vcard_storage.php:class_vcard_storage::get_vCard_Delivery_Addressing_Properties_ADR:249:array (
+  0 => 
+  array (
+    'ADR' => ';;西城区西单北大街甲133号中国联通951房间;;;100032;',
+    'AdrType' => 'DOM,POSTAL,PARCEL,HOME,WORK',
+    'RESOURCE_ID' => '3',
+  ),
+  1 => 
+  array (
+    'ADR' => ';;北京市西城区2222222222;;;123456;',
+    'AdrType' => 'DOM,POSTAL',
+    'RESOURCE_ID' => '4',
+  ),
+  2 => 
+  array (
+    'ADR' => ';;西城区西单北大街甲133号中国联通951房间;;;100032;',
+    'AdrType' => 'DOM,POSTAL,PARCEL,HOME,WORK',
+    'RESOURCE_ID' => '5',
+  ),
+  3 => 
+  array (
+    'ADR' => ';;西城区西单北大街甲133号中国联通951房间;;;100032;',
+    'AdrType' => 'DOM,POSTAL,PARCEL,HOME,WORK',
+    'RESOURCE_ID' => '6',
+  ),
+  4 => 
+  array (
+    'ADR' => ';;西城区西单北大街甲133号中国联通951房间;;;100032;',
+    'AdrType' => 'DOM,POSTAL,PARCEL,HOME,WORK',
+    'RESOURCE_ID' => '7',
+  ),
+  5 => 
+  array (
+    'ADR' => ';;西城区西单北大街甲133号中国联通951房间;;;100032;',
+    'AdrType' => 'DOM,POSTAL,PARCEL,HOME,WORK',
+    'RESOURCE_ID' => '8',
+  ),
+  6 => 
+  array (
+    'ADR' => ';;西城区西单北大街甲133号中国联通951房间;;;100032;',
+    'AdrType' => 'DOM,POSTAL,PARCEL,HOME,WORK',
+    'RESOURCE_ID' => '9',
+  ),
+)
+12/22/10 13:17:21 [2872]E:\xinshixun\Code\wo_vCard\trunk\class_vCard.php:class_vCard::get_vCard_property_from_storage:299:array (
+  'idvCard_Explanatory_Properties' => 10,
+  'property' => 'vCard_Delivery_Addressing_Properties_LABEL',
+)
+12/22/10 13:17:21 [2872]E:\xinshixun\Code\wo_vCard\trunk\class_vcard_storage.php:class_vcard_storage::get_vCard_Delivery_Addressing_Properties_LABEL:254:array (
+  'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' => 10,
+)
+12/22/10 13:17:21 [2872]E:\xinshixun\Code\wo_vCard\trunk\class_vcard_storage.php:class_vcard_storage::_get_vcard_data_from_db:296:PDOStatement::__set_state(array(
+   'queryString' => 'Select * From vCard_Delivery_Addressing_Properties_LABEL Where vCard_Explanatory_Properties_idvCard_Explanatory_Properties = :KEY',
+))
+12/22/10 13:17:21 [2872]E:\xinshixun\Code\wo_vCard\trunk\class_vcard_storage.php:class_vcard_storage::get_vCard_Delivery_Addressing_Properties_LABEL:259:array (
+  0 => 
+  array (
+    'idvCard_Delivery_Addressing_Properties_LABEL' => '4',
+    'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' => '10',
+    'LABEL' => 'Mr.John Q. Public\\, Esq.\\n        Mail Drop\\: TNE QB\\n123 Main Street\\nAny Town\\, CA  91921-1234        \\nU.S.A.',
+    'LabelType' => 'DOM,POSTAL,PARCEL,HOME',
+  ),
+  1 => 
+  array (
+    'idvCard_Delivery_Addressing_Properties_LABEL' => '5',
+    'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' => '10',
+    'LABEL' => '测试label',
+    'LabelType' => 'PARCEL',
+  ),
+)
+12/22/10 13:17:21 [2872]E:\xinshixun\Code\wo_vCard\trunk\class_vcard_storage.php:class_vcard_storage::get_vCard_Delivery_Addressing_Properties_LABEL:266:array (
+  0 => 
+  array (
+    'LABEL' => 'Mr.John Q. Public\\, Esq.\\n        Mail Drop\\: TNE QB\\n123 Main Street\\nAny Town\\, CA  91921-1234        \\nU.S.A.',
+    'LabelType' => 'DOM,POSTAL,PARCEL,HOME',
+    'RESOURCE_ID' => '4',
+  ),
+  1 => 
+  array (
+    'LABEL' => '测试label',
+    'LabelType' => 'PARCEL',
+    'RESOURCE_ID' => '5',
+  ),
+)
+12/22/10 13:33:38 [7416]E:\xinshixun\Code\wo_vCard\trunk\class_vCard.php:class_vCard::get_vCard_property_from_storage:299:array (
+  'idvCard_Explanatory_Properties' => 10,
+  'property' => 'idvCard_Telecommunications_Addressing_Properties_Tel',
+)
+12/22/10 13:35:36 [4940]E:\xinshixun\Code\wo_vCard\trunk\class_vCard.php:class_vCard::get_vCard_property_from_storage:299:array (
+  'idvCard_Explanatory_Properties' => 10,
+  'property' => 'vCard_Telecommunications_Addressing_Properties_Tel',
+)
+12/22/10 13:35:36 [4940]E:\xinshixun\Code\wo_vCard\trunk\class_vcard_storage.php:class_vcard_storage::get_vCard_Telecommunications_Addressing_Properties_Tel:271:array (
+  'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' => 10,
+)
+12/22/10 13:35:36 [4940]E:\xinshixun\Code\wo_vCard\trunk\class_vcard_storage.php:class_vcard_storage::_get_vcard_data_from_db:299:PDOStatement::__set_state(array(
+   'queryString' => 'Select * From vCard_Telecommunications_Addressing_Properties_Tel Where vCard_Explanatory_Properties_idvCard_Explanatory_Properties = :KEY',
+))
+12/22/10 13:35:36 [4940]E:\xinshixun\Code\wo_vCard\trunk\class_vcard_storage.php:class_vcard_storage::get_vCard_Telecommunications_Addressing_Properties_Tel:277:array (
+  0 => 
+  array (
+    'idvCard_Telecommunications_Addressing_Properties_Tel' => '9',
+    'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' => '10',
+    'TEL' => '(010)66505674',
+    'TelType' => 'WORK,FAX',
+  ),
+  1 => 
+  array (
+    'idvCard_Telecommunications_Addressing_Properties_Tel' => '10',
+    'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' => '10',
+    'TEL' => '01066505725',
+    'TelType' => 'WORK',
+  ),
+  2 => 
+  array (
+    'idvCard_Telecommunications_Addressing_Properties_Tel' => '11',
+    'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' => '10',
+    'TEL' => '18601108092',
+    'TelType' => 'CELL',
+  ),
+  3 => 
+  array (
+    'idvCard_Telecommunications_Addressing_Properties_Tel' => '12',
+    'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' => '10',
+    'TEL' => '13810154053',
+    'TelType' => 'CELL',
+  ),
+)
+12/22/10 14:03:57 [4144]E:\xinshixun\Code\wo_vCard\trunk\class_vCard.php:class_vCard::get_vCard_property_from_storage:299:array (
+  'idvCard_Explanatory_Properties' => 10,
+  'property' => 'vCard_Telecommunications_Addressing_Properties_Tel',
+)
+12/22/10 14:03:57 [4144]E:\xinshixun\Code\wo_vCard\trunk\class_vcard_storage.php:class_vcard_storage::get_vCard_Telecommunications_Addressing_Properties_Tel:271:array (
+  'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' => 10,
+)
+12/22/10 14:03:57 [4144]E:\xinshixun\Code\wo_vCard\trunk\class_vcard_storage.php:class_vcard_storage::_get_vcard_data_from_db:309:PDOStatement::__set_state(array(
+   'queryString' => 'Select * From vCard_Telecommunications_Addressing_Properties_Tel Where vCard_Explanatory_Properties_idvCard_Explanatory_Properties = :KEY',
+))
+12/22/10 14:03:57 [4144]E:\xinshixun\Code\wo_vCard\trunk\class_vcard_storage.php:class_vcard_storage::get_vCard_Telecommunications_Addressing_Properties_Tel:276:array (
+  0 => 
+  array (
+    'idvCard_Telecommunications_Addressing_Properties_Tel' => '9',
+    'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' => '10',
+    'TEL' => '(010)66505674',
+    'TelType' => 'WORK,FAX',
+  ),
+  1 => 
+  array (
+    'idvCard_Telecommunications_Addressing_Properties_Tel' => '10',
+    'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' => '10',
+    'TEL' => '01066505725',
+    'TelType' => 'WORK',
+  ),
+  2 => 
+  array (
+    'idvCard_Telecommunications_Addressing_Properties_Tel' => '11',
+    'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' => '10',
+    'TEL' => '18601108092',
+    'TelType' => 'CELL',
+  ),
+  3 => 
+  array (
+    'idvCard_Telecommunications_Addressing_Properties_Tel' => '12',
+    'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' => '10',
+    'TEL' => '13810154053',
+    'TelType' => 'CELL',
+  ),
+)
+12/22/10 14:03:57 [4144]E:\xinshixun\Code\wo_vCard\trunk\class_vcard_storage.php:class_vcard_storage::get_vCard_Telecommunications_Addressing_Properties_Tel:283:array (
+  0 => 
+  array (
+    'TEL' => '(010)66505674',
+    'TelType' => 'WORK,FAX',
+    'RESOURCE_ID' => '9',
+  ),
+  1 => 
+  array (
+    'TEL' => '01066505725',
+    'TelType' => 'WORK',
+    'RESOURCE_ID' => '10',
+  ),
+  2 => 
+  array (
+    'TEL' => '18601108092',
+    'TelType' => 'CELL',
+    'RESOURCE_ID' => '11',
+  ),
+  3 => 
+  array (
+    'TEL' => '13810154053',
+    'TelType' => 'CELL',
+    'RESOURCE_ID' => '12',
+  ),
+)
+12/22/10 14:05:39 [6228]E:\xinshixun\Code\wo_vCard\trunk\class_vCard.php:class_vCard::get_vCard_property_from_storage:299:array (
+  'idvCard_Explanatory_Properties' => 10,
+  'property' => 'vCard_Telecommunications_Addressing_Properties_Email',
+)
+12/22/10 14:05:39 [6228]E:\xinshixun\Code\wo_vCard\trunk\class_vcard_storage.php:class_vcard_storage::get_vCard_Telecommunications_Addressing_Properties_Email:288:array (
+  'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' => 10,
+)
+12/22/10 14:05:39 [6228]E:\xinshixun\Code\wo_vCard\trunk\class_vcard_storage.php:class_vcard_storage::_get_vcard_data_from_db:309:PDOStatement::__set_state(array(
+   'queryString' => 'Select * From vCard_Telecommunications_Addressing_Properties_Email Where vCard_Explanatory_Properties_idvCard_Explanatory_Properties = :KEY',
+))
+12/22/10 14:05:39 [6228]E:\xinshixun\Code\wo_vCard\trunk\class_vcard_storage.php:class_vcard_storage::get_vCard_Telecommunications_Addressing_Properties_Email:293:array (
+  0 => 
+  array (
+    'idvCard_Telecommunications_Addressing_Properties_Email' => '6',
+    'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' => '10',
+    'EMAIL' => 'chunshengster@gmail.com',
+    'EmailType' => 'INTERNET',
+  ),
+  1 => 
+  array (
+    'idvCard_Telecommunications_Addressing_Properties_Email' => '7',
+    'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' => '10',
+    'EMAIL' => 'chunge@wo.com.cn',
+    'EmailType' => 'INTERNET',
+  ),
+  2 => 
+  array (
+    'idvCard_Telecommunications_Addressing_Properties_Email' => '8',
+    'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' => '10',
+    'EMAIL' => '18601108092@wo.com.cn.wangchsh@uninewspace.com',
+    'EmailType' => 'INTERNET',
+  ),
+)
+12/22/10 14:05:39 [6228]E:\xinshixun\Code\wo_vCard\trunk\class_vcard_storage.php:class_vcard_storage::get_vCard_Telecommunications_Addressing_Properties_Email:300:array (
+  0 => 
+  array (
+    'EMAIL' => 'chunshengster@gmail.com',
+    'EmailType' => 'INTERNET',
+    'RESOURCE_ID' => NULL,
+  ),
+  1 => 
+  array (
+    'EMAIL' => 'chunge@wo.com.cn',
+    'EmailType' => 'INTERNET',
+    'RESOURCE_ID' => NULL,
+  ),
+  2 => 
+  array (
+    'EMAIL' => '18601108092@wo.com.cn.wangchsh@uninewspace.com',
+    'EmailType' => 'INTERNET',
+    'RESOURCE_ID' => NULL,
+  ),
+)
+12/22/10 14:07:03 [3528]E:\xinshixun\Code\wo_vCard\trunk\class_vCard.php:class_vCard::get_vCard_property_from_storage:299:array (
+  'idvCard_Explanatory_Properties' => 10,
+  'property' => 'vCard_Telecommunications_Addressing_Properties_Email',
+)
+12/22/10 14:07:03 [3528]E:\xinshixun\Code\wo_vCard\trunk\class_vcard_storage.php:class_vcard_storage::get_vCard_Telecommunications_Addressing_Properties_Email:288:array (
+  'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' => 10,
+)
+12/22/10 14:07:03 [3528]E:\xinshixun\Code\wo_vCard\trunk\class_vcard_storage.php:class_vcard_storage::_get_vcard_data_from_db:309:PDOStatement::__set_state(array(
+   'queryString' => 'Select * From vCard_Telecommunications_Addressing_Properties_Email Where vCard_Explanatory_Properties_idvCard_Explanatory_Properties = :KEY',
+))
+12/22/10 14:07:03 [3528]E:\xinshixun\Code\wo_vCard\trunk\class_vcard_storage.php:class_vcard_storage::get_vCard_Telecommunications_Addressing_Properties_Email:293:array (
+  0 => 
+  array (
+    'idvCard_Telecommunications_Addressing_Properties_Email' => '6',
+    'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' => '10',
+    'EMAIL' => 'chunshengster@gmail.com',
+    'EmailType' => 'INTERNET',
+  ),
+  1 => 
+  array (
+    'idvCard_Telecommunications_Addressing_Properties_Email' => '7',
+    'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' => '10',
+    'EMAIL' => 'chunge@wo.com.cn',
+    'EmailType' => 'INTERNET',
+  ),
+  2 => 
+  array (
+    'idvCard_Telecommunications_Addressing_Properties_Email' => '8',
+    'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' => '10',
+    'EMAIL' => '18601108092@wo.com.cn.wangchsh@uninewspace.com',
+    'EmailType' => 'INTERNET',
+  ),
+)
+12/22/10 14:07:03 [3528]E:\xinshixun\Code\wo_vCard\trunk\class_vcard_storage.php:class_vcard_storage::get_vCard_Telecommunications_Addressing_Properties_Email:300:array (
+  0 => 
+  array (
+    'EMAIL' => 'chunshengster@gmail.com',
+    'EmailType' => 'INTERNET',
+    'RESOURCE_ID' => '6',
+  ),
+  1 => 
+  array (
+    'EMAIL' => 'chunge@wo.com.cn',
+    'EmailType' => 'INTERNET',
+    'RESOURCE_ID' => '7',
+  ),
+  2 => 
+  array (
+    'EMAIL' => '18601108092@wo.com.cn.wangchsh@uninewspace.com',
+    'EmailType' => 'INTERNET',
+    'RESOURCE_ID' => '8',
+  ),
+)

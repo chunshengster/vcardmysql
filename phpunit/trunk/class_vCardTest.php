@@ -406,14 +406,21 @@ class class_vCardTest extends PHPUnit_Framework_TestCase {
             //'property'=>'vCard_Explanatory_Properties'
 //            'property' =>'vCard_Identification_Properties',
 //             'property' =>'vCard_Geographical_Properties',
-               'property' =>'vCard_Organizational_Properties'
+//               'property' =>'vCard_Organizational_Properties'
+//            'property' =>'vCard_Delivery_Addressing_Properties_LABEL'
+//            'property' =>'vCard_Telecommunications_Addressing_Properties_Tel'
+             'property' =>'vCard_Telecommunications_Addressing_Properties_Email'
             );
         $re = $this->object->get_vCard_property_from_storage($key);
 //        echo var_export($re,true);
         //echo var_export($this->object->get_vCard_Explanatory_Properties(),true);
 //        echo var_export($this->object->get_vCard_Identification_Properties());
 //        echo var_export($this->object->get_vCard_Geographical_Properties(),true);
-        echo var_export($this->object->get_vCard_Organizational_Properties(),true);
+//        echo var_export($this->object->get_vCard_Organizational_Properties(),true);
+//        echo var_export($this->object->get_vCard_Delivery_Addressing_Properties_ADR(),true);
+//            echo var_export($this->object->get_vCard_Delivery_Addressing_Properties_LABEL(),true);
+//        echo var_export($this->object->get_vCard_Telecommunications_Addressing_Properties_Tel(),true);
+        echo var_export($this->object->get_vCard_Telecommunications_Addressing_Properties_Email(),true);
     }
 }
 
