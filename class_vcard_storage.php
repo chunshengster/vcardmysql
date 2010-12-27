@@ -9,7 +9,7 @@
  */
 class class_vcard_storage {
 
-    protected static $vcard_db_para_file = 'E:\xinshixun\Code\wo_vCard\trunk\config\config.ini';
+    protected static $vcard_db_para_file = null;//dirname(__FILE__).'/config.ini';
     protected $dbh = null;
     protected static $db_host = null;
     protected static $db_port = null;
@@ -28,6 +28,7 @@ class class_vcard_storage {
     private static $vCard_Telecommunications_Addressing_Properties_Tel = 'vCard_Telecommunications_Addressing_Properties_Tel';
 
     function __construct() {
+        self::$vcard_db_para_file = dirname(__FILE__).'/config.ini';
         self::getMysqlPara ();
 //        $this->getInstance ();
     }

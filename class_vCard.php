@@ -61,7 +61,6 @@ class class_vCard {
             $this->_get_storage_resource();
 
             $re = $this->obj_vcard_storage->get_vcard_id_by_uid($this->vCard_Explanatory_Properties['UID']);
-//            echo __FILE__ . __METHOD__ . __LINE__ . var_export($re, true);
             if ($re) {
                 $this->vCard_Explanatory_Properties['RESOURCE_ID'] = $re;
             }
