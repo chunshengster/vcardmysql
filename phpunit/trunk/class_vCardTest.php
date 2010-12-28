@@ -27,6 +27,7 @@ class class_vCardTest extends PHPUnit_Framework_TestCase {
         $this->vcard = file_get_contents('E:\xinshixun\Code\wo_vCard\phpunit\trunk\a.vcf');
 //        print_r($this->vcard);
         $this->object->parse_vCard($this->vcard);
+        print_r($this->object);
 //        echo var_export($this->object);
 //        print_r($this->object);
         //print_r($this->vcard);

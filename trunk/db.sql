@@ -65,8 +65,8 @@ CREATE  TABLE IF NOT EXISTS `vCard_Identification_Properties` (
   CONSTRAINT `fk_vCard_Identification_Properties_vCard_Explanatory_Properti1`
     FOREIGN KEY (`vCard_Explanatory_Properties_idvCard_Explanatory_Properties` )
     REFERENCES `vCard_Explanatory_Properties` (`idvCard_Explanatory_Properties` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE RESTRICT
+    ON UPDATE RESTRICT)
 ENGINE = InnoDB;
 
 SHOW WARNINGS;
@@ -89,8 +89,8 @@ CREATE  TABLE IF NOT EXISTS `vCard_Delivery_Addressing_Properties_ADR` (
   CONSTRAINT `fk_vCard_Delivvery_Addressing_Properties_vCard_Explanatory_Pr1`
     FOREIGN KEY (`vCard_Explanatory_Properties_idvCard_Explanatory_Properties` )
     REFERENCES `vCard_Explanatory_Properties` (`idvCard_Explanatory_Properties` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE RESTRICT
+    ON UPDATE RESTRICT)
 ENGINE = InnoDB;
 
 SHOW WARNINGS;
@@ -113,8 +113,8 @@ CREATE  TABLE IF NOT EXISTS `vCard_Telecommunications_Addressing_Properties_Tel`
   CONSTRAINT `fk_vCard_Telecommunications_Addressing_Properties_vCard_Expla1`
     FOREIGN KEY (`vCard_Explanatory_Properties_idvCard_Explanatory_Properties` )
     REFERENCES `vCard_Explanatory_Properties` (`idvCard_Explanatory_Properties` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE RESTRICT
+    ON UPDATE RESTRICT)
 ENGINE = InnoDB;
 
 SHOW WARNINGS;
@@ -137,8 +137,8 @@ CREATE  TABLE IF NOT EXISTS `vCard_Geographical_Properties` (
   CONSTRAINT `fk_vCard_Geographical_Properties_vCard_Explanatory_Properties1`
     FOREIGN KEY (`vCard_Explanatory_Properties_idvCard_Explanatory_Properties` )
     REFERENCES `vCard_Explanatory_Properties` (`idvCard_Explanatory_Properties` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE RESTRICT
+    ON UPDATE RESTRICT)
 ENGINE = InnoDB;
 
 SHOW WARNINGS;
@@ -173,12 +173,6 @@ SHOW WARNINGS;
 CREATE INDEX `fk_vCard_Organizational_Properties_vCard_Explanatory_Properti1` ON `vCard_Organizational_Properties` (`vCard_Explanatory_Properties_idvCard_Explanatory_Properties` ASC) ;
 
 SHOW WARNINGS;
-CREATE INDEX `k_Title_Role` ON `vCard_Organizational_Properties` (`TITLE` ASC, `ROLE` ASC) ;
-
-SHOW WARNINGS;
-CREATE INDEX `k_Org` ON `vCard_Organizational_Properties` (`ORG` ASC) ;
-
-SHOW WARNINGS;
 
 -- -----------------------------------------------------
 -- Table `vCard_Telecommunications_Addressing_Properties_Email`
@@ -195,8 +189,8 @@ CREATE  TABLE IF NOT EXISTS `vCard_Telecommunications_Addressing_Properties_Emai
   CONSTRAINT `fk_vCard_Telecommunications_Addressing_Properties_Email_vCard1`
     FOREIGN KEY (`vCard_Explanatory_Properties_idvCard_Explanatory_Properties` )
     REFERENCES `vCard_Explanatory_Properties` (`idvCard_Explanatory_Properties` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE RESTRICT
+    ON UPDATE RESTRICT)
 ENGINE = InnoDB;
 
 SHOW WARNINGS;
@@ -222,8 +216,8 @@ CREATE  TABLE IF NOT EXISTS `vCard_Delivery_Addressing_Properties_LABEL` (
   CONSTRAINT `fk_vCard_Delivvery_Addressing_Properties_LABEL_vCard_Explanat1`
     FOREIGN KEY (`vCard_Explanatory_Properties_idvCard_Explanatory_Properties` )
     REFERENCES `vCard_Explanatory_Properties` (`idvCard_Explanatory_Properties` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE RESTRICT
+    ON UPDATE RESTRICT)
 ENGINE = InnoDB;
 
 SHOW WARNINGS;

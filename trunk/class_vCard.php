@@ -505,7 +505,7 @@ class class_vCard {
      */
     public function store_vCard_Explanatory_Properties($gen_uid = false) {
 
-        echo ">>>>" . __CLASS__ . ':' . __METHOD__ . ':' . __LINE__ . "\n";
+//        echo ">>>>" . __CLASS__ . ':' . __METHOD__ . ':' . __LINE__ . "\n";
 
         debugLog(__FILE__, __METHOD__, __LINE__, var_export($this->vCard_Explanatory_Properties, true));
         $this->_get_storage_resource();
