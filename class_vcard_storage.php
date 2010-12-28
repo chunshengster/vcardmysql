@@ -28,7 +28,7 @@ class class_vcard_storage {
     private static $vCard_Telecommunications_Addressing_Properties_Tel = 'vCard_Telecommunications_Addressing_Properties_Tel';
 
     function __construct() {
-        self::$vcard_db_para_file = dirname(__FILE__).'/config.ini';
+        self::$vcard_db_para_file = dirname(__FILE__).'/config/config.ini';
         self::getMysqlPara ();
 //        $this->getInstance ();
     }
@@ -41,12 +41,14 @@ class class_vcard_storage {
 
     private function getInstance() {
         $dsn = self::$db_driver . ":host=" . self::$db_host . ";port=" . self::$db_port . ";dbname=" . self::$db_name;
-        echo __CLASS__ . __METHOD__ . __LINE__ . "\n";
-        echo "\n" . $dsn . "\n";
+//        echo __CLASS__ . __METHOD__ . __LINE__ . "\n";
+//        echo "\n" . $dsn . "\n";
+        debugLog(__FILE__,__METHOD__,__LINE__,var_export($dsn,true));
         try {
             $this->dbh = new PDO($dsn, self::$db_user, self::$db_pass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES UTF8"));
         } catch (PDOException $e) {
-            print_r($e->getMessage());
+//            print_r($e->getMessage());
+            debugLog(__FILE__,__METHOD__,__LINE__,$e->getMessage());
         }
     }
 
@@ -325,14 +327,16 @@ class class_vcard_storage {
 
             try {
                 $sth = $this->dbh->prepare($select_sql);
-            } catch (Exception $exc) {
-                echo $exc->getTraceAsString();
+            } catch (PDOException $e) {
+//                echo $exc->getTraceAsString();
+                debugLog(__FILE__,__METHOD__,__LINE__,$e->getMessage());
             }
             $sth->bindParam(':UID', $uid);
             try {
                 $sth->execute();
-            } catch (Exception $exc) {
-                echo $exc->getTraceAsString();
+            } catch (PDOException $e) {
+//                echo $exc->getTraceAsString();
+                debugLog(__FILE__,__METHOD__,__LINE__,$e->getMessage());
             }
             return $sth->fetchColumn();
         }
@@ -362,6 +366,7 @@ class class_vcard_storage {
         $vcard_exist = false;
         $new_record = false;
         $this->_gen_mysql_resource();
+        debugLog(__FILE__,__METHOD__,__LINE__,var_export($this->dbh,true));
         if ($gen_uid == true) {
             $vcard_data_array['UID'] = $this->_gen_uuid();
         } else {
@@ -385,11 +390,12 @@ class class_vcard_storage {
 
                     $store_sql = "UPDATE " . self::$vCard_Explanatory_Properties . " SET `VERSION` = :VERSION,`REV` = :REV,`LANG` = :LANG,`CATEGORIES` = :CATEGORIES,`PRODID` = :PRODID,`SORT-STRING` = :SORTSTRING  WHERE UID = :UID";
                 }
-                echo "\n" . $store_sql . "\n";
                 try {
                     $sth = $this->dbh->prepare($store_sql);
-                } catch (Exception $e) {
-                    echo $e->getMessage();
+                } catch (PDOException $e) {
+//                    echo $e->getMessage();
+                    debugLog(__FILE__,__METHOD__,__LINE__,$e->getMessage());
+
                 }
 
                 $sth->bindParam(':UID', $vcard_data_array['UID']);
@@ -400,18 +406,20 @@ class class_vcard_storage {
                 $sth->bindParam(':PRODID', $vcard_data_array['PRODID']);
                 $sth->bindParam(':SORTSTRING', $vcard_data_array['SORT-STRING']);
                 // SORTSTRING,for pdo does not work with 'SORT-STRING'
-                echo "\n>>>>" . __CLASS__ . __METHOD__ . __LINE__ . "\n";
+                debugLog(__FILE__,__METHOD__,__LINE__,var_export($sth,true));
                 try {
                     $sth->execute();
                 } catch (PDOException $e) {
-                    print_r($e->getMessage());
+//                    print_r($e->getMessage());
+                    debugLog(__FILE__,__METHOD__,__LINE__,$e->getMessage());
                 }
                 if (!$vcard_exist) {
                     $id = $this->dbh->lastInsertId();
                 } else {
                     $id = $vcard_exist;
                 }
-                echo "\n >>>>" . __FILE__ . __METHOD__ . __LINE__ . var_export(array('UID' => $vcard_data_array['UID'], 'RESOURCE_ID' => isset($id) ? $id : null), true) . "\n";
+//                echo "\n >>>>" . __FILE__ . __METHOD__ . __LINE__ . var_export(array('UID' => $vcard_data_array['UID'], 'RESOURCE_ID' => isset($id) ? $id : null), true) . "\n";
+                debugLog(__FILE__,__METHOD__,__LINE__,var_export(array('UID' => $vcard_data_array['UID'], 'RESOURCE_ID' => isset($id) ? $id : null), true));
                 return array('UID' => $vcard_data_array['UID'], 'RESOURCE_ID' => isset($id) ? $id : null);
                 break;
 
@@ -432,14 +440,16 @@ class class_vcard_storage {
                     $vcard_data_array['RESOURCE_ID'] = $vcard_data_array['V_ID'];
                     $store_sql = "INSERT INTO " . self::$vCard_Identification_Properties . " (`vCard_Explanatory_Properties_idvCard_Explanatory_Properties`,`N`,`FN`,`NICKNAME`,`PHOTO`,`PhotoType`,`BDAY`,`URL`,`SOUND`,`NOTE`) VALUES (:RESOURCEID,:N,:FN,:NICKNAME,:PHOTO,:PhotoType,:BDAY,:URL,:SOUND,:NOTE) ";
                 } else {
-                    echo '>>>>>>>> return false  ' . __FILE__ . __METHOD__ . __LINE__ . "\n";
+//                    echo '>>>>>>>> return false  ' . __FILE__ . __METHOD__ . __LINE__ . "\n";
+                    debugLog(__FILE__,__METHOD__,__LINE__,'return false');
                     return false;
                 }
                 debugLog(__FILE__,__METHOD__,__LINE__,'$store_sql',$store_sql);
                 try {
                     $sth = $this->dbh->prepare($store_sql);
-                } catch (Exception $e) {
-                    print_r($e->getMessage());
+                } catch (PDOException $e) {
+//                    print_r($e->getMessage());
+                    debugLog(__FILE__,__METHOD__,__LINE__,$e->getMessage());
                 }
                 $sth->bindParam(':RESOURCEID', $vcard_data_array['RESOURCE_ID']);
                 $sth->bindParam(':N', $vcard_data_array['N']);
@@ -453,8 +463,9 @@ class class_vcard_storage {
                 $sth->bindParam(':NOTE', $vcard_data_array['NOTE']);
                 try {
                     $sth->execute();
-                } catch (Exception $e) {
-                    print_r($e->getMessage());
+                } catch (PDOException $e) {
+//                    print_r($e->getMessage());
+                    debugLog(__FILE__,__METHOD__,__LINE__,$e->getMessage());
                 }
                 if ($new_record) {
                     $vcard_data_array['RESOURCE_ID'] = $this->dbh->lastInsertId();
@@ -476,7 +487,8 @@ class class_vcard_storage {
                 } else {
                     return false;
                 }
-                echo '>>>>> $store_sql : ' . __LINE__ . ' :' . $store_sql . "\n";
+//                echo '>>>>> $store_sql : ' . __LINE__ . ' :' . $store_sql . "\n";
+                debugLog(__FILE__,__METHOD__,__LINE__,$store_sql);
 
                 $sth = $this->dbh->prepare($store_sql);
                 $sth->bindParam(':RESOURCEID', $vcard_data_array['RESOURCE_ID']);
@@ -485,8 +497,9 @@ class class_vcard_storage {
 
                 try {
                     $sth->execute();
-                } catch (Exception $e) {
-                    print_r($e->getMessage());
+                } catch (PDOException $e) {
+//                    print_r($e->getMessage());
+                    debugLog(__FILE__,__METHOD__,__LINE__,$e->getMessage());
                 }
                 if ($new_record) {
                     $vcard_data_array['RESOURCE_ID'] = $this->dbh->lastInsertId();
@@ -504,6 +517,7 @@ class class_vcard_storage {
                     $store_sql = "UPDATE " . self::$vCard_Organizational_Properties . " SET `TITLE` = :TITLE ,`ROLE` = :ROLE ,`LOGO` = :LOGO ,`LogoType` = :LogoType ,`ORG` = :ORG WHERE vCard_Explanatory_Properties_idvCard_Explanatory_Properties = :RESOURCEID";
                 }
 
+                try {
                 $sth = $this->dbh->prepare($store_sql);
                 $sth->bindParam(':TITLE', $vcard_data_array['TITLE']);
                 $sth->bindParam(':ROLE', $vcard_data_array['ROLE']);
@@ -511,11 +525,14 @@ class class_vcard_storage {
                 $sth->bindParam(':LogoType', $vcard_data_array['LogoType']);
                 $sth->bindParam(':ORG', $vcard_data_array['ORG']);
                 $sth->bindParam(':RESOURCEID', $vcard_data_array['RESOURCE_ID']);
-
+                } catch (PDOException $e){
+                    debugLog(__FILE__,__METHOD__,__LINE__,$e->getMessage());
+                }
                 try {
                     $sth->execute();
                 } catch (Exception $e) {
-                    print_r($e->getMessage());
+//                    print_r($e->getMessage());
+                    debugLog(__FILE__,__METHOD__,__LINE__,$e->getMessage());
                 }
                 if ($new_record) {
                     $vcard_data_array['RESOURCE_ID'] = $this->dbh->lastInsertId();
@@ -542,22 +559,25 @@ class class_vcard_storage {
                         }
                         try {
                             $sth = $this->dbh->prepare($store_sql);
-                        } catch (Exception $e) {
-                            print_r($e->getMessage());
+                        } catch (PDOException $e) {
+//                            print_r($e->getMessage());
+                            debugLog(__FILE__,__METHOD__,__LINE__,$e->getMessage());
                         }
                         $sth->bindParam(':RESOURCEID', $t_vcard_data['RESOURCE_ID']);
                         $sth->bindParam(':ADR', $t_vcard_data['ADR']);
                         $sth->bindParam(':AdrType', $t_vcard_data['AdrType']);
                         try {
                             $sth->execute();
-                        } catch (Exception $e) {
-                            print_r($e->getMessage());
+                        } catch (PDOException $e) {
+//                            print_r($e->getMessage());
+                            debugLog(__FILE__,__METHOD__,__LINE__,$e->getMessage());
                         }
 
                         if ($new_record) {
                             $re[$k]['RESOURCE_ID'] = $this->dbh->lastInsertId();
                         } else {
-                            echo '>>>>>>$t_vcard_data:' . var_export($t_vcard_data);
+//                            echo '>>>>>>$t_vcard_data:' . var_export($t_vcard_data);
+                            debugLog(__FILE__,__METHOD__,__LINE__,var_export($t_vcard_data));
                             $re[$k]['RESOURCE_ID'] = $t_vcard_data['RESOURCE_ID'];
                         }
                     }
@@ -584,28 +604,33 @@ class class_vcard_storage {
                             $new_record = false;
                             $store_sql = "UPDATE " . self::$vCard_Delivery_Addressing_Properties_LABEL . " SET LABEL=:LABEL ,LabelType=:LabelType WHERE idvCard_Delivery_Addressing_Properties_LABEL=:RESOURCEID";
                         }
-                        echo '>>>>>>$store_sql:' . var_export($store_sql, true) . "\n";
+//                        echo '>>>>>>$store_sql:' . var_export($store_sql, true) . "\n";
+                        debugLog(__FILE__,__METHOD__,__LINE__,var_export($store_sql, true));
                         try {
                             $sth = $this->dbh->prepare($store_sql);
-                        } catch (Exception $e) {
-                            print_r($e->getMessage());
+                        } catch (PDOException $e) {
+//                            print_r($e->getMessage());
+                            debugLog(__FILE__,__METHOD__,__LINE__,$e->getMessage());
                         }
                         $sth->bindParam(':RESOURCEID', $t_vcard_data['RESOURCE_ID']);
                         $sth->bindParam(':LABEL', $t_vcard_data['LABEL']);
                         $sth->bindParam(':LabelType', $t_vcard_data['LabelType']);
                         try {
                             $sth->execute();
-                        } catch (Exception $e) {
-                            print_r($e->getMessage());
+                        } catch (PDOException $e) {
+//                            print_r($e->getMessage());
+                            debugLog(__FILE__,__METHOD__,__LINE__,$e->getMessage());
                         }
                         if ($new_record) {
                             $re[$k]['RESOURCE_ID'] = $this->dbh->lastInsertId();
                         } else {
-                            echo '>>>>>>$t_vcard_data:' . var_export($t_vcard_data, true);
+//                            echo '>>>>>>$t_vcard_data:' . var_export($t_vcard_data, true);
+                            debugLog(__FILE__,__METHOD__,__LINE__,var_export($t_vcard_data, true));
                             $re[$k]['RESOURCE_ID'] = $t_vcard_data['RESOURCE_ID'];
                         }
                     }
-                    echo '>>>>>>$t_vcard_data:' . var_export($re, true);
+//                    echo '>>>>>>$t_vcard_data:' . var_export($re, true);
+                    debugLog(__FILE__,__METHOD__,__LINE__,var_export($re, true));
                     return $re;
                 } else {
                     return false;
@@ -632,21 +657,24 @@ class class_vcard_storage {
                         }
                         try {
                             $sth = $this->dbh->prepare($store_sql);
-                        } catch (Exception $e) {
-                            print_r($e->getMessage());
+                        } catch (PDOException $e) {
+//                            print_r($e->getMessage());
+                            debugLog(__FILE__,__METHOD__,__LINE__,$e->getMessage());
                         }
                         $sth->bindParam(':RESOURCEID', $t_vcard_data['RESOURCE_ID']);
                         $sth->bindParam(':TEL', $t_vcard_data['TEL']);
                         $sth->bindParam(':TelType', $t_vcard_data['TelType']);
                         try {
                             $sth->execute();
-                        } catch (Exception $e) {
-                            print_r($e->getMessage());
+                        } catch (PDOException $e) {
+//                            print_r($e->getMessage());
+                            debugLog(__FILE__,__METHOD__,__LINE__,$e->getMessage());
                         }
                         if ($new_record) {
                             $re[$k]['RESOURCE_ID'] = $this->dbh->lastInsertId();
                         } else {
-                            echo '>>>>>>$t_vcard_data:' . var_export($t_vcard_data);
+//                            echo '>>>>>>$t_vcard_data:' . var_export($t_vcard_data);
+                            debugLog(__FILE__,__METHOD__,__LINE__,var_export($t_vcard_data));
                             $re[$k]['RESOURCE_ID'] = $t_vcard_data['RESOURCE_ID'];
                         }
                     }
@@ -676,21 +704,24 @@ class class_vcard_storage {
                         }
                         try {
                             $sth = $this->dbh->prepare($store_sql);
-                        } catch (Exception $e) {
-                            print_r($e->getMessage());
+                        } catch (PDOException $e) {
+//                            print_r($e->getMessage());
+                            debugLog(__FILE__,__METHOD__,__LINE__,$e->getMessage());
                         }
                         $sth->bindParam(':RESOURCEID', $t_vcard_data['RESOURCE_ID']);
                         $sth->bindParam(':EMAIL', $t_vcard_data['EMAIL']);
                         $sth->bindParam(':EmailType', $t_vcard_data['EmailType']);
                         try {
                             $sth->execute();
-                        } catch (Exception $e) {
-                            print_r($e->getMessage());
+                        } catch (PDOException $e) {
+//                            print_r($e->getMessage());
+                            debugLog(__FILE__,__METHOD__,__LINE__,$e->getMessage());
                         }
                         if ($new_record) {
                             $re[$k]['RESOURCE_ID'] = $this->dbh->lastInsertId();
                         } else {
-                            echo '>>>>>>$t_vcard_data:' . var_export($t_vcard_data);
+//                            echo '>>>>>>$t_vcard_data:' . var_export($t_vcard_data);
+                            debugLog(__FILE__,__METHOD__,__LINE__,var_export($t_vcard_data));
                             $re[$k]['RESOURCE_ID'] = $t_vcard_data['RESOURCE_ID'];
                         }
                     }
@@ -708,13 +739,21 @@ class class_vcard_storage {
         if ($uid == null) {
             return false;
         }
-        echo implode(':', array(__FILE__, __METHOD__, __LINE__, 'uid:', $uid)) . "\n";
+//        echo implode(':', array(__FILE__, __METHOD__, __LINE__, 'uid:', $uid)) . "\n";
+        debugLog(__FILE__,__METHOD__,__LINE__,'uid',$uid);
+
         $this->_gen_mysql_resource();
         $FindUidSql = "SELECT `idvCard_Explanatory_Properties` FROM " . self::$vCard_Explanatory_Properties . " WHERE UID = :UID";
 //        echo ">>>>>" . $FindUidSql . "\n";
-        $sth = $this->dbh->prepare($FindUidSql);
+        try{
+        $sth = $this->dbh->prepare($FindUidSql);} catch (PDOException $e){
+            debugLog(__FILE__,__METHOD__,__LINE__,$e->getMessage());
+        }
         $sth->bindParam(':UID', $uid);
-        $sth->execute();
+        try{
+        $sth->execute();} catch (PDOException $e){
+            debugLog(__FILE__,__METHOD__,__LINE__,$e->getMessage());
+        }
         $re = $sth->fetchColumn();
 //        echo ">>>>>>" . var_export($re, true) . "\n";
         if ($re > 0) {
