@@ -1,6 +1,7 @@
 <?php
 
 require_once dirname(__FILE__) . '/../../trunk/class_vcard_storage.php';
+require_once dirname(__FILE__) . '/../../trunk/debug.php';
 
 /**
  * Test class for class_vcard_storage.
@@ -92,12 +93,15 @@ class class_vcard_storageTest extends PHPUnit_Framework_TestCase {
     /**
      * @todo Implement testGet_vCard_Delivvery_Addressing_Properties_ADR().
      */
-//    public function testGet_vCard_Delivvery_Addressing_Properties_ADR() {
-//        // Remove the following lines when you implement this test.
-//        $this->markTestIncomplete(
-//                'This test has not been implemented yet.'
-//        );
-//    }
+    public function testGet_vCard_Delivvery_Addressing_Properties_ADR() {
+        // Remove the following lines when you implement this test.
+        $key = array(
+            'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' => 6
+//            'idvCard_Delivery_Addressing_Properties_ADR' => '3'
+        );
+        $re = $this->object->get_vCard_Delivery_Addressing_Properties_ADR($key);
+        var_export($re);
+    }
 
     /**
      * @todo Implement testGet_vCard_Organizational_Properties().

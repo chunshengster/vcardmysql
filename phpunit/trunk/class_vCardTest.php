@@ -24,10 +24,10 @@ class class_vCardTest extends PHPUnit_Framework_TestCase {
      */
     protected function setUp() {
         $this->object = new class_vCard;
-        $this->vcard = file_get_contents('E:\xinshixun\Code\wo_vCard\phpunit\trunk\a.vcf');
+//        $this->vcard = file_get_contents('E:\xinshixun\Code\wo_vCard\phpunit\trunk\a.vcf');
 //        print_r($this->vcard);
-        $this->object->parse_vCard($this->vcard);
-        print_r($this->object);
+//        $this->object->parse_vCard($this->vcard);
+//        print_r($this->object);
 //        echo var_export($this->object);
 //        print_r($this->object);
         //print_r($this->vcard);
@@ -105,8 +105,8 @@ class class_vCardTest extends PHPUnit_Framework_TestCase {
     /**
      * @todo Implement testGet_vCard_Delivery_Addressing_Properties_ADR().
      */
-//    public function testGet_vCard_Delivery_Addressing_Properties_ADR() {
-//        // Remove the following lines when you implement this test.
+    public function testGet_vCard_Delivery_Addressing_Properties_ADR() {
+        // Remove the following lines when you implement this test.
 //        $vcard_tmp = array(
 //            Array
 //                (
@@ -119,9 +119,13 @@ class class_vCardTest extends PHPUnit_Framework_TestCase {
 //                'AdrType' => 'dom,postal'
 //            )
 //        );
-//        echo var_export($this->object->get_vCard_Delivery_Addressing_Properties_ADR(), true);
+        $key = array(
+            'idvCard_Delivery_Addressing_Properties_ADR' => 3
+        );
+        echo var_export($key,true);
+        echo var_export($this->object->get_vCard_Delivery_Addressing_Properties_ADR($key), true);
 //        $this->assertEquals($this->object->get_vCard_Delivery_Addressing_Properties_ADR(), $vcard_tmp);
-//    }
+    }
 
     /**
      * @todo Implement testSet_vCard_Delivery_Addressing_Properties_ADR().
@@ -412,7 +416,7 @@ class class_vCardTest extends PHPUnit_Framework_TestCase {
 //            'property' =>'vCard_Telecommunications_Addressing_Properties_Tel'
              'property' =>'vCard_Telecommunications_Addressing_Properties_Email'
             );
-        $re = $this->object->get_vCard_property_from_storage($key);
+//        $re = $this->object->get_vCard_property_from_storage($key);
 //        echo var_export($re,true);
         //echo var_export($this->object->get_vCard_Explanatory_Properties(),true);
 //        echo var_export($this->object->get_vCard_Identification_Properties());
@@ -421,7 +425,7 @@ class class_vCardTest extends PHPUnit_Framework_TestCase {
 //        echo var_export($this->object->get_vCard_Delivery_Addressing_Properties_ADR(),true);
 //            echo var_export($this->object->get_vCard_Delivery_Addressing_Properties_LABEL(),true);
 //        echo var_export($this->object->get_vCard_Telecommunications_Addressing_Properties_Tel(),true);
-        echo var_export($this->object->get_vCard_Telecommunications_Addressing_Properties_Email(),true);
+//        echo var_export($this->object->get_vCard_Telecommunications_Addressing_Properties_Email(),true);
     }
 }
 
