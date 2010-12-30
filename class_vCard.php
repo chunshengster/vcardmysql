@@ -72,9 +72,32 @@ class class_vCard {
      * =======//@param $key = array('UID') || $key = array('idvCard_Explanatory_Properties')
      * @return the $vCard_Explanatory_Properties
      */
-    public function get_vCard_Explanatory_Properties() {
+    public function get_vCard_Explanatory_Properties($from_storage=false) {
         //		$this->vCard_Explanatory_Properties = self::$obj_vcard_storeage->get_vCard_Explanatory_Properties($key);
-        return $this->vCard_Explanatory_Properties;
+        if ($from_storage == false) {
+            return $this->vCard_Explanatory_Properties;
+        } else {
+            $key = array();
+            debugLog(__FILE__, __METHOD__, __LINE__, var_export($this->vCard_Explanatory_Properties, true));
+            if ($this->vCard_Explanatory_Properties['UID'] !== '') {
+                $key = array(
+                    'UID' => $this->vCard_Explanatory_Properties['UID'],
+                );
+            } elseif ($this->vCard_Explanatory_Properties['RESOURCE_ID'] !== '' && isset($this->vCard_Explanatory_Properties['RESOURCE_ID'])) {
+                $key = array(
+                    'idvCard_Explanatory_Properties' => $this->vCard_Explanatory_Properties['RESOURCE_ID']
+                );
+            } else {
+                return false;
+            }
+            $this->_get_storage_resource();
+            $re_array = $this->obj_vcard_storage->get_vCard_Explanatory_Properties($key);
+            debugLog(__FILE__, __METHOD__, __LINE__, var_export($re_array, true));
+            $vCard_Explanatory_Properties = $re_array;
+            $this->set_vCard_Explanatory_Properties($vCard_Explanatory_Properties);
+            return $this->vCard_Explanatory_Properties;
+        }
+        return false;
     }
 
     /**
@@ -90,9 +113,33 @@ class class_vCard {
      * ========     or array('idvCard_Identification_Properties')
      * @return the $vCard_Identification_Properties
      */
-    public function get_vCard_Identification_Properties() {
+    public function get_vCard_Identification_Properties($from_storage=false) {
         //		$this->vCard_Identification_Properties = self::$obj_vcard_storeage->get_vCard_Identification_Properties($key);
-        return $this->vCard_Identification_Properties;
+        if ($from_storage == false) {
+            return $this->vCard_Identification_Properties;
+        } else {
+            $key = array();
+            debugLog(__FILE__, __METHOD__, __LINE__, var_export($this->vCard_Explanatory_Properties, true));
+            debugLog(__FILE__, __METHOD__, __LINE__, var_export($this->vCard_Identification_Properties, true));
+            if ($this->vCard_Explanatory_Properties['RESOURCE_ID'] !== '') {
+                $key = array(
+                    'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' => $this->vCard_Explanatory_Properties['RESOURCE_ID'],
+                );
+            } elseif ($this->vCard_Identification_Properties['RESOURCE_ID'] !== '' && isset($this->vCard_Identification_Properties['RESOURCE_ID'])) {
+                $key = array(
+                    'idvCard_Identification_Properties' => $this->vCard_Identification_Properties['RESOURCE_ID'],
+                );
+            } else {
+                return false;
+            }
+            $this->_get_storage_resource();
+            $re_array = $this->obj_vcard_storage->get_vCard_Identification_Properties($key);
+            debugLog(__FILE__, __METHOD__, __LINE__, var_export($re_array, true));
+            $vCard_Identification_Properties = $re_array;
+            $this->set_vCard_Identification_Properties($vCard_Identification_Properties);
+            return $this->vCard_Identification_Properties;
+        }
+        return false;
     }
 
     /**
@@ -104,9 +151,47 @@ class class_vCard {
 
     /**
      * @return the $vCard_Delivery_Addressing_Properties_ADR
+     * 如果 $from_storage = ture，则选择从数据库中取出数据
+     * 如果$resource_id 为''，则从数据库中取出该 vcard 的全部 adr 信息
+     * 如果$resource_id不为空，且为大整数，则从数据库中取出idvCard_Delivery_Addressing_Properties_ADR为$resource_id 的对应条目
      */
-    public function get_vCard_Delivery_Addressing_Properties_ADR() {
-        return $this->vCard_Delivery_Addressing_Properties_ADR;
+    public function get_vCard_Delivery_Addressing_Properties_ADR($from_storage=false, $resource_id = '') {
+        if ($from_storage == false) {
+            return $this->vCard_Delivery_Addressing_Properties_ADR;
+        } else {
+            $key = array();
+            $re_array = array();
+            debugLog(__FILE__, __METHOD__, __LINE__, var_export($this->vCard_Explanatory_Properties, true));
+            debugLog(__FILE__, __METHOD__, __LINE__, var_export($this->vCard_Delivery_Addressing_Properties_ADR, true));
+
+            $this->_get_storage_resource();
+            if ($resource_id !== '') {
+                $key = array(
+                    'idvCard_Delivery_Addressing_Properties_ADR' => $resource_id,
+                );
+                $re_array = $this->obj_vcard_storage->get_vCard_Delivery_Addressing_Properties_ADR($key);
+                debugLog(__FILE__, __METHOD__, __LINE__, var_export($key, true));
+                debugLog(__FILE__, __METHOD__, __LINE__, var_export($re_array, true));
+                foreach ($this->vCard_Delivery_Addressing_Properties_ADR as $k => $v) {
+                    if ($this->vCard_Delivery_Addressing_Properties_ADR[$k]['RESOURCE_ID'] == $resource_id) {
+                        $this->vCard_Delivery_Addressing_Properties_ADR[$k] = $re_array[0];
+                        debugLog(__FILE__, __METHOD__, __LINE__, var_export($this->vCard_Delivery_Addressing_Properties_ADR[$k], true));
+                        return $this->vCard_Delivery_Addressing_Properties_ADR[$k];
+//                        break;
+                    }
+                }
+            } elseif ($this->vCard_Explanatory_Properties['RESOURCE_ID'] !== '') {
+                $key = array(
+                    'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' => $this->vCard_Explanatory_Properties['RESOURCE_ID'],
+                );
+                debugLog(__FILE__, __METHOD__, __LINE__, var_export($key, true));
+                $re_array = $this->obj_vcard_storage->get_vCard_Delivery_Addressing_Properties_ADR($key);
+                debugLog(__FILE__, __METHOD__, __LINE__, var_export($re_array, true));
+                $this->set_vCard_Delivery_Addressing_Properties_ADR($re_array);
+                return $this->vCard_Delivery_Addressing_Properties_ADR;
+            }
+        }
+        return false;
     }
 
     /**
@@ -123,9 +208,45 @@ class class_vCard {
 
     /**
      * @return the $vCard_Delivery_Addressing_Properties_LABEL
+     * @param <bool> $from_storage
+     * @param <bigint> $resource_id
      */
-    public function get_vCard_Delivery_Addressing_Properties_LABEL() {
-        return $this->vCard_Delivery_Addressing_Properties_LABEL;
+    public function get_vCard_Delivery_Addressing_Properties_LABEL($from_storage=false, $resource_id = '') {
+        if ($from_storage == false) {
+            return $this->vCard_Delivery_Addressing_Properties_LABEL;
+        } else {
+            $key = array();
+            $re_array = array();
+            debugLog(__FILE__, __METHOD__, __LINE__, var_export($this->vCard_Explanatory_Properties, true));
+            debugLog(__FILE__, __METHOD__, __LINE__, var_export($this->vCard_Delivery_Addressing_Properties_LABEL, true));
+
+            $this->_get_storage_resource();
+            if ($resource_id !== '') {
+                $key = array(
+                    'idvCard_Delivery_Addressing_Properties_LABEL' => $resource_id,
+                );
+                $re_array = $this->obj_vcard_storage->get_vCard_Delivery_Addressing_Properties_LABEL($key);
+                debugLog(__FILE__, __METHOD__, __LINE__, var_export($key, true));
+                debugLog(__FILE__, __METHOD__, __LINE__, var_export($re_array, true));
+                foreach ($this->vCard_Delivery_Addressing_Properties_LABEL as $k => $v) {
+                    if ($this->vCard_Delivery_Addressing_Properties_LABEL[$k]['RESOURCE_ID'] == $resource_id) {
+                        $this->vCard_Delivery_Addressing_Properties_LABEL[$k] = $re_array[0];
+                        debugLog(__FILE__, __METHOD__, __LINE__, var_export($this->vCard_Delivery_Addressing_Properties_LABEL[$k], true));
+                        return $this->vCard_Delivery_Addressing_Properties_LABEL[$k];
+                    }
+                }
+            } elseif ($this->vCard_Explanatory_Properties['RESOURCE_ID'] !== '') {
+                $key = array(
+                    'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' => $this->vCard_Explanatory_Properties['RESOURCE_ID'],
+                );
+                debugLog(__FILE__, __METHOD__, __LINE__, var_export($key, true));
+                $re_array = $this->obj_vcard_storage->get_vCard_Delivery_Addressing_Properties_LABEL($key);
+                debugLog(__FILE__, __METHOD__, __LINE__, var_export($re_array, true));
+                $this->set_vCard_Delivery_Addressing_Properties_LABEL($re_array);
+                return $this->vCard_Delivery_Addressing_Properties_LABEL;
+            }
+        }
+        return false;
     }
 
     /**
@@ -139,8 +260,32 @@ class class_vCard {
     /**
      * @return the $vCard_Geographical_Properties
      */
-    public function get_vCard_Geographical_Properties() {
-        return $this->vCard_Geographical_Properties;
+    public function get_vCard_Geographical_Properties($from_storage = false) {
+        if ($from_storage == false) {
+            return $this->vCard_Geographical_Properties;
+        } else {
+            $key = array();
+            debugLog(__FILE__, __METHOD__, __LINE__, var_export($this->vCard_Explanatory_Properties, true));
+            debugLog(__FILE__, __METHOD__, __LINE__, var_export($this->vCard_Geographical_Properties, true));
+            if ($this->vCard_Explanatory_Properties['RESOURCE_ID'] !== '') {
+                $key = array(
+                    'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' => $this->vCard_Explanatory_Properties['RESOURCE_ID'],
+                );
+            } elseif ($this->vCard_Geographical_Properties['RESOURCE_ID'] !== '' && isset($this->vCard_Geographical_Properties['RESOURCE_ID'])) {
+                $key = array(
+                    'idvCard_Geographical_Properties' => $this->vCard_Geographical_Properties['RESOURCE_ID'],
+                );
+            } else {
+                return false;
+            }
+            $this->_get_storage_resource();
+            $re_array = $this->obj_vcard_storage->get_vCard_Geographical_Properties($key);
+            debugLog(__FILE__, __METHOD__, __LINE__, var_export($re_array, true));
+            $vCard_Geographical_Properties = $re_array;
+            $this->set_vCard_Geographical_Properties($vCard_Geographical_Properties);
+            return $this->vCard_Geographical_Properties;
+        }
+        return false;
     }
 
     /**
@@ -154,8 +299,32 @@ class class_vCard {
     /**
      * @return the $vCard_Organizational_Properties
      */
-    public function get_vCard_Organizational_Properties() {
-        return $this->vCard_Organizational_Properties;
+    public function get_vCard_Organizational_Properties($from_storage=false) {
+        if ($from_storage == false) {
+            return $this->vCard_Organizational_Properties;
+        } else {
+            $key = array();
+            debugLog(__FILE__, __METHOD__, __LINE__, var_export($this->vCard_Explanatory_Properties, true));
+            debugLog(__FILE__, __METHOD__, __LINE__, var_export($this->vCard_Organizational_Properties, true));
+            if ($this->vCard_Explanatory_Properties['RESOURCE_ID'] !== '') {
+                $key = array(
+                    'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' => $this->vCard_Explanatory_Properties['RESOURCE_ID'],
+                );
+            } elseif ($this->vCard_Organizational_Properties['RESOURCE_ID'] !== '' && isset($this->vCard_Organizational_Properties['RESOURCE_ID'])) {
+                $key = array(
+                    'idvCard_Organizational_Properties' => $this->vCard_Organizational_Properties['RESOURCE_ID'],
+                );
+            } else {
+                return false;
+            }
+            $this->_get_storage_resource();
+            $re_array = $this->obj_vcard_storage->get_vCard_Organizational_Properties($key);
+            debugLog(__FILE__, __METHOD__, __LINE__, var_export($re_array, true));
+            $vCard_Organizational_Properties = $re_array;
+            $this->set_vCard_Organizational_Properties($vCard_Organizational_Properties);
+            return $this->vCard_Organizational_Properties;
+        }
+        return false;
     }
 
     /**
@@ -168,8 +337,42 @@ class class_vCard {
     /**
      * @return the $vCard_Telecommunications_Addressing_Properties_Email
      */
-    public function get_vCard_Telecommunications_Addressing_Properties_Email() {
-        return $this->vCard_Telecommunications_Addressing_Properties_Email;
+    public function get_vCard_Telecommunications_Addressing_Properties_Email($from_storage=false, $resource_id='') {
+        if ($from_storage == false) {
+            return $this->vCard_Telecommunications_Addressing_Properties_Email;
+        } else {
+            $key = array();
+            $re_array = array();
+            debugLog(__FILE__, __METHOD__, __LINE__, var_export($this->vCard_Explanatory_Properties, true));
+            debugLog(__FILE__, __METHOD__, __LINE__, var_export($this->vCard_Telecommunications_Addressing_Properties_Email, true));
+
+            $this->_get_storage_resource();
+            if ($resource_id !== '') {
+                $key = array(
+                    'idvCard_Telecommunications_Addressing_Properties_Email' => $resource_id,
+                );
+                $re_array = $this->obj_vcard_storage->get_vCard_Telecommunications_Addressing_Properties_Email($key);
+                debugLog(__FILE__, __METHOD__, __LINE__, var_export($key, true));
+                debugLog(__FILE__, __METHOD__, __LINE__, var_export($re_array, true));
+                foreach ($this->vCard_Telecommunications_Addressing_Properties_Email as $k => $v) {
+                    if ($this->vCard_Telecommunications_Addressing_Properties_Email[$k]['RESOURCE_ID'] == $resource_id) {
+                        $this->vCard_Telecommunications_Addressing_Properties_Email[$k] = $re_array[0];
+                        debugLog(__FILE__, __METHOD__, __LINE__, var_export($this->vCard_Telecommunications_Addressing_Properties_Email[$k], true));
+                        return $this->vCard_Telecommunications_Addressing_Properties_Email[$k];
+                    }
+                }
+            } elseif ($this->vCard_Explanatory_Properties['RESOURCE_ID'] !== '') {
+                $key = array(
+                    'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' => $this->vCard_Explanatory_Properties['RESOURCE_ID'],
+                );
+                debugLog(__FILE__, __METHOD__, __LINE__, var_export($key, true));
+                $re_array = $this->obj_vcard_storage->get_vCard_Telecommunications_Addressing_Properties_Email($key);
+                debugLog(__FILE__, __METHOD__, __LINE__, var_export($re_array, true));
+                $this->set_vCard_Telecommunications_Addressing_Properties_Email($re_array);
+                return $this->vCard_Telecommunications_Addressing_Properties_Email;
+            }
+        }
+        return false;
     }
 
     /**
@@ -182,8 +385,42 @@ class class_vCard {
     /**
      * @return the $vCard_Telecommunications_Addressing_Properties_Tel
      */
-    public function get_vCard_Telecommunications_Addressing_Properties_Tel() {
-        return $this->vCard_Telecommunications_Addressing_Properties_Tel;
+    public function get_vCard_Telecommunications_Addressing_Properties_Tel($from_storage = false, $resource_id = '') {
+        if ($from_storage == false) {
+            return $this->vCard_Telecommunications_Addressing_Properties_Tel;
+        }else{
+            $key = array();
+            $re_array = array();
+            debugLog(__FILE__, __METHOD__, __LINE__, var_export($this->vCard_Explanatory_Properties, true));
+            debugLog(__FILE__, __METHOD__, __LINE__, var_export($this->vCard_Telecommunications_Addressing_Properties_Tel, true));
+
+            $this->_get_storage_resource();
+            if ($resource_id !== '') {
+                $key = array(
+                    'idvCard_Telecommunications_Addressing_Properties_Email' => $resource_id,
+                );
+                $re_array = $this->obj_vcard_storage->get_vCard_Telecommunications_Addressing_Properties_Tel($key);
+                debugLog(__FILE__, __METHOD__, __LINE__, var_export($key, true));
+                debugLog(__FILE__, __METHOD__, __LINE__, var_export($re_array, true));
+                foreach ($this->vCard_Telecommunications_Addressing_Properties_Tel as $k => $v) {
+                    if ($this->vCard_Telecommunications_Addressing_Properties_Tel[$k]['RESOURCE_ID'] == $resource_id) {
+                        $this->vCard_Telecommunications_Addressing_Properties_Tel[$k] = $re_array[0];
+                        debugLog(__FILE__, __METHOD__, __LINE__, var_export($this->vCard_Telecommunications_Addressing_Properties_Tel[$k], true));
+                        return $this->vCard_Telecommunications_Addressing_Properties_Tel[$k];
+                    }
+                }
+            } elseif ($this->vCard_Explanatory_Properties['RESOURCE_ID'] !== '') {
+                $key = array(
+                    'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' => $this->vCard_Explanatory_Properties['RESOURCE_ID'],
+                );
+                debugLog(__FILE__, __METHOD__, __LINE__, var_export($key, true));
+                $re_array = $this->obj_vcard_storage->get_vCard_Telecommunications_Addressing_Properties_Tel($key);
+                debugLog(__FILE__, __METHOD__, __LINE__, var_export($re_array, true));
+                $this->set_vCard_Telecommunications_Addressing_Properties_Tel($re_array);
+                return $this->vCard_Telecommunications_Addressing_Properties_Tel;
+            }
+        }
+        return false;
     }
 
     /**
@@ -223,7 +460,7 @@ class class_vCard {
 
         $this->set_vCard_Explanatory_Properties(array(
             'UID' => $this->_builder->getUniqueID(),
-            'REV' => (strlen($this->_builder->getRevision())<=1)? date("c"):$this->_builder->getRevision(),
+            'REV' => (strlen($this->_builder->getRevision()) <= 1) ? date("c") : $this->_builder->getRevision(),
             'VERSION' => $this->_parser->getVersion(),
             'LANGAGE' => $this->_builder->getLanguage(),
             'CATEGORIES' => $this->_builder->getCategories(),
@@ -275,10 +512,13 @@ class class_vCard {
      * @todo 
      * @param $key = array('UID' => $UID) or array('idvCard_Explanatory_Properties' =>$idvCard_Explanatory_Properties)
      */
-    public function get_vCard_From_Storage($key) {
 
-    }
+    /**
+      public function get_vCard_From_Storage($key) {
 
+
+      }
+     */
     public function print_parse_data() {
         try {
             print_r($this->_parser->get_parse_data());
@@ -288,7 +528,8 @@ class class_vCard {
     }
 
     /**
-     * @todo 从 vcard_storage 中取出对应的vcard 数据
+     * @todo 此函数将被废掉
+     * @todo 从 vcard_storage 中取出对应的vcard 数据,此函数需要大规模改写，与 get_xxxxx_property($from_storage=true)进行配合
      * @param array('UID' => $UID,'idvCard_Explanatory_Properties' =>$idvCard_Explanatory_Properties || 'RESOURCE_ID' = $this->vCard_??????(各个分类)_Properties['RESOURCE_ID'],'property'='' )
      * @return array
      */
@@ -616,7 +857,7 @@ class class_vCard {
             $this->_get_vcard_resource_id_from_storage();
         }
         $re_array = $this->obj_vcard_storage->store_data('vCard_Organizational_Properties', array_merge($this->vCard_Organizational_Properties, array('V_ID' => $this->vCard_Explanatory_Properties['RESOURCE_ID'])));
-        debugLog(__FILE__,__METHOD__,__LINE__,  var_export($re_array,true));
+        debugLog(__FILE__, __METHOD__, __LINE__, var_export($re_array, true));
         if ($re_array !== false) {
             $this->vCard_Organizational_Properties['RESOURCE_ID'] = $re_array['RESOURCE_ID'];
         }
@@ -632,7 +873,7 @@ class class_vCard {
         }
 
         $re_array = $this->obj_vcard_storage->store_data('vCard_Telecommunications_Addressing_Properties_Email', array_merge($this->vCard_Telecommunications_Addressing_Properties_Email, array('V_ID' => $this->vCard_Explanatory_Properties['RESOURCE_ID'])));
-        debugLog(__FILE__,__METHOD__,__LINE__,  var_export($re_array,true));
+        debugLog(__FILE__, __METHOD__, __LINE__, var_export($re_array, true));
         if ($re_array !== false) {
             foreach ($this->vCard_Telecommunications_Addressing_Properties_Email as $key => $value) {
                 if ($re_array[$key]) {
@@ -652,7 +893,7 @@ class class_vCard {
         }
 
         $re_array = $this->obj_vcard_storage->store_data('vCard_Telecommunications_Addressing_Properties_Tel', array_merge($this->vCard_Telecommunications_Addressing_Properties_Tel, array('V_ID' => $this->vCard_Explanatory_Properties['RESOURCE_ID'])));
-        debugLog(__FILE__,__METHOD__,__LINE__,  var_export($re_array,true));
+        debugLog(__FILE__, __METHOD__, __LINE__, var_export($re_array, true));
         if ($re_array !== false) {
             foreach ($this->vCard_Telecommunications_Addressing_Properties_Tel as $key => $value) {
                 if ($re_array[$key]) {
@@ -685,7 +926,7 @@ class class_vCard {
          * @todo 将此处的debuglog打印出来
          */
         debugLog(__FILE__, __METHOD__, __LINE__, var_export($re_array, true));
-        return array('id'=>$uid,'mod' => $re_array['REV'], 'flags' => 1);
+        return array('id' => $uid, 'mod' => $re_array['REV'], 'flags' => 1);
     }
 
 }
