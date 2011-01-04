@@ -234,6 +234,15 @@ final class my_vcard_build extends File_IMC_Build_Vcard {
         return $this->getValue('SORT-STRING', 0, 0);
     }
 
+    public function setLanguage($lang){
+        return $this->addValue('LANGUAGE', 0, 0, $lang);
+    }
+
+    public function  setPhoto($text) {
+        
+    }
+
+
 }
 
 ?>
