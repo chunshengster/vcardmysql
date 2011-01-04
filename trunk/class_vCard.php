@@ -56,6 +56,17 @@ class class_vCard {
         }
     }
 
+    private function _get_parser() {
+        if (!($this->_parser instanceof my_vcard_parse)) {
+            try {
+                $this->_parser = new my_vcard_parse ();
+            } catch (Exception $e) {
+                debugLog(__FILE__, __METHOD__, __LINE__, $e->getMessage());
+                return false;
+            }
+        }
+    }
+
     private function _get_vcard_resource_id_from_storage() {
         if (!isset($this->vCard_Explanatory_Properties['RESOURCE_ID']) or (is_null($this->vCard_Explanatory_Properties['RESOURCE_ID']))) {
             $this->_get_storage_resource();
@@ -95,6 +106,7 @@ class class_vCard {
             debugLog(__FILE__, __METHOD__, __LINE__, var_export($re_array, true));
             $vCard_Explanatory_Properties = $re_array;
             $this->set_vCard_Explanatory_Properties($vCard_Explanatory_Properties);
+            debugLog(__FILE__, __METHOD__, __LINE__, var_export($this->vCard_Explanatory_Properties, true));
             return $this->vCard_Explanatory_Properties;
         }
         return false;
@@ -388,7 +400,7 @@ class class_vCard {
     public function get_vCard_Telecommunications_Addressing_Properties_Tel($from_storage = false, $resource_id = '') {
         if ($from_storage == false) {
             return $this->vCard_Telecommunications_Addressing_Properties_Tel;
-        }else{
+        } else {
             $key = array();
             $re_array = array();
             debugLog(__FILE__, __METHOD__, __LINE__, var_export($this->vCard_Explanatory_Properties, true));
@@ -457,12 +469,14 @@ class class_vCard {
 //        debugLog(__FILE__, __METHOD__, __LINE__, "\n", var_export($this->_parser->get_parse_data(),true), "\n");
 
         @$this->_builder->setFromArray($this->_parser->get_parse_data());
+        echo var_export($this->_parser->get_parse_data(), true);
+        echo var_export($this->_builder, true);
 
         $this->set_vCard_Explanatory_Properties(array(
             'UID' => $this->_builder->getUniqueID(),
             'REV' => (strlen($this->_builder->getRevision()) <= 1) ? date("c") : $this->_builder->getRevision(),
             'VERSION' => $this->_parser->getVersion(),
-            'LANGAGE' => $this->_builder->getLanguage(),
+            'LANG' => $this->_builder->getLanguage(),
             'CATEGORIES' => $this->_builder->getCategories(),
             'PRODID' => $this->_builder->getProductID(),
             'SORT-STRING' => $this->_builder->getSortString()
@@ -498,10 +512,16 @@ class class_vCard {
         $this->set_vCard_Telecommunications_Addressing_Properties_Tel($this->_builder->getGroupComp('TEL'));
         $this->set_vCard_Telecommunications_Addressing_Properties_Email($this->_builder->getGroupComp('EMAIL'));
         $this->set_vCard_Organizational_Properties(array(
-            'TITLE' => $this->_builder->getTitle(), 'ROLE' => $this->_builder->getRole(), 'LOGO' => $this->_builder->getLogo(), 'LogoType' => $this->_builder->getType('LOGO'), 'AGENT' => $this->_builder->getAgent(), 'ORG' => $this->_builder->getOrg()
+            'TITLE' => $this->_builder->getTitle(),
+            'ROLE' => $this->_builder->getRole(),
+            'LOGO' => $this->_builder->getLogo(),
+            'LogoType' => $this->_builder->getType('LOGO'),
+            'AGENT' => $this->_builder->getAgent(),
+            'ORG' => $this->_builder->getOrg()
         ));
         $this->set_vCard_Geographical_Properties(array(
-            'TZ' => $this->_builder->getTz(), 'GEO' => $this->_builder->getGeo()
+            'TZ' => $this->_builder->getTz(),
+            'GEO' => $this->_builder->getGeo()
         ));
 //        print_r($this->_builder->getGeo());
         $this->_parser = NULL;
@@ -509,7 +529,7 @@ class class_vCard {
     }
 
     /**
-     * @todo 
+     * @todo
      * @param $key = array('UID' => $UID) or array('idvCard_Explanatory_Properties' =>$idvCard_Explanatory_Properties)
      */
 
@@ -544,7 +564,7 @@ class class_vCard {
             return NULL;
         }
 //        debugLog(__FILE__, __METHOD__, __LINE__, var_export($tmp_array, true));
-//        
+//
         switch ($key ['property']) {
             case 'vCard_Explanatory_Properties' :
                 if (array_key_exists('UID', $key)) {
@@ -927,6 +947,266 @@ class class_vCard {
          */
         debugLog(__FILE__, __METHOD__, __LINE__, var_export($re_array, true));
         return array('id' => $uid, 'mod' => $re_array['REV'], 'flags' => 1);
+    }
+
+    /**
+     *
+     * @param <type> $uid (uuid)
+     */
+    public function get_Full_vCard_From_Storage($uid='') {
+        if (isset($uid) && $uid !== '') {
+            /**
+             * 此处需要增加对 $uid 的检查
+             */
+            $this->vCard_Explanatory_Properties['UID'] = $uid;
+        }
+        if ($this->vCard_Explanatory_Properties['UID'] == '') {
+            return false;
+        }
+        $re = $this->get_vCard_Explanatory_Properties(true);
+//        debugLog(__FILE__,__METHOD__,__LINE__,var_export($re,true));
+        $re = $this->get_vCard_Identification_Properties(true);
+//        debugLog(__FILE__,__METHOD__,__LINE__,var_export($re,true));
+        $re = $this->get_vCard_Delivery_Addressing_Properties_ADR(true);
+//        debugLog(__FILE__,__METHOD__,__LINE__,var_export($re,true));
+        $this->get_vCard_Delivery_Addressing_Properties_LABEL(true);
+//        debugLog(__FILE__,__METHOD__,__LINE__,var_export($re,true));
+        $re = $this->get_vCard_Geographical_Properties(true);
+//        debugLog(__FILE__,__METHOD__,__LINE__,var_export($re,true));
+        $re = $this->get_vCard_Organizational_Properties(true);
+//        debugLog(__FILE__,__METHOD__,__LINE__,var_export($re,true));
+        $re = $this->get_vCard_Telecommunications_Addressing_Properties_Email(true);
+//        debugLog(__FILE__,__METHOD__,__LINE__,var_export($re,true));
+        $re = $this->get_vCard_Telecommunications_Addressing_Properties_Email(true);
+//        debugLog(__FILE__,__METHOD__,__LINE__,var_export($re,true));
+        debugLog(__FILE__, __METHOD__, __LINE__, var_export($this, true));
+        return $this;
+    }
+
+    /**
+     * 取得一个完整的vcard text
+     * @param <type> $uid
+     * $uid 在设计中，$uid为保存在 USER 表中的 user_vcard 的 vcard_name 字段，该字段被设计为vcard标准中的UID
+     */
+    public function get_vCard_Text($from_storage=false, $uid='') {
+
+        if ($from_storage == true) {
+            $this->get_Full_vCard_From_Storage($uid);
+        }
+        debugLog(__FILE__, __METHOD__, __LINE__, var_export($this, true));
+        $re_lines = array();
+        $re_lines[] = "BEGIN:VCARD";
+
+//        if (!($this->_builder instanceof my_vcard_build)) {
+//            try {
+//                $this->_builder = new my_vcard_build ();
+//            } catch (Exception $e) {
+//                debugLog(__FILE__, __METHOD__, __LINE__, $e->getMessage());
+//                return false;
+//            }
+//        }
+//        debugLog(__FILE__, __METHOD__, __LINE__, var_export($this->_builder,true));
+        /**
+         * 将 $this->vCard_Explanatory_Properties 的属性添加到 _builder 中去
+         *  $this->set_vCard_Explanatory_Properties(array(
+         *  'UID' => $this->_builder->getUniqueID(),
+         *  'REV' => (strlen($this->_builder->getRevision()) <= 1) ? date("c") : $this->_builder->getRevision(),
+         *  'VERSION' => $this->_parser->getVersion(),
+         *  'LANG' => $this->_builder->getLanguage(),
+         *  'CATEGORIES' => $this->_builder->getCategories(),
+         *  'PRODID' => $this->_builder->getProductID(),
+         *  'SORT-STRING' => $this->_builder->getSortString()
+         *   )
+         */
+//        $this->_builder->setUniqueID($this->vCard_Explanatory_Properties['UID']);
+//        $this->_builder->setVersion($this->vCard_Explanatory_Properties['VERSION']);
+//        $this->_builder->setRevision($this->vCard_Explanatory_Properties['REV']);
+//        $this->_builder->setLanguage($this->vCard_Explanatory_Properties['LANG']);
+//        $this->_builder->addCategories($this->vCard_Explanatory_Properties['CATEGORIES']);
+//        $this->_builder->setProductID($this->vCard_Explanatory_Properties['PRODID']);
+//        $this->_builder->setSortString($this->vCard_Explanatory_Properties['SORT-STRING']);
+
+        $re_lines[] = 'UID:' . $this->vCard_Explanatory_Properties['UID'];
+        $re_lines[] = 'VERSION:' . $this->vCard_Explanatory_Properties['VERSION'];
+        if ($this->vCard_Explanatory_Properties['VERSION'] == '3.0') {
+            $re_lines[] = "PROFILE:VCARD";
+        }
+        if ($this->vCard_Explanatory_Properties['REV'] != '')
+            $re_lines[] = 'REV:' . $this->vCard_Explanatory_Properties['REV'];
+        if ($this->vCard_Explanatory_Properties['LANG'] != '')
+            $re_lines[] = 'LANG:' . $this->vCard_Explanatory_Properties['LANG'];
+
+        if ($this->vCard_Explanatory_Properties['VERSION'] == '3.0') {
+            if ($this->vCard_Explanatory_Properties['CATEGORIES'] != '')
+                $re_lines[] = 'CATEGORIES:' . $this->vCard_Explanatory_Properties['CATEGORIES'];
+            if ($this->vCard_Explanatory_Properties['PRODID'] != '')
+                $re_lines[] = 'PRODID:' . $this->vCard_Explanatory_Properties['PRODID'];
+            if ($this->vCard_Explanatory_Properties['SORT-STRING'] != '')
+                $re_lines[] = 'SORT-STRING:' . $this->vCard_Explanatory_Properties['SORT-STRING'];
+        }
+//        $re_lines[] = ."\n";
+
+        /**
+         *   'FN' => $this->_builder->getFormattedName(),
+         *   'N' => $this->_builder->getName(),
+         *   'NICKNAME' => $this->_builder->getNickname(),
+         *   'PHOTO' => $this->_builder->getPhoto(),
+         *   'PhotoType' => $this->_builder->getType('PHOTO'),
+         *   'BDAY' => $this->_builder->getBirthday(),
+         *   'URL' => $this->_builder->getURL(),
+         *   'SOUND' => $this->_builder->getSound(),
+         *   'NOTE' => $this->_builder->getNote()
+         *  @todo ‘PhotoType’需要加入到属性中
+         */
+//        $this->_builder->setFormattedName($this->vCard_Identification_Properties['FN']);
+//        $N = explode(';', $this->vCard_Identification_Properties['N']);
+//        $this->_builder->setName($N[FILE_IMC::VCARD_N_FAMILY], $N[FILE_IMC::VCARD_N_GIVEN], $N[FILE_IMC::VCARD_N_ADDL], $N[FILE_IMC::VCARD_N_PREFIX], $N[FILE_IMC::VCARD_N_SUFFIX]);
+//        $N = NULL;
+//        $this->_builder->addNickname($this->vCard_Identification_Properties['NICKNAME']);
+//        $this->_builder->setPhoto($this->vCard_Identification_Properties['PHOTO']);
+//        $this->_builder->setBirthday($this->vCard_Identification_Properties['BDAY']);
+//        $this->_builder->setURL($this->vCard_Identification_Properties['URL']);
+//        $this->_builder->setSound($this->vCard_Identification_Properties['SOUND']);
+//        $this->_builder->setNote($this->vCard_Identification_Properties['NOTE']);
+
+        $re_lines[] = 'FN:' . $this->vCard_Identification_Properties['FN'];
+        $re_lines[] = 'N:' . $this->vCard_Identification_Properties['N'];
+        if ($this->vCard_Explanatory_Properties['VERSION'] == '3.0') {
+            if ($this->vCard_Identification_Properties['NICKNAME'] != '')
+                $re_lines[] = 'NICKNAME:' . $this->vCard_Identification_Properties['NICKNAME'];
+        }
+        if ($this->vCard_Identification_Properties['PHOTO'] != '')
+            $re_lines[] = 'PHOTO;' . 'TYPE=' . $this->vCard_Identification_Properties['PhotoType'] . ':' . $this->vCard_Identification_Properties['PHOTO'];
+        if ($this->vCard_Identification_Properties['BDAY'] != '')
+            $re_lines[] = 'BDAY:' . $this->vCard_Identification_Properties['BDAY'];
+        if ($this->vCard_Identification_Properties['URL'] != '')
+            $re_lines[] = 'URL:' . $this->vCard_Identification_Properties['URL'];
+        if ($this->vCard_Identification_Properties['SOUND'] != '')
+            $re_lines[] = 'SOUND:' . $this->vCard_Identification_Properties['SOUND'];
+        if ($this->vCard_Identification_Properties['NOTE'] != '')
+            $re_lines[] = 'NOTE:' . $this->vCard_Identification_Properties['NOTE'];
+//        $re_lines[] = ."\n";
+
+
+
+        /**
+         * 'TITLE' => $this->_builder->getTitle(),
+         * 'ROLE' => $this->_builder->getRole(),
+         * 'LOGO' => $this->_builder->getLogo(),
+         * 'LogoType' => $this->_builder->getType('LOGO'),
+         * 'AGENT' => $this->_builder->getAgent(),
+         * 'ORG' => $this->_builder->getOrg()
+         */
+//        $this->_builder->setTitle($this->vCard_Organizational_Properties['TITLE']);
+//        $this->_builder->setRole($this->vCard_Organizational_Properties['ROLE']);
+//        $this->_builder->setLogo($this->vCard_Organizational_Properties['LOGO']);
+//        $this->_builder->setAgent($this->vCard_Organizational_Properties['AGENT']);
+//        $this->_builder->addOrganization($this->vCard_Organizational_Properties['ORG']);
+
+        if ($this->vCard_Organizational_Properties['TITLE'] != '')
+            $re_lines[] = 'TITLE:' . $this->vCard_Organizational_Properties['TITLE'];
+        if ($this->vCard_Organizational_Properties['ROLE'] != '')
+            $re_lines[] = 'ROLE:' . $this->vCard_Organizational_Properties['ROLE'];
+        if ($this->vCard_Organizational_Properties['LOGO'] != '')
+            $re_lines[] = 'LOGO;' . 'TYPE=' . $this->vCard_Organizational_Properties['LogoType'] . ':' . $this->vCard_Organizational_Properties['LOGO'];
+        if ($this->vCard_Organizational_Properties['AGENT'] != '')
+            $re_lines[] = 'AGENT:' . $this->vCard_Organizational_Properties['AGENT'];
+        if ($this->vCard_Organizational_Properties['ORG'] != '')
+            $re_lines[] = 'ORG:' . $this->vCard_Organizational_Properties['ORG'];
+//        $re_lines[] = ."\n";
+        if ($this->vCard_Geographical_Properties['TZ'] != '')
+            $re_lines[] = 'TZ:' . $this->vCard_Geographical_Properties['TZ'];
+        if ($this->vCard_Geographical_Properties['GEO'] != '')
+            $re_lines[] = 'GEO:' . $this->vCard_Geographical_Properties['GEO'];
+
+
+        if (count($this->vCard_Delivery_Addressing_Properties_ADR) > 0) {
+            foreach ($this->vCard_Delivery_Addressing_Properties_ADR as $v) {
+                debugLog(__FILE__, __METHOD__, __LINE__, var_export($v, true));
+                $re_lines[] = 'ADR;TYPE=' . $v['AdrType'] . ':' . $v['ADR'];
+            }
+        }
+
+        if (count($this->vCard_Delivery_Addressing_Properties_LABEL) > 0) {
+            foreach ($this->vCard_Delivery_Addressing_Properties_LABEL as $v) {
+                debugLog(__FILE__, __METHOD__, __LINE__, var_export($v, true));
+                $re_lines[] = 'LABEL;TYPE=' . $v['LabelType'] . ':' . $v['LABEL'];
+            }
+        }
+
+        if (count($this->vCard_Telecommunications_Addressing_Properties_Tel) > 0) {
+            foreach ($this->vCard_Telecommunications_Addressing_Properties_Tel as $v) {
+                debugLog(__FILE__, __METHOD__, __LINE__, var_export($v, true));
+                $re_lines[] = 'TEL;TYPE=' . $v['TelType'] . ':' . $v['TEL'];
+            }
+        }
+
+        if (count($this->vCard_Telecommunications_Addressing_Properties_Email) > 0) {
+            foreach ($this->vCard_Telecommunications_Addressing_Properties_Email as $v) {
+                debugLog(__FILE__, __METHOD__, __LINE__, var_export($v, true));
+                $re_lines[] = 'EMAIL;TYPE=' . $v['EmailType'] . ':' . $v['EMAIL'];
+            }
+        }
+
+        debugLog(__FILE__, __METHOD__, __LINE__, var_export($re_lines, true));
+
+        $re_lines[] = "END:VCARD";
+
+        // version 3.0 uses \n for new lines,
+        // version 2.1 uses \r\n
+        $newline = "\n";
+        if ($this->vCard_Explanatory_Properties['VERSION'] == '3.0') {
+            $newline = "\r\n";
+        }
+
+        // fold lines at 75 characters
+        $regex = "(.{1,75})";
+        foreach ($re_lines as $key => $val) {
+            $re_lines[$key] = stripslashes($val);
+            if (strlen($val) > 75) {
+                // we trim to drop the last newline, which will be added
+                // again by the implode function at the end of fetch()
+                $re_lines[$key] = trim(preg_replace("/$regex/i", "\\1$newline ", $val));
+            }
+        }
+
+//        $this->_unescape($re_lines);
+        return implode($newline, $re_lines);
+    }
+
+    /**
+    * Used to make string human-readable after being a vCard value.
+    *
+    * Converts...
+    *     \; => ;
+    *     \, => ,
+    *     literal \n => newline
+    *
+    * @param string|array $text The text to unescape.
+    *
+    * @return mixed
+    */
+    protected function _unescape($text)
+    {
+        if (is_array($text)) {
+            foreach ($text as $key => $val) {
+                $this->_unescape($val);
+                $text[$key] = $val;
+            }
+        } else {
+            /*
+            $text = str_replace('\:', ':', $text);
+            $text = str_replace('\;', ';', $text);
+            $text = str_replace('\,', ',', $text);
+            $text = str_replace('\n', "\n", $text);
+            */
+            // combined with \r per #16637
+            $find    = array('\:', '\;', '\,', '\n', '\r');
+            $replace = array(':',  ';',  ',',  "\n", "\r");
+
+            $text    = str_replace($find, $replace, $text);
+        }
+        return $text;
     }
 
 }
