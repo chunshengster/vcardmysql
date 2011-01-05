@@ -178,7 +178,7 @@ class class_vcard_storage {
         }
 
         $re = $this->_get_vcard_data_from_db('vCard_Identification_Properties', $key);
-        debugLog(__FILE, __METHOD__, __LINE__, var_export($re, true));
+        debugLog(__FILE__, __METHOD__, __LINE__, var_export($re, true));
         if (count($re) > 1 or $re == false) {
             /**
              * @todo 系统中应该只存在一份 identification properties，如果有多份，需要…………

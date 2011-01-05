@@ -469,8 +469,8 @@ class class_vCard {
 //        debugLog(__FILE__, __METHOD__, __LINE__, "\n", var_export($this->_parser->get_parse_data(),true), "\n");
 
         @$this->_builder->setFromArray($this->_parser->get_parse_data());
-        echo var_export($this->_parser->get_parse_data(), true);
-        echo var_export($this->_builder, true);
+//        echo var_export($this->_parser->get_parse_data(), true);
+//        echo var_export($this->_builder, true);
 
         $this->set_vCard_Explanatory_Properties(array(
             'UID' => $this->_builder->getUniqueID(),
@@ -977,7 +977,7 @@ class class_vCard {
 //        debugLog(__FILE__,__METHOD__,__LINE__,var_export($re,true));
         $re = $this->get_vCard_Telecommunications_Addressing_Properties_Email(true);
 //        debugLog(__FILE__,__METHOD__,__LINE__,var_export($re,true));
-        $re = $this->get_vCard_Telecommunications_Addressing_Properties_Email(true);
+        $re = $this->get_vCard_Telecommunications_Addressing_Properties_Tel(true);
 //        debugLog(__FILE__,__METHOD__,__LINE__,var_export($re,true));
         debugLog(__FILE__, __METHOD__, __LINE__, var_export($this, true));
         return $this;
@@ -1172,41 +1172,6 @@ class class_vCard {
 
 //        $this->_unescape($re_lines);
         return implode($newline, $re_lines);
-    }
-
-    /**
-    * Used to make string human-readable after being a vCard value.
-    *
-    * Converts...
-    *     \; => ;
-    *     \, => ,
-    *     literal \n => newline
-    *
-    * @param string|array $text The text to unescape.
-    *
-    * @return mixed
-    */
-    protected function _unescape($text)
-    {
-        if (is_array($text)) {
-            foreach ($text as $key => $val) {
-                $this->_unescape($val);
-                $text[$key] = $val;
-            }
-        } else {
-            /*
-            $text = str_replace('\:', ':', $text);
-            $text = str_replace('\;', ';', $text);
-            $text = str_replace('\,', ',', $text);
-            $text = str_replace('\n', "\n", $text);
-            */
-            // combined with \r per #16637
-            $find    = array('\:', '\;', '\,', '\n', '\r');
-            $replace = array(':',  ';',  ',',  "\n", "\r");
-
-            $text    = str_replace($find, $replace, $text);
-        }
-        return $text;
     }
 
 }
