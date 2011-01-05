@@ -58,6 +58,7 @@ final class my_vcard_build extends File_IMC_Build_Vcard {
         return parent::getValue($comp, $iter, $part, $rept);
     }
 
+    
     /**
       public function getLabelType($iter = 0) {
       return $this->getType('LABEL', $iter);
@@ -126,10 +127,10 @@ final class my_vcard_build extends File_IMC_Build_Vcard {
                  *
                  */
             } else {
-                return false;
+                return array();
             }
         }
-        return false;
+        return array();
     }
 
     public function getTz() {
@@ -241,8 +242,6 @@ final class my_vcard_build extends File_IMC_Build_Vcard {
     public function  setPhoto($text) {
         
     }
-
-
 }
 
 ?>
