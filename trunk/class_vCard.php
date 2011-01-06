@@ -942,11 +942,15 @@ class class_vCard {
         $key = array('UID' => $uid, 'property' => 'vCard_Explanatory_Properties');
 
         $re_array = $this->get_vCard_property_from_storage($key);
+
         /**
          * @todo 将此处的debuglog打印出来
          */
         debugLog(__FILE__, __METHOD__, __LINE__, var_export($re_array, true));
-        return array('id' => $uid, 'mod' => $re_array['REV'], 'flags' => 1);
+        if ($re_array != '') {
+            return array('id' => $uid, 'mod' => $re_array['REV'], 'flags' => 1);
+        }
+        return false;
     }
 
     /**
@@ -985,7 +989,7 @@ class class_vCard {
 
     /**
      * 取得一个完整的vcard text
-     * @param <type> $uid
+     * @param <UUID> $uid
      * $uid 在设计中，$uid为保存在 USER 表中的 user_vcard 的 vcard_name 字段，该字段被设计为vcard标准中的UID
      */
     public function get_vCard_Text($from_storage=false, $uid='') {
