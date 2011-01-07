@@ -28,7 +28,7 @@ class class_vCardTest extends PHPUnit_Framework_TestCase {
 //        print_r($this->vcard);
         $this->object->parse_vCard($this->vcard);
 //        print_r($this->object);
-//        echo var_export($this->object);
+        var_export($this->object);
 //        print_r($this->object);
         //print_r($this->vcard);
     }
@@ -425,24 +425,24 @@ class class_vCardTest extends PHPUnit_Framework_TestCase {
 //        echo var_export($this->object->get_vCard_Telecommunications_Addressing_Properties_Email(),true);
     }
 
-    public function testget_Full_vCard_From_Storage() {
-        $re = $this->object->get_Full_vCard_From_Storage('bc441260-e692-11df-97aa-000c294ea794');
-        echo var_export($re,true);
-        if ($re) {
-            echo "<========================================>\n";
-            echo var_export($this->object->get_vCard_Delivery_Addressing_Properties_ADR());
-        }else{
-            echo "return Null!";
-        }
-    }
-
-    public function testget_vCard_Text() {
-        $re = $this->object->get_vCard_Text(true, 'bc441260-e692-11df-97aa-000c294ea794');
-        echo var_export($this->object,true);
-        echo var_export($re,true);
-        debugLog(__FILE__,__METHOD__,__LINE__,var_export($re,true));
-
-    }
+//    public function testget_Full_vCard_From_Storage() {
+//        $re = $this->object->get_Full_vCard_From_Storage('bc441260-e692-11df-97aa-000c294ea794');
+//        echo var_export($re,true);
+//        if ($re) {
+//            echo "<========================================>\n";
+//            echo var_export($this->object->get_vCard_Delivery_Addressing_Properties_ADR());
+//        }else{
+//            echo "return Null!";
+//        }
+//    }
+//
+//    public function testget_vCard_Text() {
+//        $re = $this->object->get_vCard_Text(true, 'bc441260-e692-11df-97aa-000c294ea794');
+//        echo var_export($this->object,true);
+//        echo var_export($re,true);
+//        debugLog(__FILE__,__METHOD__,__LINE__,var_export($re,true));
+//
+//    }
 
 
 }

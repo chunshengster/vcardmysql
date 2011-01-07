@@ -58,7 +58,6 @@ final class my_vcard_build extends File_IMC_Build_Vcard {
         return parent::getValue($comp, $iter, $part, $rept);
     }
 
-    
     /**
       public function getLabelType($iter = 0) {
       return $this->getType('LABEL', $iter);
@@ -90,7 +89,9 @@ final class my_vcard_build extends File_IMC_Build_Vcard {
             $r_array = array();
             if ($comp_count > 0) {
                 for ($i = 0; $i < $comp_count; $i++) {
-                    array_push($r_array, array(strtoupper($comp) => $this->getValue($comp, $i, 0), ucfirst(strtolower($comp)) . 'Type' => $this->getType($comp, $i)));
+                    $comp_value = $this->getValue($comp, $i, 0);
+                    if ($comp_value != '')
+                        array_push($r_array, array(strtoupper($comp) => $this->getValue($comp, $i, 0), ucfirst(strtolower($comp)) . 'Type' => $this->getType($comp, $i)));
                 }
                 return $r_array;
 
@@ -235,13 +236,14 @@ final class my_vcard_build extends File_IMC_Build_Vcard {
         return $this->getValue('SORT-STRING', 0, 0);
     }
 
-    public function setLanguage($lang){
+    public function setLanguage($lang) {
         return $this->addValue('LANGUAGE', 0, 0, $lang);
     }
 
-    public function  setPhoto($text) {
+    public function setPhoto($text) {
         
     }
+
 }
 
 ?>
