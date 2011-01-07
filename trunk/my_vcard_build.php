@@ -90,8 +90,10 @@ final class my_vcard_build extends File_IMC_Build_Vcard {
             if ($comp_count > 0) {
                 for ($i = 0; $i < $comp_count; $i++) {
                     $comp_value = $this->getValue($comp, $i, 0);
-                    if ($comp_value != '')
+                    debugLog(__FILE__, __METHOD__, __LINE__, var_export($comp_value, true));
+                    if ($comp_value != '' and (!preg_match("/^(;)+$/", $comp_value))) {
                         array_push($r_array, array(strtoupper($comp) => $this->getValue($comp, $i, 0), ucfirst(strtolower($comp)) . 'Type' => $this->getType($comp, $i)));
+                    }
                 }
                 return $r_array;
 
