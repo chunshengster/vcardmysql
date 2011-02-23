@@ -526,6 +526,7 @@ class class_vCard {
 //        print_r($this->_builder->getGeo());
         $this->_parser = NULL;
         $this->_builder = NULL;
+        return $this
     }
 
     /**
