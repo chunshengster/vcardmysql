@@ -11,6 +11,8 @@ if(!isset ($argv[1])){
 }
 
 $vcard = new class_vCard();
+$re = $vcard->get_Full_vCard_From_Storage($uuid);
+var_export($re);
 $re = $vcard->get_vCard_Text(true, $uuid);
 var_export($re);
 ?>
