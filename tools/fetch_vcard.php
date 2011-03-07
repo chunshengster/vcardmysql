@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__).'/../class_vCard.php';
+require_once dirname(__FILE__).'/../lib/class_vCard.php';
 
 $gen_uid = false;
 
