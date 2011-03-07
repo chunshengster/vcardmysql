@@ -5,7 +5,7 @@
  * @tutorial php.exe import_vcf.php 'a.vcf' 'user_id'
  * @todo 完成更新vcard与user之间关系的逻辑
  */
-require_once dirname(__FILE__).'/../class_vCard.php';
+require_once dirname(__FILE__).'/../lib/class_vCard.php';
 
 $gen_uid = false;
 
