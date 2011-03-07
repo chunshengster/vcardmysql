@@ -28,7 +28,7 @@ class class_vcard_storage {
     private static $vCard_Telecommunications_Addressing_Properties_Tel = 'vCard_Telecommunications_Addressing_Properties_Tel';
 
     function __construct() {
-        self::$vcard_db_para_file = dirname(__FILE__) . '/config/config.ini';
+        self::$vcard_db_para_file = dirname(__FILE__) . '/../lib/config/config.ini';
         self::getMysqlPara ();
 //        $this->getInstance ();
     }
