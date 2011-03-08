@@ -8,7 +8,7 @@
 require_once 'my_vcard_parse.php';
 require_once 'my_vcard_build.php';
 require_once 'class_vcard_storage.php';
-//require_once 'debug.php';
+require_once 'debug.php';
 
 /**
  * @author chunsheng
