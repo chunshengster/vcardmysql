@@ -8,8 +8,10 @@
 require_once 'my_vcard_parse.php';
 require_once 'my_vcard_build.php';
 require_once 'class_vcard_storage.php';
-require_once 'debug.php';
 
+if(!function_exists('debugLog')){
+    require_once 'include/debug.php';
+}
 /**
  * @author chunsheng
  */
