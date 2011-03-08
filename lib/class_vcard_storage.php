@@ -362,20 +362,7 @@ class class_vcard_storage {
         if (!isset($vcard_comp) or $vcard_comp == '') {
             return false;
         }
-        /*
-          if ($vcard_data_array['UID'] == '' or !isset($vcard_data_array['UID'])) {
-
-          } elseif(isset($vcard_data_array['V_ID']) && $vcard_data_array['V_ID'] !='') {
-
-
-          }else{
-          return false;
-          }
-          }elseif ($gen_uid !== true) {
-          $vcard_exist = $this->check_vcard_exist_via_uid($vcard_data_array['UID']);
-          }
-         */
-        //$this->dbh = $this->getInstance();
+        
         $vcard_exist = false;
         $new_record = false;
         $this->_gen_mysql_resource();
