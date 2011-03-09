@@ -46,6 +46,8 @@ class class_vcard_storage {
 //        debugLog(__FILE__, __METHOD__, __LINE__, var_export($dsn, true));
         try {
             $this->dbh = new PDO($dsn, self::$db_user, self::$db_pass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES UTF8"));
+            $this->dbh->setAttribute( PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
+            return $this->dbh;
         } catch (PDOException $e) {
 //            print_r($e->getMessage());
             debugLog(__FILE__, __METHOD__, __LINE__, $e->getMessage());
@@ -91,7 +93,7 @@ class class_vcard_storage {
         $re = $sth->fetchColumn();
 
         }catch (PDOException $e){
-            debugLog(__FILE__,__METHOD__,__LINE__,var_export($re,true));
+            debugLog(__FILE__,__METHOD__,__LINE__,var_export($e->getMessage(),true));
         }
         debugLog(__FILE__,__METHOD__,__LINE__,var_export($re,true));
 
@@ -99,42 +101,6 @@ class class_vcard_storage {
         return $re;
     }
 
-    /* 	public function get_vCard_Attr($attr_name, $key) {
-      if (! isset ( self::$attr_name )) {
-      print "Error ,tb_" . $attr_name . "\n<br>";
-      return NULL;
-      }
-      switch ($attr_name) {
-      case self::$vCard_Explanatory_Properties :
-      $sql = '';
-      break;
-      case self::$vCard_Identification_Properties :
-      $sql = '';
-      break;
-      case self::$vCard_Telecommunications_Addressing_Properties_Tel :
-      $sql = '';
-      break;
-      case self::$vCard_Telecommunications_Addressing_Properties_Email :
-      $sql = '';
-      break;
-      case self::$vCard_Delivery_Addressing_Properties_LABEL :
-      $sql = '';
-      break;
-      case self::$vCard_Delivery_Addressing_Properties_ADR :
-      $sql = '';
-      break;
-      case self::$vCard_Organizational_Properties :
-      $sql = '';
-      break;
-      case self::$vCard_Geographical_Properties :
-      $sql = '';
-      break;
-      default :
-      return NULL;
-      }
-      return 1;
-      }
-     */
 
     /*
      * @param: array('idvCard_Explanatory_Properties') or array('UID')
@@ -402,8 +368,12 @@ class class_vcard_storage {
 //                    echo $e->getMessage();
                     debugLog(__FILE__, __METHOD__, __LINE__, $e->getMessage());
                 }
-                if(strlen($vcard_data_array['REV'])<=0){
+                if(!isset($vcard_data_array['REV']) or strlen($vcard_data_array['REV'])<=0){
                     $vcard_data_array['REV']=date('c');
+                }
+
+                if(!isset($vcard_data_array['VERSION'])){
+                    $vcard_data_array['VERSION'] = '2.1';
                 }
                 $sth->bindParam(':UID', $vcard_data_array['UID']);
                 $sth->bindParam(':VERSION', $vcard_data_array['VERSION']);
