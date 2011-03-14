@@ -2,9 +2,9 @@
 
 /**
  * @author chunshengster@gmail.com
- * @version $id$
+ * @version $Id$
  */
-//require_once 'File/IMC.php';
+
 require_once 'my_vcard_parse.php';
 require_once 'my_vcard_build.php';
 require_once 'class_vcard_storage.php';
@@ -12,13 +12,10 @@ require_once 'class_vcard_storage.php';
 if(!function_exists('debugLog')){
     require_once 'include/debug.php';
 }
-/**
- * @author chunsheng
- */
+
 class class_vCard {
 
     /**
-     *
      * @var <storage object> 存储对象
      */
     private $obj_vcard_storage;
@@ -49,6 +46,7 @@ class class_vCard {
         }
         unset($this->_parser);
         unset($this->_builder);
+        $this = null;
     }
 
     private function _get_storage_resource() {
@@ -82,7 +80,7 @@ class class_vCard {
     }
 
     /**
-     * =======//@param $key = array('UID') || $key = array('idvCard_Explanatory_Properties')
+     * @param $key = array('UID') || $key = array('idvCard_Explanatory_Properties')
      * @return the $vCard_Explanatory_Properties
      */
     public function get_vCard_Explanatory_Properties($from_storage=false) {
@@ -769,8 +767,6 @@ class class_vCard {
      */
     public function store_vCard_Explanatory_Properties($gen_uid = false) {
 
-//        echo ">>>>" . __CLASS__ . ':' . __METHOD__ . ':' . __LINE__ . "\n";
-
         debugLog(__FILE__, __METHOD__, __LINE__, var_export($this->vCard_Explanatory_Properties, true));
         $this->_get_storage_resource();
         if (!isset($this->vCard_Explanatory_Properties['UID']) || $this->vCard_Explanatory_Properties['UID'] == '') {
@@ -958,7 +954,7 @@ class class_vCard {
 
     /**
      *
-     * @param <type> $uid (uuid)
+     * @param <uuid> $uid (uuid)
      */
     public function get_Full_vCard_From_Storage($uid='') {
         if (isset($uid) && $uid !== '') {
@@ -1181,6 +1177,29 @@ class class_vCard {
         return implode($newline, $re_lines);
     }
 
+    /**
+     * 返回vcard数据为一个 array
+     * @param <bool> $from_storage
+     * @param <uuid> $uuid
+     */
+    public function get_vCard_Data($from_storage,$uuid){
+        if(isset ($from_storage) && $from_storage ){
+            if(!isset ($uuid) or strlen($uuid) < 36){
+                return FALSE;
+            }
+            $this->get_Full_vCard_From_Storage($uuid);
+        }
+        return array(
+            'vCard_Explanatory_Properties'=>$this->get_vCard_Explanatory_Properties(),
+            'vCard_Identification_Properties'=>$this->get_vCard_Identification_Properties(),
+            'vCard_Delivery_Addressing_Properties_ADR'=>$this->get_vCard_Delivery_Addressing_Properties_ADR(),
+            'vCard_Delivery_Addressing_Properties_LABEL'=>$this->get_vCard_Delivery_Addressing_Properties_LABEL(),
+            'vCard_Geographical_Properties'=>$this->get_vCard_Geographical_Properties(),
+            'vCard_Organizational_Properties' => $this->get_vCard_Organizational_Properties(),
+            'vCard_Telecommunications_Addressing_Properties_Email'=>$this->get_vCard_Telecommunications_Addressing_Properties_Email(),
+            'vCard_Telecommunications_Addressing_Properties_Tel'=>$this->get_vCard_Telecommunications_Addressing_Properties_Tel(),
+        );
+    }
 }
 
 ?>

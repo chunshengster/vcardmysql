@@ -41,15 +41,11 @@ class class_vcard_storage {
 
     private function getInstance() {
         $dsn = self::$db_driver . ":host=" . self::$db_host . ";port=" . self::$db_port . ";dbname=" . self::$db_name;
-//        echo __CLASS__ . __METHOD__ . __LINE__ . "\n";
-//        echo "\n" . $dsn . "\n";
-//        debugLog(__FILE__, __METHOD__, __LINE__, var_export($dsn, true));
         try {
             $this->dbh = new PDO($dsn, self::$db_user, self::$db_pass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES UTF8"));
             $this->dbh->setAttribute( PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
             return $this->dbh;
         } catch (PDOException $e) {
-//            print_r($e->getMessage());
             debugLog(__FILE__, __METHOD__, __LINE__, $e->getMessage());
         }
     }
@@ -88,21 +84,20 @@ class class_vcard_storage {
 
         $sql = "Select uuid() as uuid";
         $this->_gen_mysql_resource();
-        try{
-        $sth = $this->dbh->query($sql);
-        $re = $sth->fetchColumn();
+        try {
+            $sth = $this->dbh->query($sql);
+            $re = $sth->fetchColumn();
 
-        }catch (PDOException $e){
+        }catch (PDOException $e) {
             debugLog(__FILE__,__METHOD__,__LINE__,var_export($e->getMessage(),true));
         }
         debugLog(__FILE__,__METHOD__,__LINE__,var_export($re,true));
 
-        //$uuid = uuid_create(UUID_TYPE_RANDOM);
         return $re;
     }
 
 
-    /*
+    /**
      * @param: array('idvCard_Explanatory_Properties') or array('UID')
      *
      */
@@ -121,18 +116,18 @@ class class_vcard_storage {
              */
         }
         return array(
-            'UID' => $re[0]['UID'],
-            'VERSION' => $re[0]['VERSION'],
-            'REV' => $re[0]['REV'],
-            'LANG' => $re[0]['LANG'],
-            'CATEGORIES' => $re[0]['CATEGORIES'],
-            'PRODID' => $re[0]['PRODID'],
-            'SORT-STRING' => $re[0]['SORT-STRING'],
-            'RESOURCE_ID' => $re[0]['idvCard_Explanatory_Properties']
+                'UID' => $re[0]['UID'],
+                'VERSION' => $re[0]['VERSION'],
+                'REV' => $re[0]['REV'],
+                'LANG' => $re[0]['LANG'],
+                'CATEGORIES' => $re[0]['CATEGORIES'],
+                'PRODID' => $re[0]['PRODID'],
+                'SORT-STRING' => $re[0]['SORT-STRING'],
+                'RESOURCE_ID' => $re[0]['idvCard_Explanatory_Properties']
         );
     }
 
-    /*
+    /**
      * @param array('vCard_Explanatory_Properties_idvCard_Explanatory_Properties')
      *      or array('idvCard_Identification_Properties')
      */
@@ -152,16 +147,16 @@ class class_vcard_storage {
             debugLog(__FILE__, __METHOD__, __LINE__, var_export($re, true));
         }
         return array(
-            'N' => $re[0]['N'],
-            'FN' => $re[0]['FN'],
-            'PHOTO' => $re[0]['PHOTO'],
-            'PhotoType' => $re[0]['PhotoType'],
-            'BDAY' => $re[0]['BDAY'],
-            'URL' => $re[0]['URL'],
-            'SOUND' => $re[0]['SOUND'],
-            'NOTE' => $re[0]['NOTE'],
-            'NICKNAME' => $re[0]['NICKNAME'],
-            'RESOURCE_ID' => $re[0]['idvCard_Identification_Properties']
+                'N' => $re[0]['N'],
+                'FN' => $re[0]['FN'],
+                'PHOTO' => $re[0]['PHOTO'],
+                'PhotoType' => $re[0]['PhotoType'],
+                'BDAY' => $re[0]['BDAY'],
+                'URL' => $re[0]['URL'],
+                'SOUND' => $re[0]['SOUND'],
+                'NOTE' => $re[0]['NOTE'],
+                'NICKNAME' => $re[0]['NICKNAME'],
+                'RESOURCE_ID' => $re[0]['idvCard_Identification_Properties']
         );
     }
 
@@ -179,9 +174,9 @@ class class_vcard_storage {
         }
         debugLog(__FILE__, __METHOD__, __LINE__, var_export($re, true));
         return array(
-            'TZ' => $re[0]['TZ'],
-            'GEO' => $re[0]['GEO'],
-            'RESOURCE_ID' => $re[0]['idvCard_Geographical_Properties']
+                'TZ' => $re[0]['TZ'],
+                'GEO' => $re[0]['GEO'],
+                'RESOURCE_ID' => $re[0]['idvCard_Geographical_Properties']
         );
 
 //        return $this->_get_vcard_data_from_db('vCard_Geographical_Properties', $key);
@@ -200,12 +195,12 @@ class class_vcard_storage {
         }
         debugLog(__FILE__, __METHOD__, __LINE__, var_export($re, true));
         return array(
-            'TITLE' => $re[0]['TITLE'],
-            'ROLE' => $re[0]['ROLE'],
-            'LOGO' => $re[0]['LOGO'],
-            'LogoType' => $re[0]['LogoType'],
-            'ORG' => $re[0]['ORG'],
-            'RESOURCE_ID' => $re[0]['idvCard_Organizational_Properties']
+                'TITLE' => $re[0]['TITLE'],
+                'ROLE' => $re[0]['ROLE'],
+                'LOGO' => $re[0]['LOGO'],
+                'LogoType' => $re[0]['LogoType'],
+                'ORG' => $re[0]['ORG'],
+                'RESOURCE_ID' => $re[0]['idvCard_Organizational_Properties']
         );
     }
 
@@ -319,16 +314,24 @@ class class_vcard_storage {
             }
             return $sth->fetchColumn();
         }
-        return null;
+        return false;
     }
 
+
+    /**
+     *
+     * @param <string> $vcard_comp
+     * @param <mixed> $vcard_data_array
+     * @param <bool> $gen_uid
+     * @return <mixed> return data or false
+     */
     public function store_data($vcard_comp, $vcard_data_array, $gen_uid=false) {
 
         debugLog(__FILE__, __METHOD__, __LINE__, var_export($vcard_comp, true), var_export($vcard_data_array, true));
         if (!isset($vcard_comp) or $vcard_comp == '') {
             return false;
         }
-        
+
         $vcard_exist = false;
         $new_record = false;
         $this->_gen_mysql_resource();
@@ -339,7 +342,7 @@ class class_vcard_storage {
             if (isset($vcard_data_array['UID'])) {
                 if ($vcard_data_array['UID'] !== '') {
                     $vcard_exist = $this->check_vcard_exist_via_uid($vcard_data_array['UID']);
-                }else{
+                }else {
                     $vcard_data_array['UID'] = $this->_gen_uuid();
                 }
             } elseif (isset($vcard_data_array['V_ID']) && $vcard_data_array['V_ID'] != '') {
@@ -359,8 +362,17 @@ class class_vcard_storage {
                     //Importent: 'SORTSTRING',for PDO does not work with 'SORT-STRING'
                     $store_sql = "INSERT INTO " . self::$vCard_Explanatory_Properties . " (`UID`,`VERSION`,`REV`,`LANG`,`CATEGORIES`,`PRODID`,`SORT-STRING`) VALUES (:UID,:VERSION,:REV,:LANG,:CATEGORIES,:PRODID,:SORTSTRING)";
                 } else {
-
-                    $store_sql = "UPDATE " . self::$vCard_Explanatory_Properties . " SET `VERSION` = :VERSION,`REV` = :REV,`LANG` = :LANG,`CATEGORIES` = :CATEGORIES,`PRODID` = :PRODID,`SORT-STRING` = :SORTSTRING  WHERE UID = :UID";
+                    if(isset ($vcard_data_array['FLAG']))
+                        if($vcard_data_array['FLAG']=='CHANGED') {
+                            $store_sql = "UPDATE " . self::$vCard_Explanatory_Properties . " SET `VERSION` = :VERSION,`REV` = :REV,`LANG` = :LANG,`CATEGORIES` = :CATEGORIES,`PRODID` = :PRODID,`SORT-STRING` = :SORTSTRING  WHERE UID = :UID";
+                            debugLog(__FILE__,__METHOD__,__LINE__,var_export($store_sql,true));
+                        }
+                        else {
+                            /**
+                             * vCard_Explanatory_Properties 属性中 $vcard_data_array['FLAG'] 不能是 "NEW" 或 "DELETED"
+                             */
+                            return false;
+                        }
                 }
                 try {
                     $sth = $this->dbh->prepare($store_sql);
@@ -368,11 +380,11 @@ class class_vcard_storage {
 //                    echo $e->getMessage();
                     debugLog(__FILE__, __METHOD__, __LINE__, $e->getMessage());
                 }
-                if(!isset($vcard_data_array['REV']) or strlen($vcard_data_array['REV'])<=0){
+                if(!isset($vcard_data_array['REV']) or strlen($vcard_data_array['REV'])<=0) {
                     $vcard_data_array['REV']=date('c');
                 }
 
-                if(!isset($vcard_data_array['VERSION'])){
+                if(!isset($vcard_data_array['VERSION'])) {
                     $vcard_data_array['VERSION'] = '2.1';
                 }
                 $sth->bindParam(':UID', $vcard_data_array['UID']);
@@ -401,13 +413,20 @@ class class_vcard_storage {
                 break;
 
             case self::$vCard_Identification_Properties:
-                /**
-                  ＊if($vcard_exist && isset($vcard_data_array['RESOURCE_ID'])) {
-                 * @todo 此处暂时去掉对 $vcard_exist 的检查
-                 */
+            /**
+             ＊if($vcard_exist && isset($vcard_data_array['RESOURCE_ID'])) {
+             * @todo 此处暂时去掉对 $vcard_exist 的检查
+             */
                 if (isset($vcard_data_array['RESOURCE_ID'])) {
                     $new_record = false;
-                    $store_sql = "UPDATE " . self::$vCard_Identification_Properties . " SET `N` = :N,`FN` = :FN,`NICKNAME` = :NICKNAME,`PHOTO` = :PHOTO,`PhotoType` = :PhotoType,`BDAY` = :BDAY,`URL` = :URL,`SOUND` = :SOUND,`NOTE` = :NOTE where `idvCard_Identification_Properties` = :RESOURCEID ";
+                    if(isset($vcard_data_array['FLAG'])) {
+                        if($vcard_data_array['FLAG'] == 'CHANGED') {
+                            $store_sql = "UPDATE " . self::$vCard_Identification_Properties . " SET `N` = :N,`FN` = :FN,`NICKNAME` = :NICKNAME,`PHOTO` = :PHOTO,`PhotoType` = :PhotoType,`BDAY` = :BDAY,`URL` = :URL,`SOUND` = :SOUND,`NOTE` = :NOTE where `idvCard_Identification_Properties` = :RESOURCEID ";
+                        }elseif($vcard_data_array['FLAG'] == 'DELETED') {
+                            $store_sql = 'DELETE FROM '.self::$vCard_Identification_Properties . ' WHERE  `idvCard_Identification_Properties` = :RESOURCEID';
+                        }
+                    }
+
                 } elseif ((!isset($vcard_data_array['RESOURCE_ID']) && isset($vcard_data_array['V_ID']))) {
                     /**
                      * (($vcard_exist) && (!isset($vcard_data_array['RESOURCE_ID']) && isset($vcard_data_array['V_ID']))) {
@@ -425,20 +444,23 @@ class class_vcard_storage {
                 try {
                     $sth = $this->dbh->prepare($store_sql);
                 } catch (PDOException $e) {
-//                    print_r($e->getMessage());
                     debugLog(__FILE__, __METHOD__, __LINE__, $e->getMessage());
                 }
                 debugLog(__FILE__, __METHOD__, __LINE__, var_export($vcard_data_array,true));
-                $sth->bindParam(':RESOURCEID', $vcard_data_array['RESOURCE_ID']);
-                $sth->bindParam(':N', $vcard_data_array['N']);
-                $sth->bindParam(':FN', $vcard_data_array['FN']);
-                $sth->bindParam(':NICKNAME', $vcard_data_array['NICKNAME']);
-                $sth->bindParam(':PHOTO', $vcard_data_array['PHOTO']);
-                $sth->bindParam(':PhotoType', $vcard_data_array['PhotoType']);
-                $sth->bindParam(':BDAY', $vcard_data_array['BDAY']);
-                $sth->bindParam(':URL', $vcard_data_array['URL']);
-                $sth->bindParam(':SOUND', $vcard_data_array['SOUND']);
-                $sth->bindParam(':NOTE', $vcard_data_array['NOTE']);
+                if(preg_match("/^DELETE/", $store_sql)) {
+                    $sth->bindParam(':RESOURCEID', $vcard_data_array['RESOURCE_ID']);
+                }else {
+                    $sth->bindParam(':RESOURCEID', $vcard_data_array['RESOURCE_ID']);
+                    $sth->bindParam(':N', $vcard_data_array['N']);
+                    $sth->bindParam(':FN', $vcard_data_array['FN']);
+                    $sth->bindParam(':NICKNAME', $vcard_data_array['NICKNAME']);
+                    $sth->bindParam(':PHOTO', $vcard_data_array['PHOTO']);
+                    $sth->bindParam(':PhotoType', $vcard_data_array['PhotoType']);
+                    $sth->bindParam(':BDAY', $vcard_data_array['BDAY']);
+                    $sth->bindParam(':URL', $vcard_data_array['URL']);
+                    $sth->bindParam(':SOUND', $vcard_data_array['SOUND']);
+                    $sth->bindParam(':NOTE', $vcard_data_array['NOTE']);
+                }
                 try {
                     $sth->execute();
                 } catch (PDOException $e) {
@@ -461,7 +483,13 @@ class class_vcard_storage {
                     $store_sql = "INSERT INTO " . self::$vCard_Geographical_Properties . " (`vCard_Explanatory_Properties_idvCard_Explanatory_Properties`,`TZ`,`GEO`) VALUES (:RESOURCEID,:TZ,:GEO)";
                 } elseif (isset($vcard_data_array['RESOURCE_ID'])) {
                     $new_record = false;
-                    $store_sql = "UPDATE " . self::$vCard_Geographical_Properties . " SET TZ = :TZ , GEO = :GEO where idvCard_Geographical_Properties = :RESOURCEID";
+                    if(isset($vcard_data_array['FLAG']) && $vcard_data_array['FLAG'] == 'CHANGED') {
+                        $store_sql = "UPDATE " . self::$vCard_Geographical_Properties . " SET TZ = :TZ , GEO = :GEO where idvCard_Geographical_Properties = :RESOURCEID";
+                    }elseif(isset($vcard_data_array['FLAG']) && $vcard_data_array['FLAG']=='DELETED') {
+                        $store_sql = 'DELETE FROM '.self::$vCard_Geographical_Properties. ' WHERE idvCard_Geographical_Properties = :RESOURCEID';
+                    }else {
+                        return false;
+                    }
                 } else {
                     return false;
                 }
@@ -469,9 +497,13 @@ class class_vcard_storage {
                 debugLog(__FILE__, __METHOD__, __LINE__, $store_sql);
 
                 $sth = $this->dbh->prepare($store_sql);
-                $sth->bindParam(':RESOURCEID', $vcard_data_array['RESOURCE_ID']);
-                $sth->bindParam(':TZ', $vcard_data_array['TZ']);
-                $sth->bindParam(':GEO', $vcard_data_array['GEO']);
+                if(preg_match("/^DELETE/", $store_sql)) {
+                    $sth->bindParam(':RESOURCEID', $vcard_data_array['RESOURCE_ID']);
+                }else {
+                    $sth->bindParam(':RESOURCEID', $vcard_data_array['RESOURCE_ID']);
+                    $sth->bindParam(':TZ', $vcard_data_array['TZ']);
+                    $sth->bindParam(':GEO', $vcard_data_array['GEO']);
+                }
 
                 try {
                     $sth->execute();
@@ -492,17 +524,25 @@ class class_vcard_storage {
                     $store_sql = "INSERT INTO " . self::$vCard_Organizational_Properties . " (`vCard_Explanatory_Properties_idvCard_Explanatory_Properties` ,`TITLE` ,`ROLE` ,`LOGO` ,`LogoType` ,`ORG`) VALUES (:RESOURCEID,:TITLE,:ROLE,:LOGO,:LogoType,:ORG)";
                 } else {
                     $new_record = false;
-                    $store_sql = "UPDATE " . self::$vCard_Organizational_Properties . " SET `TITLE` = :TITLE ,`ROLE` = :ROLE ,`LOGO` = :LOGO ,`LogoType` = :LogoType ,`ORG` = :ORG WHERE vCard_Explanatory_Properties_idvCard_Explanatory_Properties = :RESOURCEID";
+                    if(isset($vcard_data_array['FLAG']) && $vcard_data_array['FALG'] == 'CHANGED') {
+                        $store_sql = "UPDATE " . self::$vCard_Organizational_Properties . " SET `TITLE` = :TITLE ,`ROLE` = :ROLE ,`LOGO` = :LOGO ,`LogoType` = :LogoType ,`ORG` = :ORG WHERE vCard_Explanatory_Properties_idvCard_Explanatory_Properties = :RESOURCEID";
+                    }elseif(isset ($vcard_data_array['FLAG']) && $vcard_data_array['FLAG'] == 'DELETED') {
+                        $store_sql = 'DELETE FROM '. self::$vCard_Organizational_Properties . ' WHERE vCard_Explanatory_Properties_idvCard_Explanatory_Properties = :RESOURCEID';
+                    }
                 }
                 debugLog(__FILE__, __METHOD__, __LINE__, $store_sql);
                 try {
                     $sth = $this->dbh->prepare($store_sql);
-                    $sth->bindParam(':TITLE', $vcard_data_array['TITLE']);
-                    $sth->bindParam(':ROLE', $vcard_data_array['ROLE']);
-                    $sth->bindParam(':LOGO', $vcard_data_array['LOGO']);
-                    $sth->bindParam(':LogoType', $vcard_data_array['LogoType']);
-                    $sth->bindParam(':ORG', $vcard_data_array['ORG']);
-                    $sth->bindParam(':RESOURCEID', $vcard_data_array['RESOURCE_ID']);
+                    if(preg_match("/^DELETE/", $store_sql)) {
+                        $sth->bindParam(':RESOURCEID', $vcard_data_array['RESOURCE_ID']);
+                    }else {
+                        $sth->bindParam(':TITLE', $vcard_data_array['TITLE']);
+                        $sth->bindParam(':ROLE', $vcard_data_array['ROLE']);
+                        $sth->bindParam(':LOGO', $vcard_data_array['LOGO']);
+                        $sth->bindParam(':LogoType', $vcard_data_array['LogoType']);
+                        $sth->bindParam(':ORG', $vcard_data_array['ORG']);
+                        $sth->bindParam(':RESOURCEID', $vcard_data_array['RESOURCE_ID']);
+                    }
                 } catch (PDOException $e) {
                     debugLog(__FILE__, __METHOD__, __LINE__, $e->getMessage());
                 }
@@ -533,19 +573,22 @@ class class_vcard_storage {
                             $store_sql = "INSERT INTO " . self::$vCard_Delivery_Addressing_Properties_ADR . " (`vCard_Explanatory_Properties_idvCard_Explanatory_Properties`,`ADR`,`AdrType`) VALUES (:RESOURCEID,:ADR,:AdrType)";
                         } else {
                             $new_record = false;
-                            $store_sql = "UPDATE " . self::$vCard_Delivery_Addressing_Properties_ADR . " SET ADR=:ADR, AdrType=:AdrType WHERE idvCard_Delivery_Addressing_Properties_ADR=:RESOURCEID";
+                            if(isset($vcard_data_array['FLAG']) && $vcard_data_array['FLAG']=='CHANGED') {
+                                $store_sql = "UPDATE " . self::$vCard_Delivery_Addressing_Properties_ADR . " SET ADR=:ADR, AdrType=:AdrType WHERE idvCard_Delivery_Addressing_Properties_ADR=:RESOURCEID";
+                            }elseif(isset ($vcard_data_array['FLAG']) && $vcard_data_array['FLAG'] == 'DELETED') {
+                                $store_sql = 'DELETE FROM '.self::$vCard_Delivery_Addressing_Properties_ADR.' WHERE idvCard_Delivery_Addressing_Properties_ADR=:RESOURCEID';
+                            }else {
+                                return false;
+                            }
                         }
 
                         try {
                             $sth = $this->dbh->prepare($store_sql);
-                        } catch (PDOException $e) {
-//                            print_r($e->getMessage());
-                            debugLog(__FILE__, __METHOD__, __LINE__, $e->getMessage());
-                        }
-                        $sth->bindParam(':RESOURCEID', $t_vcard_data['RESOURCE_ID']);
-                        $sth->bindParam(':ADR', $t_vcard_data['ADR']);
-                        $sth->bindParam(':AdrType', $t_vcard_data['AdrType']);
-                        try {
+                            $sth->bindParam(':RESOURCEID', $t_vcard_data['RESOURCE_ID']);
+                            if(!preg_match("/^DELETE/", $store_sql)) {
+                                $sth->bindParam(':ADR', $t_vcard_data['ADR']);
+                                $sth->bindParam(':AdrType', $t_vcard_data['AdrType']);
+                            }
                             $sth->execute();
                         } catch (PDOException $e) {
 //                            print_r($e->getMessage());
@@ -582,34 +625,33 @@ class class_vcard_storage {
                             $store_sql = "INSERT INTO " . self::$vCard_Delivery_Addressing_Properties_LABEL . " (`vCard_Explanatory_Properties_idvCard_Explanatory_Properties`,`LABEL`,`LabelType`) VALUES (:RESOURCEID,:LABEL,:LabelType)";
                         } else {
                             $new_record = false;
-                            $store_sql = "UPDATE " . self::$vCard_Delivery_Addressing_Properties_LABEL . " SET LABEL=:LABEL ,LabelType=:LabelType WHERE idvCard_Delivery_Addressing_Properties_LABEL=:RESOURCEID";
+                            if(isset($vcard_data_array['FLAG']) && $vcard_data_array['FLAG'] == 'CHANGED'){
+                                $store_sql = "UPDATE " . self::$vCard_Delivery_Addressing_Properties_LABEL . " SET LABEL=:LABEL ,LabelType=:LabelType WHERE idvCard_Delivery_Addressing_Properties_LABEL=:RESOURCEID";
+                            }elseif(isset ($vcard_data_array['FLAG']) && $vcard_data_array['FLAG'] == 'DELETED'){
+                                $store_sql = 'DELETE FROM '. self::$vCard_Delivery_Addressing_Properties_LABEL. ' WHERE idvCard_Delivery_Addressing_Properties_LABEL=:RESOURCEID';
+                            }else{
+                                return false;
+                            }
+
                         }
-//                        echo '>>>>>>$store_sql:' . var_export($store_sql, true) . "\n";
                         debugLog(__FILE__, __METHOD__, __LINE__, var_export($store_sql, true));
                         try {
                             $sth = $this->dbh->prepare($store_sql);
+                            $sth->bindParam(':RESOURCEID', $t_vcard_data['RESOURCE_ID']);
+                            if(!preg_match("/^DELETE/", $store_sql)){
+                                $sth->bindParam(':LABEL', $t_vcard_data['LABEL']);
+                                $sth->bindParam(':LabelType', $t_vcard_data['LabelType']);
+                            }
                         } catch (PDOException $e) {
-//                            print_r($e->getMessage());
-                            debugLog(__FILE__, __METHOD__, __LINE__, $e->getMessage());
-                        }
-                        $sth->bindParam(':RESOURCEID', $t_vcard_data['RESOURCE_ID']);
-                        $sth->bindParam(':LABEL', $t_vcard_data['LABEL']);
-                        $sth->bindParam(':LabelType', $t_vcard_data['LabelType']);
-                        try {
-                            $sth->execute();
-                        } catch (PDOException $e) {
-//                            print_r($e->getMessage());
-                            debugLog(__FILE__, __METHOD__, __LINE__, $e->getMessage());
+                            debugLog(__FILE__, __METHOD__, __LINE__, var_export($e->getMessage(),true));
                         }
                         if ($new_record) {
                             $re[$k]['RESOURCE_ID'] = $this->dbh->lastInsertId();
                         } else {
-//                            echo '>>>>>>$t_vcard_data:' . var_export($t_vcard_data, true);
                             debugLog(__FILE__, __METHOD__, __LINE__, var_export($t_vcard_data, true));
                             $re[$k]['RESOURCE_ID'] = $t_vcard_data['RESOURCE_ID'];
                         }
                     }
-//                    echo '>>>>>>$t_vcard_data:' . var_export($re, true);
                     debugLog(__FILE__, __METHOD__, __LINE__, var_export($re, true));
                     return $re;
                 } else {
@@ -618,7 +660,7 @@ class class_vcard_storage {
                 break;
 
             case self::$vCard_Telecommunications_Addressing_Properties_Tel:
-                //$insert_sql = "INSERT INTO " . self::$vCard_Telecommunications_Addressing_Properties_Tel . " (`vCard_Explanatory_Properties_idvCard_Explanatory_Properties`, `TEL` ,`TelType`) VALUES (:RESOURCE_ID, :TEL, :TelType)";
+            //$insert_sql = "INSERT INTO " . self::$vCard_Telecommunications_Addressing_Properties_Tel . " (`vCard_Explanatory_Properties_idvCard_Explanatory_Properties`, `TEL` ,`TelType`) VALUES (:RESOURCE_ID, :TEL, :TelType)";
                 $re = array();
                 /**
                  * @todo V_ID 数据需要校验
@@ -633,19 +675,21 @@ class class_vcard_storage {
                             $store_sql = "INSERT INTO " . self::$vCard_Telecommunications_Addressing_Properties_Tel . " (`vCard_Explanatory_Properties_idvCard_Explanatory_Properties`, `TEL` ,`TelType`) VALUES (:RESOURCEID, :TEL, :TelType)";
                         } else {
                             $new_record = false;
-                            $store_sql = "UPDATE " . self::$vCard_Telecommunications_Addressing_Properties_Tel . " SET TEL=:TEL ,TelType=:TelType WHERE idvCard_Telecommunications_Addressing_Properties_Tel=:RESOURCEID";
+                            if(isset($vcard_data_array['FLAG']) && $vcard_data_array['FLAG'] == 'CHANGED'){
+                                $store_sql = "UPDATE " . self::$vCard_Telecommunications_Addressing_Properties_Tel . " SET TEL=:TEL ,TelType=:TelType WHERE idvCard_Telecommunications_Addressing_Properties_Tel=:RESOURCEID";
+                            }elseif(isset($vcard_data_array['FLAG']) && $vcard_data_array['FLAG'] == 'DELETED'){
+                                $store_sql = 'DELETE FROM '.self::$vCard_Telecommunications_Addressing_Properties_Tel.' WHERE idvCard_Telecommunications_Addressing_Properties_Tel=:RESOURCEID';
+                            }else{
+                                return false;
+                            }
                         }
                         try {
                             $sth = $this->dbh->prepare($store_sql);
-                        } catch (PDOException $e) {
-//                            print_r($e->getMessage());
-                            debugLog(__FILE__, __METHOD__, __LINE__, $e->getMessage());
-                        }
-                        $sth->bindParam(':RESOURCEID', $t_vcard_data['RESOURCE_ID']);
-                        $sth->bindParam(':TEL', $t_vcard_data['TEL']);
-                        $sth->bindParam(':TelType', $t_vcard_data['TelType']);
-                        try {
-                            $sth->execute();
+                            $sth->bindParam(':RESOURCEID', $t_vcard_data['RESOURCE_ID']);
+                            if(!preg_match("/^DELETE/", $store_sql)){
+                                $sth->bindParam(':TEL', $t_vcard_data['TEL']);
+                                $sth->bindParam(':TelType', $t_vcard_data['TelType']);
+                            }
                         } catch (PDOException $e) {
 //                            print_r($e->getMessage());
                             debugLog(__FILE__, __METHOD__, __LINE__, $e->getMessage());
@@ -666,7 +710,7 @@ class class_vcard_storage {
                 break;
 
             case self::$vCard_Telecommunications_Addressing_Properties_Email:
-                //$insert_sql = "INSERT INTO " . self::$vCard_Telecommunications_Addressing_Properties_Email . " (`vCard_Explanatory_Properties_idvCard_Explanatory_Properties`, `EMAIL`, `EmailType`) VALUES (:RESOURCE_ID, :EMAIL, :EmailType)";
+            //$insert_sql = "INSERT INTO " . self::$vCard_Telecommunications_Addressing_Properties_Email . " (`vCard_Explanatory_Properties_idvCard_Explanatory_Properties`, `EMAIL`, `EmailType`) VALUES (:RESOURCE_ID, :EMAIL, :EmailType)";
                 $re = array();
                 /**
                  * @todo V_ID 数据需要校验
@@ -681,27 +725,27 @@ class class_vcard_storage {
                             $store_sql = "INSERT INTO " . self::$vCard_Telecommunications_Addressing_Properties_Email . " (`vCard_Explanatory_Properties_idvCard_Explanatory_Properties`, `EMAIL`, `EmailType`) VALUES (:RESOURCEID, :EMAIL, :EmailType)";
                         } else {
                             $new_record = false;
-                            $store_sql = "UPDATE " . self::$vCard_Telecommunications_Addressing_Properties_Email . " SET EMAIL=:EMAIL ,EmailType=:EmailType WHERE idvCard_Telecommunications_Addressing_Properties_Email=:RESOURCEID";
+                            if(isset($vcard_data_array['FLAG']) && $vcard_data_array['FLAG']=='CHANGED'){
+                                $store_sql = "UPDATE " . self::$vCard_Telecommunications_Addressing_Properties_Email . " SET EMAIL=:EMAIL ,EmailType=:EmailType WHERE idvCard_Telecommunications_Addressing_Properties_Email=:RESOURCEID";
+                            }elseif(isset($vcard_data_array['FLAG']) && $vcard_data_array['FLAG'] == 'DELETED'){
+                                $store_sql = 'DELETE FROM '.self::$vCard_Telecommunications_Addressing_Properties_Email.' WHERE idvCard_Telecommunications_Addressing_Properties_Email=:RESOURCEID';
+                            }else{
+                                return false;
+                            }
                         }
                         try {
                             $sth = $this->dbh->prepare($store_sql);
+                            $sth->bindParam(':RESOURCEID', $t_vcard_data['RESOURCE_ID']);
+                            if(!preg_match("/^DELETE/", $store_sql)){
+                                $sth->bindParam(':EMAIL', $t_vcard_data['EMAIL']);
+                                $sth->bindParam(':EmailType', $t_vcard_data['EmailType']);
+                            }
                         } catch (PDOException $e) {
-//                            print_r($e->getMessage());
-                            debugLog(__FILE__, __METHOD__, __LINE__, $e->getMessage());
-                        }
-                        $sth->bindParam(':RESOURCEID', $t_vcard_data['RESOURCE_ID']);
-                        $sth->bindParam(':EMAIL', $t_vcard_data['EMAIL']);
-                        $sth->bindParam(':EmailType', $t_vcard_data['EmailType']);
-                        try {
-                            $sth->execute();
-                        } catch (PDOException $e) {
-//                            print_r($e->getMessage());
                             debugLog(__FILE__, __METHOD__, __LINE__, $e->getMessage());
                         }
                         if ($new_record) {
                             $re[$k]['RESOURCE_ID'] = $this->dbh->lastInsertId();
                         } else {
-//                            echo '>>>>>>$t_vcard_data:' . var_export($t_vcard_data);
                             debugLog(__FILE__, __METHOD__, __LINE__, var_export($t_vcard_data, true));
                             $re[$k]['RESOURCE_ID'] = $t_vcard_data['RESOURCE_ID'];
                         }
