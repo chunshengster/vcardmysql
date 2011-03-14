@@ -46,7 +46,7 @@ class class_vCard {
         }
         unset($this->_parser);
         unset($this->_builder);
-        $this = null;
+//        $this = null;
     }
 
     private function _get_storage_resource() {
