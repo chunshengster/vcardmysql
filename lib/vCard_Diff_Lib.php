@@ -6,7 +6,7 @@
  */
 
 if(!function_exists('debugLog')){
-    require_once 'include/debug.php';
+    require_once dirname(__FILE__).'/debug.php';
 }
 
 class vCard_Diff_Lib {
