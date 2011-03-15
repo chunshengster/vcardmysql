@@ -6,6 +6,7 @@
  */
 class vCard_Diff_Lib {
     //put your code here
+/**
     public static function diff_onedimension($old,$new,$del_fields) {
 
         ksort($old);
@@ -36,52 +37,63 @@ class vCard_Diff_Lib {
         }
         return $c1;
     }
+*/
 
-    public static function  diff_twodimension($old,$new,$fileds) {
+    public static function  diff_twodimension($old,$new,$fields) {
         $a1 = $old;
         $b1 = $new;
 
         foreach($a1 as $key =>$value) {
-            if($value[$fileds[0]]!='') {
-                $a11[$value[$fileds[0]]]['TYPE'] = $value[$fileds[1]];
-                $a11[$value[$fileds[0]]]['RESOURCE_ID'] = $value['RESOURCE_ID'];
+//            echo 'key=>';var_export($key);echo "\n";
+//            echo 'value=>';var_export($value); echo "\n";
+//            echo 'field=>';var_export($fields);echo "\n";
+
+            if($value[$fields[0]]!='') {
+
+                $a11[$value[$fields[0]]]['TYPE'] = $value[$fields[1]];
+                $a11[$value[$fields[0]]]['RESOURCE_ID'] = $value['RESOURCE_ID'];
             }
         }
+//        echo "\n a11:";var_export($a11);
+//        echo "\n";
 
         $i=0;
         foreach($b1 as $key =>$value) {
-            if($value[$fileds[0]]!='') {//去掉值为空的字段
-                $b11[$value[$fileds[0]]] = $value[$fileds[1]];
+            if($value[$fields[0]]!='') {//去掉值为空的字段
+                $b11[$value[$fields[0]]]['TYPE'] = $value[$fields[1]];
 
-                if(array_key_exists($value[$fileds[0]],$a11)) {//字段1存在
-                    if($value[$fileds[1]]==$a11[$value[$fileds[0]]]) {//字段2内容没变
-                        $c1[$i]['FLAG'] = 'KEEP';
-                        $c1[$i][$fileds[0]] =$value[$fileds[0]];
-                        $c1[$i][$fileds[1]] = $value[$fileds[1]];
-                        $i++;
+                if(array_key_exists($value[$fields[0]],$a11)) {//字段1存在
+//                    echo $value[$fields[1]].'<-->'.var_export($a11[$value[$fields[0]]]['TYPE'],true)."\n";
+                    
+                    if($value[$fields[1]]==$a11[$value[$fields[0]]]['TYPE']) {//字段2内容没变
+
+//                        $c1[$i]['FLAG'] = 'KEEP';
+//                        $c1[$i][$fields[0]] =$value[$fields[0]];
+//                        $c1[$i][$fields[1]] = $value[$fields[1]];
+//                        $i++;
                     }
                     else {
                         $c1[$i]['FLAG'] ='CHANGED';
-                        $c1[$i][$fileds[0]] =$value[$fileds[0]];
-                        $c1[$i][$fileds[1]] = $value[$fileds[1]];
-                        $c1[$i]['RESOURCE_ID'] = $a11[$value[$fileds[0]]]['RESOURCE_ID'];
+                        $c1[$i][$fields[0]] =$value[$fields[0]];
+                        $c1[$i][$fields[1]] = $value[$fields[1]];
+                        $c1[$i]['RESOURCE_ID'] = $a11[$value[$fields[0]]]['RESOURCE_ID'];
                         $i++;
                     }
                 }
                 else {
                     $c1[$i]['FLAG'] ='NEW';
-                    $c1[$i][$fileds[0]] =$value[$fileds[0]];
-                    $c1[$i][$fileds[1]] = $value[$fileds[1]];
+                    $c1[$i][$fields[0]] =$value[$fields[0]];
+                    $c1[$i][$fields[1]] = $value[$fields[1]];
                     $i++;
                 }
             }
         }
 
         foreach($a1 as $key =>$value) {
-            if(!array_key_exists($value[$fileds[0]],$b11)) {
+            if(!array_key_exists($value[$fields[0]],$b11)) {
                 $c1[$i]['FLAG'] ='DELETED';
-                $c1[$i][$fileds[0]] =$value[$fileds[0]];
-                $c1[$i][$fileds[1]] = $value[$fileds[1]];
+                $c1[$i][$fields[0]] =$value[$fields[0]];
+                $c1[$i][$fields[1]] = $value[$fields[1]];
                 $c1[$i]['RESOURCE_ID'] = $value['RESOURCE_ID'];
                 $i++;
             }
@@ -107,21 +119,40 @@ class vCard_Diff_Lib {
     public static function vCard_Diff($vcard_a,$vcard_b) {
         foreach ($vcard_a as $key => $value) {
             $rs = self::show_dimension($value);
-            $delfields = 'UID,REV,RESOURCE_ID';
+            //$delfields = 'UID,REV,RESOURCE_ID';
             if($rs =='onedimension') {
-                $c[$key]= self::diff_onedimension($value, $vcard_b[$key],$delfields );
+                $c[$key]= self::diff_onedimension($value, $vcard_b[$key]);
             }
             if($rs == 'twodimension') {
-                $fileds =array_keys($vcard_b[$key][0]);
+                $fields =array_keys($vcard_b[$key][0]);
 
 //                echo ">>>>>>:\n";
 //                echo "key => ".$key."<<end key \n";
-//                var_export($fileds);
+//                var_export($fields);
 //                echo "<<<<<<\n";
-                $c[$key] = self::diff_twodimension($value, $vcard_b[$key], $fileds);
+                $c[$key] = self::diff_twodimension($value, $vcard_b[$key], $fields);
             }
         }
         return $c;
     }
+
+    public static function diff_onedimension($old,$new) {
+        $is_changed = false;
+        foreach ($new as $key=>$value) {
+            if(isset($value) && $value <> '') {
+                if(isset ($old[$key]) && $old[$key] <> $value) {
+                    $old['FLAG'] = 'CHANGED';
+                    $is_changed = true;
+                    $old[$key] = $value;
+                }
+            }
+        }
+        if($is_changed) {
+            return $old;
+        }else {
+            return array();
+        }
+    }
+    
 }
 ?>
