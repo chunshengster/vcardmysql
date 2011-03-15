@@ -106,7 +106,7 @@ class vCard_Diff_Lib {
      */
     public static function vCard_Diff($vcard_a,$vcard_b) {
         foreach ($vcard_a as $key => $value) {
-            $rs = ArrayClass::show_dimension($value);
+            $rs = self::show_dimension($value);
             $delfields = 'UID,REV,RESOURCE_ID';
             if($rs =='onedimension') {
                 $c[$key]= self::diff_onedimension($value, $vcard_b[$key],$delfields );
