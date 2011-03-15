@@ -4,6 +4,11 @@
  * @version $Id$
  * @author wenhui<wenhui@wo.com.cn>
  */
+
+if(!function_exists('debugLog')){
+    require_once 'include/debug.php';
+}
+
 class vCard_Diff_Lib {
     //put your code here
 /**
@@ -42,11 +47,12 @@ class vCard_Diff_Lib {
     public static function  diff_twodimension($old,$new,$fields) {
         $a1 = $old;
         $b1 = $new;
+        $c1 = array();
 
         foreach($a1 as $key =>$value) {
-//            echo 'key=>';var_export($key);echo "\n";
-//            echo 'value=>';var_export($value); echo "\n";
-//            echo 'field=>';var_export($fields);echo "\n";
+            echo 'key=>';var_export($key);echo "\n";
+            echo 'value=>';var_export($value); echo "\n";
+            echo 'field=>';var_export($fields);echo "\n";
 
             if($value[$fields[0]]!='') {
 
@@ -121,6 +127,7 @@ class vCard_Diff_Lib {
             $rs = self::show_dimension($value);
             //$delfields = 'UID,REV,RESOURCE_ID';
             if($rs =='onedimension') {
+                debugLog(__FILE__,__CLASS__,__METHOD__,__LINE__,var_export($value,true),var_export($vcard_b[$key],true));
                 $c[$key]= self::diff_onedimension($value, $vcard_b[$key]);
             }
             if($rs == 'twodimension') {
@@ -137,6 +144,7 @@ class vCard_Diff_Lib {
     }
 
     public static function diff_onedimension($old,$new) {
+        debugLog(__FILE__,__CLASS__,__METHOD__,__LINE__,var_export($old,true),var_export($new,true));
         $is_changed = false;
         foreach ($new as $key=>$value) {
             if(isset($value) && $value <> '') {
@@ -148,6 +156,7 @@ class vCard_Diff_Lib {
             }
         }
         if($is_changed) {
+            debugLog(__FILE__,__CLASS__,__METHOD__,__LINE__,var_export($old,true));
             return $old;
         }else {
             return array();
