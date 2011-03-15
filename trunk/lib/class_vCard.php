@@ -10,7 +10,7 @@ require_once 'my_vcard_build.php';
 require_once 'class_vcard_storage.php';
 
 if(!function_exists('debugLog')){
-    require_once 'include/debug.php';
+    require_once dirname(__FILE__).'/debug.php';
 }
 
 class class_vCard {
