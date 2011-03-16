@@ -106,13 +106,15 @@ class vCard_Diff_Lib {
         }
         return $c1;
     }
-    public static function show_dimension($array) {
-        $a = count($array,COUNT_RECURSIVE);
-        $b =  count($array);
-        if($a==$b) {
+    public static function show_dimension($key) {
+//        $a = count($array,COUNT_RECURSIVE);
+//        $b =  count($array);
+        $one = array('vCard_Explanatory_Properties','vCard_Identification_Properties','vCard_Geographical_Properties','vCard_Organizational_Properties');
+        $two = array('vCard_Delivery_Addressing_Properties_ADR','vCard_Delivery_Addressing_Properties_LABEL','vCard_Telecommunications_Addressing_Properties_Tel','vCard_Telecommunications_Addressing_Properties_Email');
+        if(in_array($key, $one)) {
             return 'onedimension';
         }
-        else {
+        elseif(in_array($key, $two)) {
             return  'twodimension';
         }
     }
@@ -124,7 +126,7 @@ class vCard_Diff_Lib {
      */
     public static function vCard_Diff($vcard_a,$vcard_b) {
         foreach ($vcard_a as $key => $value) {
-            $rs = self::show_dimension($value);
+            $rs = self::show_dimension($key);
             //$delfields = 'UID,REV,RESOURCE_ID';
             if($rs =='onedimension') {
                 debugLog(__FILE__,__CLASS__,__METHOD__,__LINE__,var_export($value,true),var_export($vcard_b[$key],true));
