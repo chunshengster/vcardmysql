@@ -50,9 +50,9 @@ class vCard_Diff_Lib {
         $c1 = array();
 
         foreach($a1 as $key =>$value) {
-            echo 'key=>';var_export($key);echo "\n";
-            echo 'value=>';var_export($value); echo "\n";
-            echo 'field=>';var_export($fields);echo "\n";
+//            echo 'key=>';var_export($key);echo "\n";
+//            echo 'value=>';var_export($value); echo "\n";
+//            echo 'field=>';var_export($fields);echo "\n";
 
             if($value[$fields[0]]!='') {
 
