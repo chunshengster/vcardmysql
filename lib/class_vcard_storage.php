@@ -683,6 +683,7 @@ class class_vcard_storage {
                                 return false;
                             }
                         }
+                        debugLog(__FILE__,__CLASS__,__METHOD__,__LINE__,var_export($store_sql,true));
                         try {
                             $sth = $this->dbh->prepare($store_sql);
                             $sth->bindParam(':RESOURCEID', $t_vcard_data['RESOURCE_ID']);
