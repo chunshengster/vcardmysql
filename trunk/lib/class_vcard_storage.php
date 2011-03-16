@@ -573,9 +573,9 @@ class class_vcard_storage {
                             $store_sql = "INSERT INTO " . self::$vCard_Delivery_Addressing_Properties_ADR . " (`vCard_Explanatory_Properties_idvCard_Explanatory_Properties`,`ADR`,`AdrType`) VALUES (:RESOURCEID,:ADR,:AdrType)";
                         } else {
                             $new_record = false;
-                            if(isset($vcard_data_array['FLAG']) && $vcard_data_array['FLAG']=='CHANGED') {
+                            if(isset($t_vcard_data['FLAG']) && $t_vcard_data['FLAG']=='CHANGED') {
                                 $store_sql = "UPDATE " . self::$vCard_Delivery_Addressing_Properties_ADR . " SET ADR=:ADR, AdrType=:AdrType WHERE idvCard_Delivery_Addressing_Properties_ADR=:RESOURCEID";
-                            }elseif(isset ($vcard_data_array['FLAG']) && $vcard_data_array['FLAG'] == 'DELETED') {
+                            }elseif(isset ($t_vcard_data['FLAG']) && $t_vcard_data['FLAG'] == 'DELETED') {
                                 $store_sql = 'DELETE FROM '.self::$vCard_Delivery_Addressing_Properties_ADR.' WHERE idvCard_Delivery_Addressing_Properties_ADR=:RESOURCEID';
                             }else {
                                 return false;
@@ -625,9 +625,9 @@ class class_vcard_storage {
                             $store_sql = "INSERT INTO " . self::$vCard_Delivery_Addressing_Properties_LABEL . " (`vCard_Explanatory_Properties_idvCard_Explanatory_Properties`,`LABEL`,`LabelType`) VALUES (:RESOURCEID,:LABEL,:LabelType)";
                         } else {
                             $new_record = false;
-                            if(isset($vcard_data_array['FLAG']) && $vcard_data_array['FLAG'] == 'CHANGED'){
+                            if(isset($t_vcard_data['FLAG']) && $t_vcard_data['FLAG'] == 'CHANGED'){
                                 $store_sql = "UPDATE " . self::$vCard_Delivery_Addressing_Properties_LABEL . " SET LABEL=:LABEL ,LabelType=:LabelType WHERE idvCard_Delivery_Addressing_Properties_LABEL=:RESOURCEID";
-                            }elseif(isset ($vcard_data_array['FLAG']) && $vcard_data_array['FLAG'] == 'DELETED'){
+                            }elseif(isset ($t_vcard_data['FLAG']) && $t_vcard_data['FLAG'] == 'DELETED'){
                                 $store_sql = 'DELETE FROM '. self::$vCard_Delivery_Addressing_Properties_LABEL. ' WHERE idvCard_Delivery_Addressing_Properties_LABEL=:RESOURCEID';
                             }else{
                                 return false;
@@ -675,9 +675,9 @@ class class_vcard_storage {
                             $store_sql = "INSERT INTO " . self::$vCard_Telecommunications_Addressing_Properties_Tel . " (`vCard_Explanatory_Properties_idvCard_Explanatory_Properties`, `TEL` ,`TelType`) VALUES (:RESOURCEID, :TEL, :TelType)";
                         } else {
                             $new_record = false;
-                            if(isset($vcard_data_array['FLAG']) && $vcard_data_array['FLAG'] == 'CHANGED'){
+                            if(isset($t_vcard_data['FLAG']) && $t_vcard_data['FLAG'] == 'CHANGED'){
                                 $store_sql = "UPDATE " . self::$vCard_Telecommunications_Addressing_Properties_Tel . " SET TEL=:TEL ,TelType=:TelType WHERE idvCard_Telecommunications_Addressing_Properties_Tel=:RESOURCEID";
-                            }elseif(isset($vcard_data_array['FLAG']) && $vcard_data_array['FLAG'] == 'DELETED'){
+                            }elseif(isset($t_vcard_data['FLAG']) && $t_vcard_data['FLAG'] == 'DELETED'){
                                 $store_sql = 'DELETE FROM '.self::$vCard_Telecommunications_Addressing_Properties_Tel.' WHERE idvCard_Telecommunications_Addressing_Properties_Tel=:RESOURCEID';
                             }else{
                                 return false;
@@ -725,9 +725,9 @@ class class_vcard_storage {
                             $store_sql = "INSERT INTO " . self::$vCard_Telecommunications_Addressing_Properties_Email . " (`vCard_Explanatory_Properties_idvCard_Explanatory_Properties`, `EMAIL`, `EmailType`) VALUES (:RESOURCEID, :EMAIL, :EmailType)";
                         } else {
                             $new_record = false;
-                            if(isset($vcard_data_array['FLAG']) && $vcard_data_array['FLAG']=='CHANGED'){
+                            if(isset($t_vcard_data['FLAG']) && $t_vcard_data['FLAG']=='CHANGED'){
                                 $store_sql = "UPDATE " . self::$vCard_Telecommunications_Addressing_Properties_Email . " SET EMAIL=:EMAIL ,EmailType=:EmailType WHERE idvCard_Telecommunications_Addressing_Properties_Email=:RESOURCEID";
-                            }elseif(isset($vcard_data_array['FLAG']) && $vcard_data_array['FLAG'] == 'DELETED'){
+                            }elseif(isset($t_vcard_data['FLAG']) && $t_vcard_data['FLAG'] == 'DELETED'){
                                 $store_sql = 'DELETE FROM '.self::$vCard_Telecommunications_Addressing_Properties_Email.' WHERE idvCard_Telecommunications_Addressing_Properties_Email=:RESOURCEID';
                             }else{
                                 return false;

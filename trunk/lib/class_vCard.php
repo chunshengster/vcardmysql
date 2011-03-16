@@ -1182,7 +1182,7 @@ class class_vCard {
      * @param <bool> $from_storage
      * @param <uuid> $uuid
      */
-    public function get_vCard_Data($from_storage,$uuid){
+    public function get_vCard_Data($from_storage=null,$uuid=null){
         if(isset ($from_storage) && $from_storage ){
             if(!isset ($uuid) or strlen($uuid) < 36){
                 return FALSE;
