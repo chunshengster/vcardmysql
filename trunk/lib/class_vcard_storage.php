@@ -668,6 +668,7 @@ class class_vcard_storage {
                             }elseif(isset($t_vcard_data['FLAG']) && $t_vcard_data['FLAG'] == 'DELETED'){
                                 $store_sql = 'DELETE FROM '.self::$vCard_Telecommunications_Addressing_Properties_Tel.' WHERE idvCard_Telecommunications_Addressing_Properties_Tel=:RESOURCEID';
                             }else{
+                                debugLog(__FILE__,__CLASS__,__METHOD__,__LINE__,var_export($store_sql,true));
                                 return false;
                             }
                         }
