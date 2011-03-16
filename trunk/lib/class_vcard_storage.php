@@ -376,27 +376,22 @@ class class_vcard_storage {
                 }
                 try {
                     $sth = $this->dbh->prepare($store_sql);
-                } catch (PDOException $e) {
-//                    echo $e->getMessage();
-                    debugLog(__FILE__, __METHOD__, __LINE__, $e->getMessage());
-                }
-                if(!isset($vcard_data_array['REV']) or strlen($vcard_data_array['REV'])<=0) {
-                    $vcard_data_array['REV']=date('c');
-                }
 
-                if(!isset($vcard_data_array['VERSION'])) {
-                    $vcard_data_array['VERSION'] = '2.1';
-                }
-                $sth->bindParam(':UID', $vcard_data_array['UID']);
-                $sth->bindParam(':VERSION', $vcard_data_array['VERSION']);
-                $sth->bindParam(':REV', $vcard_data_array['REV']);
-                $sth->bindParam(':LANG', $vcard_data_array['LANG']);
-                $sth->bindParam(':CATEGORIES', $vcard_data_array['CATEGORIES']);
-                $sth->bindParam(':PRODID', $vcard_data_array['PRODID']);
-                $sth->bindParam(':SORTSTRING', $vcard_data_array['SORT-STRING']);
-                // SORTSTRING,for pdo does not work with 'SORT-STRING'
-                debugLog(__FILE__, __METHOD__, __LINE__, var_export($sth, true));
-                try {
+                    if(!isset($vcard_data_array['REV']) or strlen($vcard_data_array['REV'])<=0) {
+                        $vcard_data_array['REV']=date('c');
+                    }
+
+                    if(!isset($vcard_data_array['VERSION'])) {
+                        $vcard_data_array['VERSION'] = '2.1';
+                    }
+                    $sth->bindParam(':UID', $vcard_data_array['UID']);
+                    $sth->bindParam(':VERSION', $vcard_data_array['VERSION']);
+                    $sth->bindParam(':REV', $vcard_data_array['REV']);
+                    $sth->bindParam(':LANG', $vcard_data_array['LANG']);
+                    $sth->bindParam(':CATEGORIES', $vcard_data_array['CATEGORIES']);
+                    $sth->bindParam(':PRODID', $vcard_data_array['PRODID']);
+                    $sth->bindParam(':SORTSTRING', $vcard_data_array['SORT-STRING']);
+                    // SORTSTRING,for pdo does not work with 'SORT-STRING'
                     $sth->execute();
                 } catch (PDOException $e) {
 //                    print_r($e->getMessage());
@@ -443,27 +438,23 @@ class class_vcard_storage {
                 debugLog(__FILE__, __METHOD__, __LINE__, '$store_sql', $store_sql);
                 try {
                     $sth = $this->dbh->prepare($store_sql);
-                } catch (PDOException $e) {
-                    debugLog(__FILE__, __METHOD__, __LINE__, $e->getMessage());
-                }
-                debugLog(__FILE__, __METHOD__, __LINE__, var_export($vcard_data_array,true));
-                if(preg_match("/^DELETE/", $store_sql)) {
-                    $sth->bindParam(':RESOURCEID', $vcard_data_array['RESOURCE_ID']);
-                }else {
-                    $sth->bindParam(':RESOURCEID', $vcard_data_array['RESOURCE_ID']);
-                    $sth->bindParam(':N', $vcard_data_array['N']);
-                    $sth->bindParam(':FN', $vcard_data_array['FN']);
-                    $sth->bindParam(':NICKNAME', $vcard_data_array['NICKNAME']);
-                    $sth->bindParam(':PHOTO', $vcard_data_array['PHOTO']);
-                    $sth->bindParam(':PhotoType', $vcard_data_array['PhotoType']);
-                    $sth->bindParam(':BDAY', $vcard_data_array['BDAY']);
-                    $sth->bindParam(':URL', $vcard_data_array['URL']);
-                    $sth->bindParam(':SOUND', $vcard_data_array['SOUND']);
-                    $sth->bindParam(':NOTE', $vcard_data_array['NOTE']);
-                }
-                try {
-                    $sth->execute();
-                } catch (PDOException $e) {
+                    debugLog(__FILE__, __METHOD__, __LINE__, var_export($vcard_data_array,true));
+                    if(preg_match("/^DELETE/", $store_sql)) {
+                        $sth->bindParam(':RESOURCEID', $vcard_data_array['RESOURCE_ID']);
+                    }else {
+                        $sth->bindParam(':RESOURCEID', $vcard_data_array['RESOURCE_ID']);
+                        $sth->bindParam(':N', $vcard_data_array['N']);
+                        $sth->bindParam(':FN', $vcard_data_array['FN']);
+                        $sth->bindParam(':NICKNAME', $vcard_data_array['NICKNAME']);
+                        $sth->bindParam(':PHOTO', $vcard_data_array['PHOTO']);
+                        $sth->bindParam(':PhotoType', $vcard_data_array['PhotoType']);
+                        $sth->bindParam(':BDAY', $vcard_data_array['BDAY']);
+                        $sth->bindParam(':URL', $vcard_data_array['URL']);
+                        $sth->bindParam(':SOUND', $vcard_data_array['SOUND']);
+                        $sth->bindParam(':NOTE', $vcard_data_array['NOTE']);
+                        $sth->execute();
+                    }
+                }catch (PDOException $e) {
 //                    print_r($e->getMessage());
                     debugLog(__FILE__, __METHOD__, __LINE__, $e->getMessage());
                 }
@@ -543,10 +534,6 @@ class class_vcard_storage {
                         $sth->bindParam(':ORG', $vcard_data_array['ORG']);
                         $sth->bindParam(':RESOURCEID', $vcard_data_array['RESOURCE_ID']);
                     }
-                } catch (PDOException $e) {
-                    debugLog(__FILE__, __METHOD__, __LINE__, $e->getMessage());
-                }
-                try {
                     $sth->execute();
                 } catch (PDOException $e) {
 //                    print_r($e->getMessage());
@@ -642,6 +629,7 @@ class class_vcard_storage {
                                 $sth->bindParam(':LABEL', $t_vcard_data['LABEL']);
                                 $sth->bindParam(':LabelType', $t_vcard_data['LabelType']);
                             }
+                            $sth->execute();
                         } catch (PDOException $e) {
                             debugLog(__FILE__, __METHOD__, __LINE__, var_export($e->getMessage(),true));
                         }
@@ -691,6 +679,7 @@ class class_vcard_storage {
                                 $sth->bindParam(':TEL', $t_vcard_data['TEL']);
                                 $sth->bindParam(':TelType', $t_vcard_data['TelType']);
                             }
+                            $sth->execute();
                         } catch (PDOException $e) {
 //                            print_r($e->getMessage());
                             debugLog(__FILE__, __METHOD__, __LINE__, $e->getMessage());
@@ -741,6 +730,7 @@ class class_vcard_storage {
                                 $sth->bindParam(':EMAIL', $t_vcard_data['EMAIL']);
                                 $sth->bindParam(':EmailType', $t_vcard_data['EmailType']);
                             }
+                            $sth->execute();
                         } catch (PDOException $e) {
                             debugLog(__FILE__, __METHOD__, __LINE__, $e->getMessage());
                         }
