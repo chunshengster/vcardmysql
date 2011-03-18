@@ -154,7 +154,7 @@ class class_vcard_storage {
                 'BDAY' => $re[0]['BDAY'],
                 'URL' => $re[0]['URL'],
                 'SOUND' => $re[0]['SOUND'],
-                'NOTE' => $re[0]['NOTE'],
+                'NOTE' => stripslashes($re[0]['NOTE']),
                 'NICKNAME' => $re[0]['NICKNAME'],
                 'RESOURCE_ID' => $re[0]['idvCard_Identification_Properties']
         );
