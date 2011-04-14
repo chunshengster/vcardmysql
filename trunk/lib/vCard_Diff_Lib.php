@@ -2,7 +2,7 @@
 /**
  * 比较一维、二维数组
  * @version $Id$
- * @author wenhui<wenhui@wo.com.cn>
+ * @author wenhui<wenhui@wo.com.cn> chunshengster<chunshengster@gmail.com>
  */
 
 if(!function_exists('debugLog')){
