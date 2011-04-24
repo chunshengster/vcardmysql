@@ -378,11 +378,12 @@ class class_vcard_storage {
                     $sth = $this->dbh->prepare($store_sql);
 
                     if(!isset($vcard_data_array['REV']) or strlen($vcard_data_array['REV'])<=0) {
-                        $vcard_data_array['REV']=date('c');
+                        $vcard_data_array['REV'] = date("Y-m-d H:m:s");
+
                     }
 
                     if(!isset($vcard_data_array['VERSION'])) {
-                        $vcard_data_array['VERSION'] = '2.1';
+                        $vcard_data_array['VERSION'] = '3.0';
                     }
                     $sth->bindParam(':UID', $vcard_data_array['UID']);
                     $sth->bindParam(':VERSION', $vcard_data_array['VERSION']);
