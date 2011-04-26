@@ -90,11 +90,11 @@ class class_vCard {
         } else {
             $key = array();
             debugLog(__FILE__, __METHOD__, __LINE__, var_export($this->vCard_Explanatory_Properties, true));
-            if ($this->vCard_Explanatory_Properties['UID'] !== '') {
+            if (isset ($this->vCard_Explanatory_Properties['UID']) and ($this->vCard_Explanatory_Properties['UID'] != '')) {
                 $key = array(
                     'UID' => $this->vCard_Explanatory_Properties['UID'],
                 );
-            } elseif ($this->vCard_Explanatory_Properties['RESOURCE_ID'] !== '' && isset($this->vCard_Explanatory_Properties['RESOURCE_ID'])) {
+            } elseif ($this->vCard_Explanatory_Properties['RESOURCE_ID'] != '' && isset($this->vCard_Explanatory_Properties['RESOURCE_ID'])) {
                 $key = array(
                     'idvCard_Explanatory_Properties' => $this->vCard_Explanatory_Properties['RESOURCE_ID']
                 );
@@ -954,18 +954,22 @@ class class_vCard {
 
     /**
      *
-     * @param <uuid> $uid (uuid)
+     * @param <string> $uid
+     * @param <int> $vcard_id
+     * @return $this
      */
-    public function get_Full_vCard_From_Storage($uid='') {
-        if (isset($uid) && $uid !== '') {
+    public function get_Full_vCard_From_Storage($uid= null,$vcard_id = null) {
+        if (isset($uid) && ($uid != '')) {
             /**
              * 此处需要增加对 $uid 的检查
              */
             $this->vCard_Explanatory_Properties['UID'] = $uid;
+        }elseif(isset ($vcard_id) && (gettype(intval($vcard_id)) == 'integer')){
+            $this->vCard_Explanatory_Properties['RESOURCE_ID'] = $vcard_id;
+        }else{
+            return FALSE;
         }
-        if ($this->vCard_Explanatory_Properties['UID'] == '') {
-            return false;
-        }
+
         $re = $this->get_vCard_Explanatory_Properties(true);
 //        debugLog(__FILE__,__METHOD__,__LINE__,var_export($re,true));
         $re = $this->get_vCard_Identification_Properties(true);
@@ -1200,6 +1204,8 @@ class class_vCard {
             'vCard_Telecommunications_Addressing_Properties_Tel'=>$this->get_vCard_Telecommunications_Addressing_Properties_Tel(),
         );
     }
+
+    
 }
 
 ?>
