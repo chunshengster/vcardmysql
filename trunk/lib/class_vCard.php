@@ -30,14 +30,19 @@ class class_vCard {
     private $vCard_Telecommunications_Addressing_Properties_Email = array();
     private $vCard_Telecommunications_Addressing_Properties_Tel = array();
 
-    function __construct() {
-
-        /*
-          $this->obj_vcard_storeage = new class_vcard_db ();
-          if (! ($this->obj_vcard_storeage instanceof class_vcard_db)) {
-          return 0;
-          }
-         */
+    function __construct($v = null) {
+        if(isset ($v) and self::varify_vCard_data($v)){
+            $this->set_vCard_Explanatory_Properties($v['vCard_Explanatory_Properties']);
+            $this->set_vCard_Identification_Properties($v['vCard_Identification_Properties']);
+            $this->set_vCard_Organizational_Properties($v['vCard_Organizational_Properties']);
+            $this->set_vCard_Geographical_Properties($v['vCard_Geographical_Properties']);
+            $this->set_vCard_Delivery_Addressing_Properties_ADR($v['vCard_Delivery_Addressing_Properties_ADR']);
+            $this->set_vCard_Delivery_Addressing_Properties_LABEL($v['vCard_Delivery_Addressing_Properties_LABEL']);
+            $this->set_vCard_Telecommunications_Addressing_Properties_Email($v['vCard_Telecommunications_Addressing_Properties_Email']);
+            $this->set_vCard_Telecommunications_Addressing_Properties_Tel($v['vCard_Telecommunications_Addressing_Properties_Tel']);
+            return $this;
+        }else {
+        }
     }
 
     function __destruct() {
@@ -1203,6 +1208,78 @@ class class_vCard {
             'vCard_Telecommunications_Addressing_Properties_Email'=>$this->get_vCard_Telecommunications_Addressing_Properties_Email(),
             'vCard_Telecommunications_Addressing_Properties_Tel'=>$this->get_vCard_Telecommunications_Addressing_Properties_Tel(),
         );
+    }
+
+    public static function varify_vCard_data($vcard) {
+        if(!is_array($vcard) and (count($vcard) <=0) and !($vcard instanceof class_vCard)){
+            return FALSE;
+        }
+        /**
+         * @todo 该函数需要完善
+         * 
+         */
+        return TRUE;
+    }
+
+    public function store_vCard() {
+        if(!self::varify_vCard_data($this)){
+            return false;
+        }
+
+        /**
+         * @tutorial 对于 store_* 类方法的返回值判断 应使用 === 
+         */
+        debugLog(__FILE__,__CLASS__,__METHOD__,__LINE__,var_export($this,TRUE));
+        $re = $this->store_vCard_Explanatory_Properties();
+        debugLog(__FILE__,__CLASS__,__METHOD__,__LINE__,var_export($re,true));
+        if($re === FALSE){
+            debugLog(__FILE__,__CLASS__,__METHOD__,__LINE__,var_export($this->get_vCard_Explanatory_Properties(),true));
+            return false;
+        }
+        
+        $re = $this->store_vCard_Identification_Properties();
+        debugLog(__FILE__,__CLASS__,__METHOD__,__LINE__,var_export($re,true));
+        if($re === FALSE){
+            debugLog(__FILE__,__CLASS__,__METHOD__,__LINE__,var_export($this->get_vCard_Identification_Properties(),true));
+            return false;
+        }
+        
+        $re = $this->store_vCard_Organizational_Properties();
+        debugLog(__FILE__,__CLASS__,__METHOD__,__LINE__,var_export($re,true));
+        if($re === FALSE){
+            debugLog(__FILE__,__CLASS__,__METHOD__,__LINE__,var_export($this->get_vCard_Organizational_Properties(),true));
+            return false;
+        }
+
+        $re = $this->store_vCard_Delivery_Addressing_Properties_ADR();
+        debugLog(__FILE__,__CLASS__,__METHOD__,__LINE__,var_export($re,true));
+        if($re === FALSE){
+            debugLog(__FILE__,__CLASS__,__METHOD__,__LINE__,var_export($this->get_vCard_Delivery_Addressing_Properties_ADR(),true));
+            return false;
+        }
+
+        $re = $this->store_vCard_Delivery_Addressing_Properties_LABEL();
+        debugLog(__FILE__,__CLASS__,__METHOD__,__LINE__,var_export($re,true));
+        if($re === FALSE){
+            debugLog(__FILE__,__CLASS__,__METHOD__,__LINE__,var_export($this->get_vCard_Delivery_Addressing_Properties_LABEL(),true));
+            return false;
+        }
+        
+        $re = $this->store_vCard_Telecommunications_Addressing_Properties_Tel();
+        debugLog(__FILE__,__CLASS__,__METHOD__,__LINE__,var_export($re,true));
+        if($re === FALSE){
+            debugLog(__FILE__,__CLASS__,__METHOD__,__LINE__,var_export($this->get_vCard_Telecommunications_Addressing_Properties_Tel(),true));
+            return false;
+        }
+
+        $re = $this->store_vCard_Telecommunications_Addressing_Properties_Email();
+        debugLog(__FILE__,__CLASS__,__METHOD__,__LINE__,var_export($re,true));
+        if($re === FALSE){
+            debugLog(__FILE__,__CLASS__,__METHOD__,__LINE__,var_export($this->get_vCard_Telecommunications_Addressing_Properties_Email(),true));
+            return false;
+        }
+        
+        return $this->get_vCard_Data();
     }
 
     
