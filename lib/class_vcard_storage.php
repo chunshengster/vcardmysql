@@ -110,11 +110,19 @@ class class_vcard_storage {
         }
         $re = $this->_get_vcard_data_from_db('vCard_Explanatory_Properties', $key);
         debugLog(__FILE__, __METHOD__, __LINE__, var_export($re, true));
-        if (count($re) > 1) {
+        if (count($re) > 1 or $re === FALSE) {
             /**
              * @todo 系统中应该只存在一份 Explanatory properties，如果有多份，需要…………
              */
+            debugLog(__FILE__,__CLASS__,__METHOD__,__LINE__,var_export($re,true));
+            return false;
         }
+        
+        if(count($re) == 0){
+            return array(
+            );
+        }
+
         return array(
                 'UID' => $re[0]['UID'],
                 'VERSION' => $re[0]['VERSION'],
@@ -140,11 +148,15 @@ class class_vcard_storage {
 
         $re = $this->_get_vcard_data_from_db('vCard_Identification_Properties', $key);
         debugLog(__FILE__, __METHOD__, __LINE__, var_export($re, true));
-        if (count($re) > 1 or $re == false) {
+        if (count($re) > 1 or $re === false) {
             /**
              * @todo 系统中应该只存在一份 identification properties，如果有多份，需要…………
              */
             debugLog(__FILE__, __METHOD__, __LINE__, var_export($re, true));
+        }
+        if(count($re) == 0){
+            return array(
+            );
         }
         return array(
                 'N' => $re[0]['N'],
@@ -167,12 +179,19 @@ class class_vcard_storage {
         }
         $re = $this->_get_vcard_data_from_db('vCard_Geographical_Properties', $key);
 
-        if (count($re) > 1 or $re == false) {
+        if (count($re) > 1 or $re === false) {
             /**
              * @todo 系统中应该只存在一份 Geographical properties，如果有多份，需要…………
              */
+            return false;
         }
+
         debugLog(__FILE__, __METHOD__, __LINE__, var_export($re, true));
+        if(count($re) == 0){
+            return array(
+            );
+        }
+        
         return array(
                 'TZ' => $re[0]['TZ'],
                 'GEO' => $re[0]['GEO'],
@@ -192,8 +211,15 @@ class class_vcard_storage {
             /**
              * @todo 系统中应该只存在一份 Organizational properties，如果有多份，需要…………
              */
+            return FALSE;
         }
         debugLog(__FILE__, __METHOD__, __LINE__, var_export($re, true));
+
+        if(count($re) == 0){
+            return array(
+            );
+        }
+        
         return array(
                 'TITLE' => $re[0]['TITLE'],
                 'ROLE' => $re[0]['ROLE'],
@@ -211,6 +237,16 @@ class class_vcard_storage {
         }
         $re = $this->_get_vcard_data_from_db('vCard_Delivery_Addressing_Properties_ADR', $key);
         debugLog(__FILE__, __METHOD__, __LINE__, var_export($re, true));
+
+        if($re === false){
+            return FALSE;
+        }
+
+        if(count($re) == 0){
+            return array(
+            );
+        }
+
         $re_array = array();
         foreach ($re as $k => $val) {
             $re_array[$k]['ADR'] = $val['ADR'];
@@ -228,6 +264,15 @@ class class_vcard_storage {
         }
         $re = $this->_get_vcard_data_from_db('vCard_Delivery_Addressing_Properties_LABEL', $key);
         debugLog(__FILE__, __METHOD__, __LINE__, var_export($re, true));
+        
+        if($re === FALSE){
+            return FALSE;
+        }
+
+        if(count($re) == 0){
+            return array(
+            );
+        }
         $re_array = array();
         foreach ($re as $k => $val) {
             $re_array[$k]['LABEL'] = $val['LABEL'];
@@ -245,6 +290,15 @@ class class_vcard_storage {
         }
         $re = $this->_get_vcard_data_from_db('vCard_Telecommunications_Addressing_Properties_Tel', $key);
         debugLog(__FILE__, __METHOD__, __LINE__, var_export($re, true));
+
+        if($re === FALSE){
+            return FALSE;
+        }
+
+        if(count($re) === 0){
+            return array(
+            );
+        }
         $re_array = array();
         foreach ($re as $k => $val) {
             $re_array[$k]['TEL'] = $val['TEL'];
@@ -262,6 +316,15 @@ class class_vcard_storage {
         }
         $re = $this->_get_vcard_data_from_db('vCard_Telecommunications_Addressing_Properties_Email', $key);
         debugLog(__FILE__, __METHOD__, __LINE__, var_export($re, true));
+        
+        if($re === FALSE){
+            return FALSE;
+        }
+
+        if(count($re) === 0){
+            return array(
+            );
+        }
         $re_array = array();
         foreach ($re as $k => $val) {
             $re_array[$k]['EMAIL'] = $val['EMAIL'];
@@ -282,6 +345,7 @@ class class_vcard_storage {
             $sth->execute();
         } catch (PDOException $e) {
             debugLog(__FILE__, __METHOD__, __LINE__, $e->getMessage());
+            return FALSE;
         }
         $re = $sth->fetchAll(PDO::FETCH_ASSOC);
         debugLog(__FILE__, __METHOD__, __LINE__, var_export($re, true));
@@ -311,6 +375,7 @@ class class_vcard_storage {
             } catch (PDOException $e) {
 //                echo $exc->getTraceAsString();
                 debugLog(__FILE__, __METHOD__, __LINE__, $e->getMessage());
+                return FALSE;
             }
             return $sth->fetchColumn();
         }
