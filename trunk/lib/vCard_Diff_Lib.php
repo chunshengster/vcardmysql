@@ -10,39 +10,6 @@ if(!function_exists('debugLog')){
 }
 
 class vCard_Diff_Lib {
-    //put your code here
-/**
-    public static function diff_onedimension($old,$new,$del_fields) {
-
-        ksort($old);
-        ksort($new);
-        if(count($old) > 0) $tmp = $old['RESOURCE_ID'];
-        $del_filed = array(',',$del_fields);
-        foreach($del_filed as $key =>$value) {
-           if(isset ($old[$value])) unset($old[$value]);
-           if(isset ($new[$value])) unset($new[$value]);
-        }
-
-        $a1 = serialize($old);
-        $b1 = serialize($new);
-        $c1 = array();
-        if($a1!=$b1) {
-            if(count($old) > 0 && count($new) > 0){
-                $c1 = $new;
-                $c1['FLAG'] = 'CHANGED';
-                $c1['RESOURCE_ID'] = $tmp;
-            }elseif(count($old)>0){
-                $c1 = array();
-                $c1['FLAG'] = 'DELETED';
-                $c1['RESOURCE_ID'] = $tmp;
-            }elseif (count($new)>0) {
-                $c1 = $new;
-                $c1['FLAG'] = 'NEW';
-            }
-        }
-        return $c1;
-    }
-*/
 
     public static function  diff_twodimension($old,$new,$fields) {
         $a1 = $old;
@@ -50,9 +17,6 @@ class vCard_Diff_Lib {
         $c1 = array();
 
         foreach($a1 as $key =>$value) {
-//            echo 'key=>';var_export($key);echo "\n";
-//            echo 'value=>';var_export($value); echo "\n";
-//            echo 'field=>';var_export($fields);echo "\n";
 
             if($value[$fields[0]]!='') {
 
@@ -60,8 +24,6 @@ class vCard_Diff_Lib {
                 $a11[$value[$fields[0]]]['RESOURCE_ID'] = $value['RESOURCE_ID'];
             }
         }
-//        echo "\n a11:";var_export($a11);
-//        echo "\n";
 
         $i=0;
         foreach($b1 as $key =>$value) {
