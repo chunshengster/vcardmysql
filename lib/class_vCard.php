@@ -1006,37 +1006,9 @@ class class_vCard {
             $this->get_Full_vCard_From_Storage($uid);
         }
         debugLog(__FILE__, __METHOD__, __LINE__, var_export($this, true));
+        
         $re_lines = array();
         $re_lines[] = "BEGIN:VCARD";
-
-//        if (!($this->_builder instanceof my_vcard_build)) {
-//            try {
-//                $this->_builder = new my_vcard_build ();
-//            } catch (Exception $e) {
-//                debugLog(__FILE__, __METHOD__, __LINE__, $e->getMessage());
-//                return false;
-//            }
-//        }
-//        debugLog(__FILE__, __METHOD__, __LINE__, var_export($this->_builder,true));
-        /**
-         * 将 $this->vCard_Explanatory_Properties 的属性添加到 _builder 中去
-         *  $this->set_vCard_Explanatory_Properties(array(
-         *  'UID' => $this->_builder->getUniqueID(),
-         *  'REV' => (strlen($this->_builder->getRevision()) <= 1) ? date("c") : $this->_builder->getRevision(),
-         *  'VERSION' => $this->_parser->getVersion(),
-         *  'LANG' => $this->_builder->getLanguage(),
-         *  'CATEGORIES' => $this->_builder->getCategories(),
-         *  'PRODID' => $this->_builder->getProductID(),
-         *  'SORT-STRING' => $this->_builder->getSortString()
-         *   )
-         */
-//        $this->_builder->setUniqueID($this->vCard_Explanatory_Properties['UID']);
-//        $this->_builder->setVersion($this->vCard_Explanatory_Properties['VERSION']);
-//        $this->_builder->setRevision($this->vCard_Explanatory_Properties['REV']);
-//        $this->_builder->setLanguage($this->vCard_Explanatory_Properties['LANG']);
-//        $this->_builder->addCategories($this->vCard_Explanatory_Properties['CATEGORIES']);
-//        $this->_builder->setProductID($this->vCard_Explanatory_Properties['PRODID']);
-//        $this->_builder->setSortString($this->vCard_Explanatory_Properties['SORT-STRING']);
 
         $re_lines[] = 'UID:' . $this->vCard_Explanatory_Properties['UID'];
         $re_lines[] = 'VERSION:' . $this->vCard_Explanatory_Properties['VERSION'];
@@ -1056,31 +1028,7 @@ class class_vCard {
             if ($this->vCard_Explanatory_Properties['SORT-STRING'] != '')
                 $re_lines[] = 'SORT-STRING:' . $this->vCard_Explanatory_Properties['SORT-STRING'];
         }
-//        $re_lines[] = ."\n";
-
-        /**
-         *   'FN' => $this->_builder->getFormattedName(),
-         *   'N' => $this->_builder->getName(),
-         *   'NICKNAME' => $this->_builder->getNickname(),
-         *   'PHOTO' => $this->_builder->getPhoto(),
-         *   'PhotoType' => $this->_builder->getType('PHOTO'),
-         *   'BDAY' => $this->_builder->getBirthday(),
-         *   'URL' => $this->_builder->getURL(),
-         *   'SOUND' => $this->_builder->getSound(),
-         *   'NOTE' => $this->_builder->getNote()
-         *  @todo ‘PhotoType’需要加入到属性中
-         */
-//        $this->_builder->setFormattedName($this->vCard_Identification_Properties['FN']);
-//        $N = explode(';', $this->vCard_Identification_Properties['N']);
-//        $this->_builder->setName($N[FILE_IMC::VCARD_N_FAMILY], $N[FILE_IMC::VCARD_N_GIVEN], $N[FILE_IMC::VCARD_N_ADDL], $N[FILE_IMC::VCARD_N_PREFIX], $N[FILE_IMC::VCARD_N_SUFFIX]);
-//        $N = NULL;
-//        $this->_builder->addNickname($this->vCard_Identification_Properties['NICKNAME']);
-//        $this->_builder->setPhoto($this->vCard_Identification_Properties['PHOTO']);
-//        $this->_builder->setBirthday($this->vCard_Identification_Properties['BDAY']);
-//        $this->_builder->setURL($this->vCard_Identification_Properties['URL']);
-//        $this->_builder->setSound($this->vCard_Identification_Properties['SOUND']);
-//        $this->_builder->setNote($this->vCard_Identification_Properties['NOTE']);
-
+        
         $re_lines[] = 'FN:' . $this->vCard_Identification_Properties['FN'];
         $re_lines[] = 'N:' . $this->vCard_Identification_Properties['N'];
         if ($this->vCard_Explanatory_Properties['VERSION'] == '3.0') {
@@ -1101,19 +1049,7 @@ class class_vCard {
 
 
 
-        /**
-         * 'TITLE' => $this->_builder->getTitle(),
-         * 'ROLE' => $this->_builder->getRole(),
-         * 'LOGO' => $this->_builder->getLogo(),
-         * 'LogoType' => $this->_builder->getType('LOGO'),
-         * 'AGENT' => $this->_builder->getAgent(),
-         * 'ORG' => $this->_builder->getOrg()
-         */
-//        $this->_builder->setTitle($this->vCard_Organizational_Properties['TITLE']);
-//        $this->_builder->setRole($this->vCard_Organizational_Properties['ROLE']);
-//        $this->_builder->setLogo($this->vCard_Organizational_Properties['LOGO']);
-//        $this->_builder->setAgent($this->vCard_Organizational_Properties['AGENT']);
-//        $this->_builder->addOrganization($this->vCard_Organizational_Properties['ORG']);
+  $this->_builder->addOrganization($this->vCard_Organizational_Properties['ORG']);
 
         if ($this->vCard_Organizational_Properties['TITLE'] != '')
             $re_lines[] = 'TITLE:' . $this->vCard_Organizational_Properties['TITLE'];
@@ -1121,14 +1057,15 @@ class class_vCard {
             $re_lines[] = 'ROLE:' . $this->vCard_Organizational_Properties['ROLE'];
         if ($this->vCard_Organizational_Properties['LOGO'] != '')
             $re_lines[] = 'LOGO;' . 'TYPE=' . $this->vCard_Organizational_Properties['LogoType'] . ':' . $this->vCard_Organizational_Properties['LOGO'];
-        if ($this->vCard_Organizational_Properties['AGENT'] != '')
+        if (isset ($this->vCard_Organizational_Properties['AGENT']) and ($this->vCard_Organizational_Properties['AGENT'] != ''))
             $re_lines[] = 'AGENT:' . $this->vCard_Organizational_Properties['AGENT'];
         if ($this->vCard_Organizational_Properties['ORG'] != '')
             $re_lines[] = 'ORG:' . $this->vCard_Organizational_Properties['ORG'];
+        
 //        $re_lines[] = ."\n";
-        if ($this->vCard_Geographical_Properties['TZ'] != '')
+        if (isset ($this->vCard_Geographical_Properties['TZ']) and ($this->vCard_Geographical_Properties['TZ'] != ''))
             $re_lines[] = 'TZ:' . $this->vCard_Geographical_Properties['TZ'];
-        if ($this->vCard_Geographical_Properties['GEO'] != '')
+        if (isset ($this->vCard_Geographical_Properties['GEO']) and ($this->vCard_Geographical_Properties['GEO'] != ''))
             $re_lines[] = 'GEO:' . $this->vCard_Geographical_Properties['GEO'];
 
 
