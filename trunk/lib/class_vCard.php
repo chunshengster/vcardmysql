@@ -1048,9 +1048,7 @@ class class_vCard {
 //        $re_lines[] = ."\n";
 
 
-
-  $this->_builder->addOrganization($this->vCard_Organizational_Properties['ORG']);
-
+        
         if ($this->vCard_Organizational_Properties['TITLE'] != '')
             $re_lines[] = 'TITLE:' . $this->vCard_Organizational_Properties['TITLE'];
         if ($this->vCard_Organizational_Properties['ROLE'] != '')
@@ -1194,6 +1192,14 @@ class class_vCard {
             debugLog(__FILE__,__CLASS__,__METHOD__,__LINE__,var_export($this->get_vCard_Delivery_Addressing_Properties_ADR(),true));
             return false;
         }
+
+        $re = $this->store_vCard_Geographical_Properties();
+        debugLog(__FILE__,__CLASS__,__METHOD__,__LINE__,var_export($re,true));
+        if($re === FALSE){
+            debugLog(__FILE__,__CLASS__,__METHOD__,__LINE__,var_export($this->get_vCard_Geographical_Properties(),true));
+            return false;
+        }
+
 
         $re = $this->store_vCard_Delivery_Addressing_Properties_LABEL();
         debugLog(__FILE__,__CLASS__,__METHOD__,__LINE__,var_export($re,true));
