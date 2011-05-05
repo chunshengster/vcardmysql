@@ -26,7 +26,7 @@ class class_vcard_storage {
     private static $vCard_Organizational_Properties = 'vCard_Organizational_Properties';
     private static $vCard_Telecommunications_Addressing_Properties_Email = 'vCard_Telecommunications_Addressing_Properties_Email';
     private static $vCard_Telecommunications_Addressing_Properties_Tel = 'vCard_Telecommunications_Addressing_Properties_Tel';
-
+    private static $vCard_Extension_Properties = 'vCard_Extension_Properties';
     function __construct() {
         self::$vcard_db_para_file = dirname(__FILE__) . '/../config/config.ini';
         self::getMysqlPara ();
@@ -333,6 +333,35 @@ class class_vcard_storage {
         }
         debugLog(__FILE__, __METHOD__, __LINE__, var_export($re_array, true));
         return $re_array;
+    }
+
+    public function get_vCard_Extension_Properties($key) {
+        debugLog(__FILE__,__METHOD__,__LINE__,  var_export($key, true));
+        if (key($key) !== 'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' and key($key) !== 'idvCard_Extension_Properties') {
+            return NULL;
+        }
+        $re = $this->_get_vcard_data_from_db('vCard_Extension_Properties', $key);
+        debugLog(__FILE__, __METHOD__, __LINE__, var_export($re, true));
+
+        if($re === FALSE){
+            return FALSE;
+        }
+
+        if(count($re) === 0){
+            return array(
+            );
+        }
+        $re_array = array();
+        /**
+         * @todo 同一种类型的 extension 只能出现一次，对此，需要增加冲突解决机制
+         */
+        foreach ($re as $k => $val) {
+            $re_array[$val['ExtensionName']]['Value'] = $val['ExtensionValue'];
+            $re_array[$val['ExtensionName']]['RESOURCE_ID'] = $val['idvCard_Extension_Properties'];
+        }
+        debugLog(__FILE__, __METHOD__, __LINE__, var_export($re_array, true));
+        return $re_array;
+
     }
 
     private function _get_vcard_data_from_db($table, $key) {
@@ -815,6 +844,52 @@ class class_vcard_storage {
                     return false;
                 }
                 break;
+            case self::$vCard_Extension_Properties:
+                $re = array();
+                if (isset($vcard_data_array['V_ID'])) {
+                    $v_id = $vcard_data_array['V_ID'];
+                    unset($vcard_data_array['V_ID']);
+                    foreach ($vcard_data_array as $k => $t_vcard_data) {
+                        if (!isset($t_vcard_data['RESOURCE_ID'])) {
+                            $new_record = true;
+                            $t_vcard_data['RESOURCE_ID'] = $v_id;
+                            $store_sql = "INSERT INTO " . self::$vCard_Extension_Properties . " (`vCard_Explanatory_Properties_idvCard_Explanatory_Properties`, `ExtensionName`, `ExtensionValue`) VALUES (:RESOURCEID, :ExtensionName, :ExtensionValue)";
+                        } else {
+                            $new_record = false;
+                            if(isset($t_vcard_data['FLAG']) && $t_vcard_data['FLAG']=='CHANGED'){
+                                $store_sql = "UPDATE " . self::$vCard_Extension_Properties . " SET ExtensionName=:ExtensionName ,ExtensionValue=:ExtensionValue WHERE idvCard_Extension_Properties=:RESOURCEID";
+                            }elseif(isset($t_vcard_data['FLAG']) && $t_vcard_data['FLAG'] == 'DELETED'){
+                                $store_sql = 'DELETE FROM '.self::$vCard_Extension_Properties .' WHERE idvCard_Extension_Properties =:RESOURCEID';
+                            }else{
+                                return false;
+                            }
+                        }
+                        debugLog(__FILE__,__CLASS__,__METHOD__,__LINE__,var_export($store_sql,true));
+                        try {
+                            $sth = $this->dbh->prepare($store_sql);
+                            $sth->bindParam(':RESOURCEID', $t_vcard_data['RESOURCE_ID']);
+                            if(!preg_match("/^DELETE/", $store_sql)){
+                                $sth->bindParam(':ExtensionName', $k);
+                                $sth->bindParam(':ExtensionValue', $t_vcard_data['Value']);
+                            }
+                            $sth->execute();
+                        } catch (PDOException $e) {
+                            debugLog(__FILE__, __METHOD__, __LINE__, $e->getMessage());
+                        }
+                        if ($new_record) {
+                            $re[$k]['RESOURCE_ID'] = $this->dbh->lastInsertId();
+                        } else {
+                            debugLog(__FILE__, __METHOD__, __LINE__, var_export($t_vcard_data, true));
+                            $re[$k]['RESOURCE_ID'] = $t_vcard_data['RESOURCE_ID'];
+                        }
+                    }
+                    debugLog(__FILE__, __METHOD__, __LINE__, var_export($re, true));
+                    return $re;
+                } else {
+                    return false;
+                }
+                break;
+                
             default:
                 return false;
         }

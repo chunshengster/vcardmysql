@@ -70,12 +70,6 @@ final class my_vcard_build extends File_IMC_Build_Vcard {
      */
     public function getCompCount($comp) {
         if (is_array($this->value[$comp]) or isset($this->value[$comp])) {
-            /**
-              echo "this->value:>>>>>>>\n";
-              print_r($this->value[$comp]);
-              echo "\n";
-             *
-             */
             return count($this->value[$comp]);
         } elseif (isset($this->value[$comp])) {
             return 1;
@@ -244,6 +238,13 @@ final class my_vcard_build extends File_IMC_Build_Vcard {
 
     public function setPhoto($text) {
         
+    }
+
+    public function get_x_microblog() {
+        if(($microblog = $this->getValue('X-MICROBLOG',0,0))!= NULL){
+            return explode('@', $microblog);
+        }
+        return NULL;
     }
 
 }
