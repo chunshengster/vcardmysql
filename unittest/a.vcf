@@ -17,11 +17,13 @@ ADR;TYPE=dom,postal:;;北京市西城区2222222222;;;123456;
 ORG:联通新时讯通信有限公司 unIcom中国联通
 TITLE:资深架构师
 BDAY:1981-04-18
+LANGUAGE:CHINESE
 URL;TYPE=HOME:http\://www.muduo.net
 item1.URL:http\://www.muduo.net/?8974
 item1.X-ABLabel:BLOG
 item2.X-ABRELATEDNAMES:xofjdl
 item2.X-ABLabel:_$!<Spouse>!$_
+
 LABEL;TYPE=dom,home,postal,parcel:Mr.John Q. Public, Esq.\n
          Mail Drop: TNE QB\n123 Main Street\nAny Town, CA  91921-1234
          \nU.S.A.

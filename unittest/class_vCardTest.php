@@ -1,7 +1,7 @@
 <?php
 
-require_once dirname(__FILE__) . '/../../trunk/class_vCard.php';
-require_once dirname(__FILE__) . '/../../trunk/debug.php';
+require_once dirname(__FILE__) . '/../lib/class_vCard.php';
+require_once dirname(__FILE__) . '/../lib/debug.php';
 
 /**
  * Test class for class_vCard.
@@ -23,12 +23,14 @@ class class_vCardTest extends PHPUnit_Framework_TestCase {
      * This method is called before a test is executed.
      */
     protected function setUp() {
-        $this->object = new class_vCard;
-        $this->vcard = file_get_contents('E:\xinshixun\Code\wo_vCard\phpunit\trunk\a.vcf');
-//        print_r($this->vcard);
-        $this->object->parse_vCard($this->vcard);
+        $this->object = new class_vCard();
+        $vcard_text = file_get_contents('./a.vcf');
+//        print_r($vcard_text);
+        
+        $this->object->parse_vCard($vcard_text);
 //        print_r($this->object);
-        var_export($this->object);
+        print $this->object->get_vCard_Data();
+//        var_export($this->object);
 //        print_r($this->object);
         //print_r($this->vcard);
     }
@@ -41,27 +43,30 @@ class class_vCardTest extends PHPUnit_Framework_TestCase {
         
     }
 
-    public function test__destruct() {
-        // Remove the following lines when you implement this test.
-        $this->assertTrue($this->object instanceof class_vCard);
-    }
+//    public function test__destruct() {
+//        // Remove the following lines when you implement this test.
+//        $this->assertTrue($this->object instanceof class_vCard);
+//    }
 
     /**
      * Implement testGet_vCard_Explanatory_Properties().
      */
-//    public function testGet_vCard_Explanatory_Properties() {
-//        // Remove the following lines when you implement this test.
+    public function testGet_vCard_Explanatory_Properties() {
+        // Remove the following lines when you implement this test.
+
+        
+//        print_r($this->object->get_vCard_Explanatory_Properties());
 //        $vcard_tmp = array(
 //            'UID' => 'bc441260-e692-11df-97aa-000c294ea793',
 //            'REV' => '20101013111111',
 //            'VERSION' => '3.0',
-//            'LANGAGE' => '',
+//            'LANGUAGE' => '',
 //            'CATEGORIES' => '',
 //            'PRODID' => '',
 //            'SORT-STRING' => ''
 //        );
 //        $this->assertEquals($vcard_tmp, $this->object->get_vCard_Explanatory_Properties());
-//    }
+    }
 
     /**
      *  Implement testSet_vCard_Explanatory_Properties().
@@ -105,8 +110,8 @@ class class_vCardTest extends PHPUnit_Framework_TestCase {
     /**
      * @todo Implement testGet_vCard_Delivery_Addressing_Properties_ADR().
      */
-    public function testGet_vCard_Delivery_Addressing_Properties_ADR() {
-        // Remove the following lines when you implement this test.
+//    public function testGet_vCard_Delivery_Addressing_Properties_ADR() {
+//        // Remove the following lines when you implement this test.
 //        $vcard_tmp = array(
 //            Array
 //                (
@@ -125,7 +130,7 @@ class class_vCardTest extends PHPUnit_Framework_TestCase {
 //        echo var_export($key,true);
 //        echo var_export($this->object->get_vCard_Delivery_Addressing_Properties_ADR($key), true);
 //        $this->assertEquals($this->object->get_vCard_Delivery_Addressing_Properties_ADR(), $vcard_tmp);
-    }
+//    }
 
     /**
      * @todo Implement testSet_vCard_Delivery_Addressing_Properties_ADR().
@@ -155,7 +160,7 @@ class class_vCardTest extends PHPUnit_Framework_TestCase {
 //        echo var_export($this->object->get_vCard_Delivery_Addressing_Properties_LABEL(), true);
 //        $this->assertEquals($this->object->get_vCard_Delivery_Addressing_Properties_LABEL(), $vcard_tmp);
 //    }
-//
+
     /**
      * @todo Implement testSet_vCard_Delivery_Addressing_Properties_LABEL().
      */
@@ -401,18 +406,18 @@ class class_vCardTest extends PHPUnit_Framework_TestCase {
     /**
      * @todo implement testget_vCard_property_from_storage
      */
-    public function testget_vCard_property_from_storage() {
-        $key = array(
+//    public function testget_vCard_property_from_storage() {
+//        $key = array(
             //'UID'=>'bc441260-e692-11df-97aa-000c294ea794',
-            'idvCard_Explanatory_Properties' => 10,
+//            'idvCard_Explanatory_Properties' => 10,
             //'property'=>'vCard_Explanatory_Properties'
 //            'property' =>'vCard_Identification_Properties',
 //             'property' =>'vCard_Geographical_Properties',
 //               'property' =>'vCard_Organizational_Properties'
 //            'property' =>'vCard_Delivery_Addressing_Properties_LABEL'
 //            'property' =>'vCard_Telecommunications_Addressing_Properties_Tel'
-            'property' => 'vCard_Telecommunications_Addressing_Properties_Email'
-        );
+//            'property' => 'vCard_Telecommunications_Addressing_Properties_Email'
+//        );
 //        $re = $this->object->get_vCard_property_from_storage($key);
 //        echo var_export($re,true);
         //echo var_export($this->object->get_vCard_Explanatory_Properties(),true);
@@ -423,7 +428,7 @@ class class_vCardTest extends PHPUnit_Framework_TestCase {
 //            echo var_export($this->object->get_vCard_Delivery_Addressing_Properties_LABEL(),true);
 //        echo var_export($this->object->get_vCard_Telecommunications_Addressing_Properties_Tel(),true);
 //        echo var_export($this->object->get_vCard_Telecommunications_Addressing_Properties_Email(),true);
-    }
+//    }
 
 //    public function testget_Full_vCard_From_Storage() {
 //        $re = $this->object->get_Full_vCard_From_Storage('bc441260-e692-11df-97aa-000c294ea794');
