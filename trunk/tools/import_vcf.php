@@ -32,33 +32,36 @@ if($vcard_explanatory_properties['UID'] != ''){
 
 
 $re = $vcard->store_vCard_Explanatory_Properties($gen_uid);
-echo __FILE__,__LINE__,  var_export($re,true);
+
+echo "\n",__FILE__,__LINE__,  var_export($re,true),"\n";
 if($re == ''){
     exit(0);
 }
 $re = $vcard->store_vCard_Identification_Properties();
-echo __FILE__,__LINE__,  var_export($re,true);
+echo __FILE__,__LINE__,  var_export($re,true),"\n";
 
 $re = $vcard->store_vCard_Geographical_Properties();
-echo __FILE__,__LINE__,  var_export($re,true);
+echo __FILE__,__LINE__,  var_export($re,true),"\n";
 
 $re = $vcard->store_vCard_Organizational_Properties();
-echo __FILE__,__LINE__,  var_export($re,true);
+echo __FILE__,__LINE__,  var_export($re,true),"\n";
 
 $re = $vcard->store_vCard_Delivery_Addressing_Properties_ADR();
-echo __FILE__,__LINE__,  var_export($re,true);
+echo __FILE__,__LINE__,  var_export($re,true),"\n";
 
 $re = $vcard->store_vCard_Delivery_Addressing_Properties_LABEL();
-echo __FILE__,__LINE__,  var_export($re,true);
+echo __FILE__,__LINE__,  var_export($re,true),"\n";
 
 $re = $vcard->store_vCard_Telecommunications_Addressing_Properties_Tel();
-echo __FILE__,__LINE__,  var_export($re,true);
+echo __FILE__,__LINE__,  var_export($re,true),"\n";
 
 $re = $vcard->store_vCard_Telecommunications_Addressing_Properties_Email();
-echo __FILE__,__LINE__,  var_export($re,true);
+echo __FILE__,__LINE__,  var_export($re,true),"\n";
 
 
-echo __FILE__,__LINE__,var_export($vcard->get_vCard_Text(),true);
+
+
+echo __FILE__,__LINE__,var_export($vcard->get_vCard_Text(),true),"\n";
 
 
 
