@@ -90,39 +90,7 @@ final class my_vcard_build extends File_IMC_Build_Vcard {
                     }
                 }
                 return $r_array;
-
-                /*
-                  switch ($comp) {
-                  case 'LABEL':
-
-                  //* @todo there may be some thing wrong in this case;
-
-                  for ($i = 0; $i < $comp_count; $i++) {
-                  array_push($r_array, array(strtoupper($comp) => $this->getValue($comp, $i, 0), ucfirst(strtolower($comp)) . 'Type' => $this->getType($comp, $i)));
-                  }
-                  return $r_array;
-                  break;
-                  case 'ADR':
-                  for ($i = 0; $i < $comp_count; $i++) {
-                  array_push($r_array, array(strtoupper($comp) => $this->getValue($comp, $i, 0), ucfirst(strtolower($comp)) . 'Type' => $this->getType($comp, $i)));
-                  }
-                  return $r_array;
-                  break;
-                  case 'EMAIL':
-                  for ($i = 0; $i < $comp_count; $i++) {
-                  array_push($r_array, array(strtoupper($comp) => $this->getValue($comp, $i, 0), ucfirst(strtolower($comp)) . 'Type' => $this->getType($comp, $i)));
-                  }
-
-                  //echo "my_vcard_build_php".__CLASS__.__METHOD__.__LINE__."\n";
-                  //print_r($r_array);
-
-                  return $r_array;
-                  break;
-                  default:
-                  break;
-                  }
-                 *
-                 */
+                
             } else {
                 return array();
             }
@@ -245,6 +213,10 @@ final class my_vcard_build extends File_IMC_Build_Vcard {
             return explode('@', $microblog);
         }
         return NULL;
+    }
+
+    public function get_x_aim() {
+        return null;
     }
 
 }

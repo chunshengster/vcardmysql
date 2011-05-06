@@ -488,8 +488,8 @@ class class_vCard {
                 }
             } elseif ($this->vCard_Explanatory_Properties['RESOURCE_ID'] !== '') {
                 $key = array(
-//                    'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' => $this->vCard_Explanatory_Properties['RESOURCE_ID'],
-                    'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' => 190,
+                    'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' => $this->vCard_Explanatory_Properties['RESOURCE_ID'],
+//                    'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' => 190,
                 );
                 debugLog(__FILE__, __METHOD__, __LINE__, var_export($key, true));
                 $re_array = $this->obj_vcard_storage->get_vCard_Extension_Properties($key);
@@ -534,7 +534,7 @@ class class_vCard {
 
         @$this->_builder->setFromArray($this->_parser->get_parse_data());
 //        echo var_export($this->_parser->get_parse_data(), true);
-        echo var_export($this->_builder, true);
+        debugLog(__FILE__,__CLASS__,__METHOD__,__LINE__,var_export($this->_builder, true));
 
         $this->set_vCard_Explanatory_Properties(array(
             'UID' => $this->_builder->getUniqueID(),
@@ -804,7 +804,7 @@ class class_vCard {
              * @todo 修正数据结构，每个结构分块都返回并记录该条在数据库中的id ,已完成
              */
             $this->vCard_Explanatory_Properties['RESOURCE_ID'] = $re_array['RESOURCE_ID'];
-            return $this->vCard_Explanatory_Properties['RESOURCE_ID'];
+//            return $this->vCard_Explanatory_Properties['RESOURCE_ID'];
         }
         return $re_array;
     }
@@ -820,7 +820,7 @@ class class_vCard {
         debugLog(__FILE__, __METHOD__, __LINE__, var_export($re_array, true));
         if ($re_array !== false) {
             $this->vCard_Identification_Properties['RESOURCE_ID'] = $re_array['RESOURCE_ID'];
-            return $this->vCard_Identification_Properties['RESOURCE_ID'];
+//            return $this->vCard_Identification_Properties['RESOURCE_ID'];
         }
         return $re_array;
     }
