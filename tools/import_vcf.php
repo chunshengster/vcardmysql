@@ -30,7 +30,6 @@ if($vcard_explanatory_properties['UID'] != ''){
     $gen_uid = true;
 }
 
-
 $re = $vcard->store_vCard_Explanatory_Properties($gen_uid);
 
 echo "\n",__FILE__,__LINE__,  var_export($re,true),"\n";

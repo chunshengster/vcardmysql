@@ -157,12 +157,22 @@ final class my_vcard_build extends File_IMC_Build_Vcard {
         return $this->getValue('PHOTO', 0, 0);
     }
 
-    /*
       public function getPhotoType() {
-      return $this->getType('PHOTO');
+        $pt = $this->getType('PHOTO');
+        if(preg_match("/base64/i", $pt)){
+            if(preg_match("/jpg|jpeg/i", $pt)){
+                return 'JPEG';
+            }  elseif (preg_match('/bmp/i', $pt)) {
+                return 'BMP';
+            } elseif (preg_match('/gif/i', $pt)) {
+                return 'GIF';
+            }else{
+                return 'UNKNOWN';
+            }
+        }  elseif (preg_match('/url|uri/i', $pt)) {
+            return 'URL';
+        }
       }
-     *
-     */
 
     public function getURL() {
         return $this->getValue('URL', 0, 0);
