@@ -586,9 +586,13 @@ class class_vCard {
             'GEO' => $this->_builder->getGeo()
         ));
 
-        $this->set_vCard_Extension_Properties(array(
+        if(($x_microblog = $this->_builder->get_x_microblog()) != ''){
+        $this->set_vCard_Extension_Properties(array_merge($this->vCard_Extension_Properties,array(
             'X-MICROBLOG' => $this->_builder->get_x_microblog(),
-        ));
+            )
+                )
+                );
+        }
 
         $this->_parser = NULL;
         $this->_builder = NULL;
@@ -789,6 +793,9 @@ class class_vCard {
         if (!isset($this->vCard_Explanatory_Properties['UID']) || $this->vCard_Explanatory_Properties['UID'] == '') {
             $gen_uid = true;
         }
+        if(count($this->vCard_Explanatory_Properties) <= 0 ){
+            return true;
+        }
         $re_array = $this->obj_vcard_storage->store_data('vCard_Explanatory_Properties', $this->vCard_Explanatory_Properties, $gen_uid);
         debugLog(__FILE__, __METHOD__, __LINE__, var_export($re_array, true));
         if ($re_array !== false) {
@@ -806,6 +813,9 @@ class class_vCard {
     }
 
     public function store_vCard_Identification_Properties() {
+        if(count($this->vCard_Identification_Properties) <= 0){
+            return true;
+        }
         $this->_get_storage_resource();
         if (!isset($this->vCard_Explanatory_Properties['RESOURCE_ID']) and !isset($this->vCard_Explanatory_Properties['UID'])) {
             return false;
@@ -830,6 +840,9 @@ class class_vCard {
          *              array(…………)
          *       )
          */
+        if(count($this->vCard_Delivery_Addressing_Properties_ADR)<=0){
+            return true;
+        }
         if (!isset($this->vCard_Explanatory_Properties['RESOURCE_ID']) and !isset($this->vCard_Explanatory_Properties['UID'])) {
             return false;
         } elseif (isset($this->vCard_Explanatory_Properties['UID'])) {
@@ -849,6 +862,9 @@ class class_vCard {
     }
 
     public function store_vCard_Delivery_Addressing_Properties_LABEL() {
+        if(count($this->vCard_Delivery_Addressing_Properties_LABEL) <=0 ){
+            return true;
+        }
         $this->_get_storage_resource();
         if (!isset($this->vCard_Explanatory_Properties['RESOURCE_ID']) and !isset($this->vCard_Explanatory_Properties['UID'])) {
             return false;
@@ -869,6 +885,9 @@ class class_vCard {
     }
 
     public function store_vCard_Geographical_Properties() {
+        if(count($this->vCard_Geographical_Properties) <=0 ){
+            return true;
+        }
         $this->_get_storage_resource();
         if (!isset($this->vCard_Explanatory_Properties['RESOURCE_ID']) and !isset($this->vCard_Explanatory_Properties['UID'])) {
             return false;
@@ -886,6 +905,9 @@ class class_vCard {
     }
 
     public function store_vCard_Organizational_Properties() {
+        if(count($this->vCard_Organizational_Properties) <=0 ){
+            return true;
+        }
         $this->_get_storage_resource();
         if (!isset($this->vCard_Explanatory_Properties['RESOURCE_ID']) and !isset($this->vCard_Explanatory_Properties['UID'])) {
             return false;
@@ -901,6 +923,9 @@ class class_vCard {
     }
 
     public function store_vCard_Telecommunications_Addressing_Properties_Email() {
+        if(count($this->vCard_Telecommunications_Addressing_Properties_Email)<=0){
+            return true;
+        }
         $this->_get_storage_resource();
         if (!isset($this->vCard_Explanatory_Properties['RESOURCE_ID']) and !isset($this->vCard_Explanatory_Properties['UID'])) {
             return false;
@@ -921,6 +946,9 @@ class class_vCard {
     }
 
     public function store_vCard_Telecommunications_Addressing_Properties_Tel() {
+        if(count($this->vCard_Telecommunications_Addressing_Properties_Tel)){
+            return true;
+        }
         $this->_get_storage_resource();
         if (!isset($this->vCard_Explanatory_Properties['RESOURCE_ID']) and !isset($this->vCard_Explanatory_Properties['UID'])) {
             return false;
@@ -946,6 +974,9 @@ class class_vCard {
      * @return <type>
      */
     public function store_vCard_Extension_Properties() {
+        if(count($this->vCard_Extension_Properties)<=0){
+            return true;
+        }
         $this->_get_storage_resource();
         if (!isset($this->vCard_Explanatory_Properties['RESOURCE_ID']) and !isset($this->vCard_Explanatory_Properties['UID'])) {
             return false;
