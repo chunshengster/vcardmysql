@@ -138,13 +138,13 @@ class vCard_Diff_Lib {
             return array();
         }
 
-        if((count($old) < 1) and (count($new) > 0)){
+        if((count($old) < 1) and (count($new) > 1)){
             $old = $new;
             $old['FLAG'] = 'CHANGED';
             return $old;
         }
         foreach ($old as $key => $value) {
-            debugLog(__FILE__,__LINE__,  var_export($key,$value));
+            debugLog(__FILE__,__LINE__,  var_export($key,true),  var_export($value,ture));
             if(isset ($new[$key]) && ($value != $new[$key])){
                 $old[$key] = $new[$key];
                 $old['FLAG'] = 'CHANGED';
