@@ -97,7 +97,7 @@ class vCard_Diff_Lib {
             if ($rs == 'onedimension') {
                 debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($value, true), var_export($vcard_b[$key], true));
                 if($key === 'vCard_Explanatory_Properties'){
-                    $value['UID'] = $vcard_b[$key]['UID'];
+                    $vcard_b[$key]['UID'] = $value['UID'] ;
                 }
                 $c[$key] = self::diff_onedimension($value, $vcard_b[$key]);
             } elseif ($rs == 'twodimension') {
