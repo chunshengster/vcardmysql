@@ -219,12 +219,23 @@ class class_vcard_storage {
             return array(
             );
         }
-        
+
+        /**
+         *  'idvCard_Organizational_Properties' => '172',
+            'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' => '166',
+            'TITLE' => '',
+            'ROLE' => '',
+            'LOGO' => '',
+            'LogoType' => NULL,
+            'AGENT' => NULL,
+            'ORG' => '息通网络',
+         */
         return array(
                 'TITLE' => $re[0]['TITLE'],
                 'ROLE' => $re[0]['ROLE'],
                 'LOGO' => $re[0]['LOGO'],
                 'LogoType' => $re[0]['LogoType'],
+                'AGENT' => $re[0]['AGENT'],
                 'ORG' => $re[0]['ORG'],
                 'RESOURCE_ID' => $re[0]['idvCard_Organizational_Properties']
         );
