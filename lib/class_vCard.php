@@ -557,7 +557,7 @@ class class_vCard {
             'NICKNAME' => $this->_builder->getNickname(),
             'PHOTO' => $this->_builder->getPhoto(),
             'PhotoType' => $this->_builder->getPhotoType(),
-            'BDAY' => $this->_builder->getBirthday(),
+            'BDAY' => ($this->_builder->getBirthday()=='')?'0000-00-00':$this->_builder->getBirthday(),
             'URL' => $this->_builder->getURL(),
             'SOUND' => $this->_builder->getSound(),
             'NOTE' => $this->_builder->getNote()
@@ -813,7 +813,7 @@ class class_vCard {
     }
 
     public function store_vCard_Identification_Properties() {
-        if(count($this->vCard_Identification_Properties) <= 0){
+        if(count($this->vCard_Identification_Properties) <= 1){
             return true;
         }
         $this->_get_storage_resource();
@@ -885,7 +885,7 @@ class class_vCard {
     }
 
     public function store_vCard_Geographical_Properties() {
-        if(count($this->vCard_Geographical_Properties) <=0 ){
+        if(count($this->vCard_Geographical_Properties) <=1 ){
             return true;
         }
         $this->_get_storage_resource();
@@ -905,7 +905,7 @@ class class_vCard {
     }
 
     public function store_vCard_Organizational_Properties() {
-        if(count($this->vCard_Organizational_Properties) <=0 ){
+        if(count($this->vCard_Organizational_Properties) <=1 ){
             return true;
         }
         $this->_get_storage_resource();
@@ -946,7 +946,7 @@ class class_vCard {
     }
 
     public function store_vCard_Telecommunications_Addressing_Properties_Tel() {
-        if(count($this->vCard_Telecommunications_Addressing_Properties_Tel)){
+        if(count($this->vCard_Telecommunications_Addressing_Properties_Tel)<=0){
             return true;
         }
         $this->_get_storage_resource();
