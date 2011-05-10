@@ -614,7 +614,7 @@ class class_vcard_storage {
                     $store_sql = "INSERT INTO " . self::$vCard_Organizational_Properties . " (`vCard_Explanatory_Properties_idvCard_Explanatory_Properties` ,`TITLE` ,`ROLE` ,`LOGO` ,`LogoType` ,`ORG`) VALUES (:RESOURCEID,:TITLE,:ROLE,:LOGO,:LogoType,:ORG)";
                 } else {
                     $new_record = false;
-                    if(isset($vcard_data_array['FLAG']) && $vcard_data_array['FALG'] == 'CHANGED') {
+                    if(isset($vcard_data_array['FLAG']) && $vcard_data_array['FLAG'] == 'CHANGED') {
                         $store_sql = "UPDATE " . self::$vCard_Organizational_Properties . " SET `TITLE` = :TITLE ,`ROLE` = :ROLE ,`LOGO` = :LOGO ,`LogoType` = :LogoType ,`ORG` = :ORG WHERE vCard_Explanatory_Properties_idvCard_Explanatory_Properties = :RESOURCEID";
                     }elseif(isset ($vcard_data_array['FLAG']) && $vcard_data_array['FLAG'] == 'DELETED') {
                         $store_sql = 'DELETE FROM '. self::$vCard_Organizational_Properties . ' WHERE vCard_Explanatory_Properties_idvCard_Explanatory_Properties = :RESOURCEID';

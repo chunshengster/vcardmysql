@@ -138,7 +138,8 @@ class vCard_Diff_Lib {
             return $old;
         }
         foreach ($old as $key => $value) {
-            if(isset ($new[$key]) && $value != $new[$key]){
+            debugLog(__FILE__,__LINE__,  var_export($key,$value));
+            if(isset ($new[$key]) && ($value != $new[$key])){
                 $old[$key] = $new[$key];
                 $old['FLAG'] = 'CHANGED';
                 unset ($new[$key]);
@@ -151,7 +152,7 @@ class vCard_Diff_Lib {
         return $old;
     }
 
-    public function diff_extension($old, $new) {
+    public static function diff_extension($old, $new) {
         debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($old, true));
         debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($new, true));
         foreach ($old as $k => $v) {
