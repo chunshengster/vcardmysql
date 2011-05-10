@@ -615,9 +615,9 @@ class class_vcard_storage {
                 } else {
                     $new_record = false;
                     if(isset($vcard_data_array['FLAG']) && $vcard_data_array['FLAG'] == 'CHANGED') {
-                        $store_sql = "UPDATE " . self::$vCard_Organizational_Properties . " SET `TITLE` = :TITLE ,`ROLE` = :ROLE ,`LOGO` = :LOGO ,`LogoType` = :LogoType ,`ORG` = :ORG WHERE vCard_Explanatory_Properties_idvCard_Explanatory_Properties = :RESOURCEID";
+                        $store_sql = "UPDATE " . self::$vCard_Organizational_Properties . " SET `TITLE` = :TITLE ,`ROLE` = :ROLE ,`LOGO` = :LOGO ,`LogoType` = :LogoType ,`ORG` = :ORG WHERE idvCard_Organizational_Properties = :RESOURCEID";
                     }elseif(isset ($vcard_data_array['FLAG']) && $vcard_data_array['FLAG'] == 'DELETED') {
-                        $store_sql = 'DELETE FROM '. self::$vCard_Organizational_Properties . ' WHERE vCard_Explanatory_Properties_idvCard_Explanatory_Properties = :RESOURCEID';
+                        $store_sql = 'DELETE FROM '. self::$vCard_Organizational_Properties . ' WHERE idvCard_Organizational_Properties = :RESOURCEID';
                     }
                 }
                 debugLog(__FILE__, __METHOD__, __LINE__, $store_sql);
@@ -632,6 +632,7 @@ class class_vcard_storage {
                         $sth->bindParam(':LogoType', $vcard_data_array['LogoType']);
                         $sth->bindParam(':ORG', $vcard_data_array['ORG']);
                         $sth->bindParam(':RESOURCEID', $vcard_data_array['RESOURCE_ID']);
+                        debugLog(__FILE__,__CLASS__,__METHOD__,__LINE__,  var_export($sth,true));
                     }
                     $sth->execute();
                 } catch (PDOException $e) {

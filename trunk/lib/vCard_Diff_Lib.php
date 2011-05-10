@@ -144,7 +144,7 @@ class vCard_Diff_Lib {
             return $old;
         }
         foreach ($old as $key => $value) {
-            debugLog(__FILE__,__LINE__,  var_export($key,true),  var_export($value,ture));
+            debugLog(__FILE__,__LINE__,  var_export($key,true),  var_export($value,TRUE));
             if(isset ($new[$key]) && ($value != $new[$key])){
                 $old[$key] = $new[$key];
                 $old['FLAG'] = 'CHANGED';
