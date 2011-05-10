@@ -92,8 +92,13 @@ class vCard_Diff_Lib {
         foreach ($vcard_a as $key => $value) {
             $rs = self::show_dimension($key);
             //$delfields = 'UID,REV,RESOURCE_ID';
+
+
             if ($rs == 'onedimension') {
                 debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($value, true), var_export($vcard_b[$key], true));
+                if($key === 'vCard_Explanatory_Properties'){
+                    $value['UID'] = $vcard_b[$key]['UID'];
+                }
                 $c[$key] = self::diff_onedimension($value, $vcard_b[$key]);
             } elseif ($rs == 'twodimension') {
                 debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($value, true), var_export($vcard_b[$key], true));
@@ -127,6 +132,7 @@ class vCard_Diff_Lib {
 //                }
 //            }
 //        }
+        
         if(count($new) < 1){
             debugLog(__FILE__,__CLASS__,__METHOD__,__LINE__,  var_export($old,TRUE),  var_export($new,True),"Error !");
             return array();
