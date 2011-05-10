@@ -426,6 +426,10 @@ class class_vcard_storage {
             return false;
         }
 
+        if(count($vcard_data_array) < 2 and isset ($vcard_data_array['V_ID'])){
+            return FALSE;
+        }
+
         $vcard_exist = false;
         $new_record = false;
         $this->_gen_mysql_resource();

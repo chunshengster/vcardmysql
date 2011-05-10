@@ -113,23 +113,42 @@ class vCard_Diff_Lib {
     }
 
     public static function diff_onedimension($old, $new) {
+        /**
+         * $old 可能为空， $new 不可能为空。
+         */
         debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($old, true), var_export($new, true));
-        $is_changed = false;
-        foreach ($new as $key => $value) {
-            if (isset($value) && $value <> '') {
-                if (isset($old[$key]) && $old[$key] <> $value) {
-                    $old['FLAG'] = 'CHANGED';
-                    $is_changed = true;
-                    $old[$key] = $value;
-                }
-            }
-        }
-        if ($is_changed) {
-            debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($old, true));
-            return $old;
-        } else {
+//        $is_changed = false;
+//        foreach ($new as $key => $value) {
+//            if (isset($value) && $value <> '') {
+//                if (isset($old[$key]) && $old[$key] <> $value) {
+//                    $old['FLAG'] = 'CHANGED';
+//                    $is_changed = true;
+//                    $old[$key] = $value;
+//                }
+//            }
+//        }
+        if(count($new) < 1){
+            debugLog(__FILE__,__CLASS__,__METHOD__,__LINE__,  var_export($old,TRUE),  var_export($new,True),"Error !");
             return array();
         }
+
+        if((count($old) < 1) and (count($new) > 0)){
+            $old = $new;
+            $old['FLAG'] = 'CHANGED';
+            return $old;
+        }
+        foreach ($old as $key => $value) {
+            if(isset ($new[$key]) && $value != $new[$key]){
+                $old[$key] = $new[$key];
+                $old['FLAG'] = 'CHANGED';
+                unset ($new[$key]);
+            }
+        }
+        if(count($new)>=1){
+            $old = array_merge($old, $new);
+        }
+        debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($old, true));
+        return $old;
     }
 
     public function diff_extension($old, $new) {
