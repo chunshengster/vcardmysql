@@ -150,6 +150,7 @@ class vCard_Diff_Lib {
                 $old['FLAG'] = 'CHANGED';
                 unset ($new[$key]);
             }
+            debugLog(__FILE__,__CLASS__,__METHOD__,__LINE__,  var_export($old,TRUE),  var_export($new,True));
         }
         if(count($new)>=1){
             $old = array_merge($old, $new);
