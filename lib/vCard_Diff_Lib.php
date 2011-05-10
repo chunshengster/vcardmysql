@@ -162,6 +162,8 @@ class vCard_Diff_Lib {
         }
         if($is_changed){
             $old['RESOURCE_ID'] = $resource_id;
+        }else{
+            return array();
         }
         debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($old, true));
         return $old;
