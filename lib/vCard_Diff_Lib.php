@@ -138,22 +138,30 @@ class vCard_Diff_Lib {
             return array();
         }
 
-        if((count($old) < 1) and (count($new) > 1)){
-            $old = $new;
-            $old['FLAG'] = 'CHANGED';
-            return $old;
-        }
+//        if((count($old) < 1) and (count($new) > 1)){
+//            $old = $new;
+//            $old['FLAG'] = 'CHANGED';
+//            return $old;
+//        }
+        $is_changed = false;
+        $resource_id = $old['RESOURCE_ID'];
+        unset($old['RESOURCE_ID']);
         foreach ($old as $key => $value) {
             debugLog(__FILE__,__LINE__,  var_export($key,true),  var_export($value,TRUE));
             if(isset ($new[$key]) && ($value != $new[$key])){
                 $old[$key] = $new[$key];
                 $old['FLAG'] = 'CHANGED';
+                $is_changed = TRUE;
                 unset ($new[$key]);
             }
             debugLog(__FILE__,__CLASS__,__METHOD__,__LINE__,  var_export($old,TRUE),  var_export($new,True));
         }
         if(count($new)>=1){
             $old = array_merge($old, $new);
+            $is_changed = True;
+        }
+        if($is_changed){
+            $old['RESOURCE_ID'] = $resource_id;
         }
         debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($old, true));
         return $old;
