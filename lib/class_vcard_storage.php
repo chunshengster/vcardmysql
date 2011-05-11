@@ -488,7 +488,6 @@ class class_vcard_storage {
 
                     if(!isset($vcard_data_array['REV']) or strlen($vcard_data_array['REV'])<=0) {
                         $vcard_data_array['REV'] = date("Y-m-d H:m:s");
-
                     }
 
                     if(!isset($vcard_data_array['VERSION'])) {

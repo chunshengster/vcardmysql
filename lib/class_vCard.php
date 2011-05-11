@@ -1258,35 +1258,35 @@ class class_vCard {
         debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($re, true));
         if ($re === FALSE) {
             debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($this->get_vCard_Explanatory_Properties(), true));
-            return false;
+//            return false;
         }
 
         $re = $this->store_vCard_Identification_Properties();
         debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($re, true));
         if ($re === FALSE) {
             debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($this->get_vCard_Identification_Properties(), true));
-            return false;
+//            return false;
         }
 
         $re = $this->store_vCard_Organizational_Properties();
         debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($re, true));
         if ($re === FALSE) {
             debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($this->get_vCard_Organizational_Properties(), true));
-            return false;
+//            return false;
         }
 
         $re = $this->store_vCard_Delivery_Addressing_Properties_ADR();
         debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($re, true));
         if ($re === FALSE) {
             debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($this->get_vCard_Delivery_Addressing_Properties_ADR(), true));
-            return false;
+//            return false;
         }
 
         $re = $this->store_vCard_Geographical_Properties();
         debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($re, true));
         if ($re === FALSE) {
             debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($this->get_vCard_Geographical_Properties(), true));
-            return false;
+//            return false;
         }
 
 
@@ -1294,28 +1294,28 @@ class class_vCard {
         debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($re, true));
         if ($re === FALSE) {
             debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($this->get_vCard_Delivery_Addressing_Properties_LABEL(), true));
-            return false;
+//            return false;
         }
 
         $re = $this->store_vCard_Telecommunications_Addressing_Properties_Tel();
         debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($re, true));
         if ($re === FALSE) {
             debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($this->get_vCard_Telecommunications_Addressing_Properties_Tel(), true));
-            return false;
+//            return false;
         }
 
         $re = $this->store_vCard_Telecommunications_Addressing_Properties_Email();
         debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($re, true));
         if ($re === FALSE) {
             debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($this->get_vCard_Telecommunications_Addressing_Properties_Email(), true));
-            return false;
+//            return false;
         }
 
         $re = $this->store_vCard_Extension_Properties();
         debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($re, true));
         if ($re === FALSE) {
             debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($this->get_vCard_Extension_Properties(), true));
-            return false;
+//            return false;
         }
 
         return $this->get_vCard_Data();
