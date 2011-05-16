@@ -27,7 +27,20 @@ final class my_vcard_build extends File_IMC_Build_Vcard {
     public function getType($comp, $iter = 0) {
         $type = $this->getParam($comp, $iter);
         $type = explode('=', $type, 2);
+        if($comp == 'TEL'){
+            $this->getTelType($type);
+        }
         return $type[1];
+    }
+    
+    public function getTelType($type) {
+//        $type = $this->getType($comp);
+        $pattern = '/(PREF|WORK|HOME|VOICE|FAX|MSG|CELL|PAGER|BBS|CAR|VIDEO)/i';
+        if(preg_match_all($pattern, $type, $matchesarray)){
+            $type = strtoupper( implode(',', $matchesarray[0]));
+            return $type;
+        }
+        return '';
     }
 
     public function getBirthday() {
