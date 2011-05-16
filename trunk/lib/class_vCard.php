@@ -556,7 +556,7 @@ class class_vCard {
             'N' => $this->_builder->getName(),
             'NICKNAME' => $this->_builder->getNickname(),
             'PHOTO' => $this->_builder->getPhoto(),
-            'PhotoType' => $this->_builder->getPhotoType(),
+            'PhotoType' => $this->_builder->getType('PHOTO'),
             'BDAY' => ($this->_builder->getBirthday()=='')?'0000-00-00':$this->_builder->getBirthday(),
             'URL' => $this->_builder->getURL(),
             'SOUND' => $this->_builder->getSound(),
