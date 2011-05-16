@@ -30,6 +30,9 @@ final class my_vcard_build extends File_IMC_Build_Vcard {
         if($comp == 'TEL'){
             $this->getTelType($type);
         }
+        if($comp == 'PHOTO'){
+            $this->getPhotoType($type);
+        }
         return $type[1];
     }
     
@@ -170,8 +173,8 @@ final class my_vcard_build extends File_IMC_Build_Vcard {
         return $this->getValue('PHOTO', 0, 0);
     }
 
-      public function getPhotoType() {
-        $pt = $this->getType('PHOTO');
+      public function getPhotoType($pt) {
+//        $pt = $this->getType('PHOTO');
         if(preg_match("/base64/i", $pt)){
             if(preg_match("/jpg|jpeg/i", $pt)){
                 return 'JPEG';
