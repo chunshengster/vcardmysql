@@ -28,22 +28,22 @@ final class my_vcard_build extends File_IMC_Build_Vcard {
         $type = $this->getParam($comp, $iter);
         $type = explode('=', $type, 2);
         if($comp == 'TEL'){
-            $this->getTelType($type);
+            $this->parseTelType($type);
         }
         if($comp == 'PHOTO'){
-            $this->getPhotoType($type);
+            $this->parsePhotoType($type);
         }
         return $type[1];
     }
     
-    public function getTelType($type) {
+    public function parseTelType($type) {
 //        $type = $this->getType($comp);
         $pattern = '/(PREF|WORK|HOME|VOICE|FAX|MSG|CELL|PAGER|BBS|CAR|VIDEO)/i';
         if(preg_match_all($pattern, $type, $matchesarray)){
             $type = strtoupper( implode(',', $matchesarray[0]));
             return $type;
         }
-        return '';
+        return 'OTHER';
     }
 
     public function getBirthday() {
@@ -70,8 +70,19 @@ final class my_vcard_build extends File_IMC_Build_Vcard {
     public function getValue($comp, $iter = 0, $part = 0, $rept = null) {
         if ($comp === 'ADR') {
             return $this->getAdrValue($iter);
+        }elseif($comp === 'TEL'){
+            $telValue = parent::getValue($comp, $iter, $part, $rept);
+            debugLog(__FILE__,__CLASS__,__METHOD__,__LINE__,  var_export($telValue,true));
+//            $telValue = $this->parseTelValue($telValue);
+            return $telValue;
         }
         return parent::getValue($comp, $iter, $part, $rept);
+    }
+    
+    public function parseTelValue($telValue) {
+        $telValue = preg_replace('/\+|\s+|\-|\(|\)/', '', $telValue);
+        debugLog(__FILE__,__CLASS__,__METHOD__,__LINE__,  var_export($telValue,true));
+        return $telValue;
     }
 
     /**
@@ -173,7 +184,7 @@ final class my_vcard_build extends File_IMC_Build_Vcard {
         return $this->getValue('PHOTO', 0, 0);
     }
 
-      public function getPhotoType($pt) {
+      public function parsePhotoType($pt) {
 //        $pt = $this->getType('PHOTO');
         if(preg_match("/base64/i", $pt)){
             if(preg_match("/jpg|jpeg/i", $pt)){
