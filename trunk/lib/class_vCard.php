@@ -794,7 +794,7 @@ class class_vCard {
             $gen_uid = true;
         }
         if(count($this->vCard_Explanatory_Properties) <= 0 ){
-            return true;
+            $gen_uid = true;
         }
         $re_array = $this->obj_vcard_storage->store_data('vCard_Explanatory_Properties', $this->vCard_Explanatory_Properties, $gen_uid);
         debugLog(__FILE__, __METHOD__, __LINE__, var_export($re_array, true));
