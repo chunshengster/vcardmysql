@@ -487,7 +487,7 @@ class class_vcard_storage {
                     $sth = $this->dbh->prepare($store_sql);
 
                     if(!isset($vcard_data_array['REV']) or strlen($vcard_data_array['REV'])<=0) {
-                        $vcard_data_array['REV'] = date("Y-m-d H:m:s");
+                        $vcard_data_array['REV'] = date("Y-m-d H:i:s");
                     }
 
                     if(!isset($vcard_data_array['VERSION'])) {
