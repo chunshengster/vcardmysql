@@ -26,7 +26,7 @@ class vCard_Duplicate_Lib {
 
     function __construct() {
         self::$vcard_db_para_file = dirname(__FILE__) . '/../config/config.ini';
-        self::getMysqlPara ();
+        self::getMysqlPara();
     }
 
     function __destruct() {
@@ -39,7 +39,7 @@ class vCard_Duplicate_Lib {
         $dsn = self::$db_driver . ":host=" . self::$db_host . ";port=" . self::$db_port . ";dbname=" . self::$db_name;
         try {
             $this->dbh = new PDO($dsn, self::$db_user, self::$db_pass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES UTF8"));
-            $this->dbh->setAttribute( PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
+            $this->dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             return $this->dbh;
         } catch (PDOException $e) {
             debugLog(__FILE__, __METHOD__, __LINE__, $e->getMessage());
@@ -81,22 +81,50 @@ class vCard_Duplicate_Lib {
      * @param <mixed> $array  如 array(160,189,191)，array中的元素表示 vcard_id 
      * @return <array> $r_array 返回差重的结果
      */
-    public function findDuplicate($key,$id_list) {
+    public function findDuplicate($key, $id_list) {
         $this->_gen_mysql_resource();
-        if($key === 'EMAIL'){
+
+        if ($key === 'FN') {
             $SQL_FIND_DUPLICATE = "SELECT 
                 group_concat(`vCard_Explanatory_Properties_idvCard_Explanatory_Properties`) 
-                as 'result_group',EMAIL  
-                FROM ".self::$vCard_Telecommunications_Addressing_Properties_Email.
-                " WHERE `vCard_Explanatory_Properties_idvCard_Explanatory_Properties`
-                IN (".$id_list.") GROUP BY `EMAIL`;";
+                as 'result_group',FN  
+                FROM " . self::$vCard_Identification_Properties .
+                    " WHERE `vCard_Explanatory_Properties_idvCard_Explanatory_Properties`
+                IN (" . $id_list . ") GROUP BY `FN`;";
             try{
                 $sth = $this->dbh->query($SQL_FIND_DUPLICATE);
                 $re_array = $sth->fetchAll(PDO::FETCH_ASSOC);
-//                echo var_export($re_array, TRUE);
-                foreach ($re_array as $k=>$v) {
+                foreach ($re_array as $k => $v) {
                     $t = explode(',', $v['result_group']);
-                    if(count($t)<2){
+                    if (count($t) < 2) {
+                        unset($re_array[$k]);
+                        continue;
+                    }
+//                    $re_array[$k] = $t;
+                    unset($re_array[$k]);
+                    $re_array[$v['FN']] = $t;
+                }
+                return $re_array;
+                
+            }  catch (PDOException $e) {
+                debugLog(__FILE__, __CLASS__, __METHOD__, var_export($e->getMessage(), true));
+            }
+        }
+
+        if ($key === 'EMAIL') {
+            $SQL_FIND_DUPLICATE = "SELECT 
+                group_concat(`vCard_Explanatory_Properties_idvCard_Explanatory_Properties`) 
+                as 'result_group',EMAIL  
+                FROM " . self::$vCard_Telecommunications_Addressing_Properties_Email .
+                    " WHERE `vCard_Explanatory_Properties_idvCard_Explanatory_Properties`
+                IN (" . $id_list . ") GROUP BY `EMAIL`;";
+            try {
+                $sth = $this->dbh->query($SQL_FIND_DUPLICATE);
+                $re_array = $sth->fetchAll(PDO::FETCH_ASSOC);
+//                echo var_export($re_array, TRUE);
+                foreach ($re_array as $k => $v) {
+                    $t = explode(',', $v['result_group']);
+                    if (count($t) < 2) {
                         unset($re_array[$k]);
                         continue;
                     }
@@ -107,28 +135,27 @@ class vCard_Duplicate_Lib {
 
                 return $re_array;
                 /**
-                $r = array();
-                foreach ($re_array as $k => $v) {
-                    array_push($r, $v['result_group']);
-                }
-                return $r;
+                  $r = array();
+                  foreach ($re_array as $k => $v) {
+                  array_push($r, $v['result_group']);
+                  }
+                  return $r;
                  * 
                  */
-            }catch (PDOException $e){
-                debugLog(__FILE__,__CLASS__,__METHOD__,var_export($e->getMessage(),true));
+            } catch (PDOException $e) {
+                debugLog(__FILE__, __CLASS__, __METHOD__, var_export($e->getMessage(), true));
             }
-
-        }elseif ($key === 'TEL') {
+        } elseif ($key === 'TEL') {
             $SQL_FIND_DUPLICATE = "SELECT 
                 group_concat(`vCard_Explanatory_Properties_idvCard_Explanatory_Properties`)
                 as 'result_group', TEL
-                FROM ".self::$vCard_Telecommunications_Addressing_Properties_Tel
-                ." WHERE `vCard_Explanatory_Properties_idvCard_Explanatory_Properties`
-                IN (".$id_list.") GROUP BY `TEL`";
-            try{
+                FROM " . self::$vCard_Telecommunications_Addressing_Properties_Tel
+                    . " WHERE `vCard_Explanatory_Properties_idvCard_Explanatory_Properties`
+                IN (" . $id_list . ") GROUP BY `TEL`";
+            try {
                 $sth = $this->dbh->query($SQL_FIND_DUPLICATE);
                 $re_array = $sth->fetchAll(PDO::FETCH_ASSOC);
-                foreach ($re_array as $k=>$v) {
+                foreach ($re_array as $k => $v) {
                     $t = explode(',', $v['result_group']);
 //                    if(count($t)<2){
 //                        unset($re_array[$k]);
@@ -139,11 +166,12 @@ class vCard_Duplicate_Lib {
                 }
 //                echo var_export($re_array, true);
                 return $re_array;
-            }catch (PDOException $e){
-                debugLog(__FILE__,__CLASS__,__METHOD__,var_export($e->getMessage(),true));
+            } catch (PDOException $e) {
+                debugLog(__FILE__, __CLASS__, __METHOD__, var_export($e->getMessage(), true));
             }
         }
     }
 
 }
+
 ?>
