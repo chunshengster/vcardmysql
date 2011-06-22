@@ -40,7 +40,7 @@ class class_vCard {
             $this->set_vCard_Delivery_Addressing_Properties_LABEL($v['vCard_Delivery_Addressing_Properties_LABEL']);
             $this->set_vCard_Telecommunications_Addressing_Properties_Email($v['vCard_Telecommunications_Addressing_Properties_Email']);
             $this->set_vCard_Telecommunications_Addressing_Properties_Tel($v['vCard_Telecommunications_Addressing_Properties_Tel']);
-            $this->set_vCard_Extension_Properties($v['$vCard_Extension_Properties']);
+            $this->set_vCard_Extension_Properties($v['vCard_Extension_Properties']);
 
             return $this;
         } elseif (isset($v) and self::varify_vCard_data($v) and ($v instanceof class_vCard)) {
@@ -986,7 +986,7 @@ class class_vCard {
 
         $re_array = $this->obj_vcard_storage->store_data('vCard_Extension_Properties', array_merge($this->vCard_Extension_Properties, array('V_ID' => $this->vCard_Explanatory_Properties['RESOURCE_ID'])));
         debugLog(__FILE__, __METHOD__, __LINE__, var_export($re_array, true));
-        /*         * l
+        /** 
          * @todo vCard_Extension_Properties 的存储方法未完成
          *
          */
