@@ -87,6 +87,7 @@ class vCard_Diff_Lib {
      * 比较两个vcard的数据变化。返回 vcard_b 与 vcard_a 的数据变化。数据结构请参考 class_vcard
      * @param <class_vCard> $vcard_a
      * @param <class_vCard> $vcard_b
+     * @return 比对结果
      */
     public static function vCard_Diff($vcard_a, $vcard_b) {
         foreach ($vcard_a as $key => $value) {
@@ -96,24 +97,49 @@ class vCard_Diff_Lib {
 
             if ($rs == 'onedimension') {
                 debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($value, true), var_export($vcard_b[$key], true));
-                if($key === 'vCard_Explanatory_Properties'){
-                    $vcard_b[$key]['UID'] = $value['UID'] ;
+                if ($key === 'vCard_Explanatory_Properties') {
+                    $vcard_b[$key]['UID'] = $value['UID'];
                 }
                 $c[$key] = self::diff_onedimension($value, $vcard_b[$key]);
             } elseif ($rs == 'twodimension') {
                 debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($value, true), var_export($vcard_b[$key], true));
-                if(count($vcard_b[$key])>0){
+                if (count($vcard_b[$key]) > 0) {
                     $fields = array_keys($vcard_b[$key][0]);
-                }else{
+                } else {
                     $fields = '';
                 }
-                
+
                 $c[$key] = self::diff_twodimension($value, $vcard_b[$key], $fields);
             } elseif ($rs == 'Extension') {
                 debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($value, true), var_export($vcard_b[$key], true));
                 $c[$key] = self::diff_extension($value, $vcard_b[$key]);
             }
         }
+
+        $is_changed = FALSE;
+        foreach ($c as $key => $val) {
+            if($is_changed){
+                continue;
+            }
+            if (is_array($val)) {
+                foreach ($val as $v) {
+                    if (isset($v['FLAG'])) {
+                        $c['vCard_Explanatory_Properties']['REV'] = null;
+                        $c['vCard_Explanatory_Properties']['FLAG'] = 'CHANGED';
+                        $is_changed = TRUE;
+                        continue;
+                    }
+                }
+            } else {
+                if (isset($val['FLAG'])) {
+                    $c['vCard_Explanatory_Properties']['REV'] = null;
+                    $c['vCard_Explanatory_Properties']['FLAG'] = 'CHANGED';
+                    $is_changed = TRUE;
+                    continue;
+                }
+            }
+        }
+        debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($c, true));
         return $c;
     }
 
@@ -132,9 +158,9 @@ class vCard_Diff_Lib {
 //                }
 //            }
 //        }
-        
-        if(count($new) < 1){
-            debugLog(__FILE__,__CLASS__,__METHOD__,__LINE__,  var_export($old,TRUE),  var_export($new,True),"Error !");
+
+        if (count($new) < 1) {
+            debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($old, TRUE), var_export($new, True), "Error !");
             return array();
         }
 
@@ -147,22 +173,22 @@ class vCard_Diff_Lib {
         $resource_id = $old['RESOURCE_ID'];
         unset($old['RESOURCE_ID']);
         foreach ($old as $key => $value) {
-            debugLog(__FILE__,__LINE__,  var_export($key,true),  var_export($value,TRUE));
-            if(isset ($new[$key]) && ($value != $new[$key])){
+            debugLog(__FILE__, __LINE__, var_export($key, true), var_export($value, TRUE));
+            if (isset($new[$key]) && ($value != $new[$key])) {
                 $old[$key] = $new[$key];
                 $old['FLAG'] = 'CHANGED';
                 $is_changed = TRUE;
             }
-            unset ($new[$key]);
-            debugLog(__FILE__,__CLASS__,__METHOD__,__LINE__,  var_export($old,TRUE),  var_export($new,True));
+            unset($new[$key]);
+            debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($old, TRUE), var_export($new, True));
         }
-        if(count($new)>=1){
+        if (count($new) >= 1) {
             $old = array_merge($old, $new);
             $is_changed = True;
         }
-        if($is_changed){
+        if ($is_changed) {
             $old['RESOURCE_ID'] = $resource_id;
-        }else{
+        } else {
             return array();
         }
         debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($old, true));
@@ -195,4 +221,5 @@ class vCard_Diff_Lib {
     }
 
 }
+
 ?>
