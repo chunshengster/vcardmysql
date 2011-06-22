@@ -471,7 +471,7 @@ class class_vcard_storage {
                     //Importent: 'SORTSTRING',for PDO does not work with 'SORT-STRING'
                     $store_sql = "INSERT INTO " . self::$vCard_Explanatory_Properties . " (`UID`,`VERSION`,`REV`,`LANG`,`CATEGORIES`,`PRODID`,`SORT-STRING`) VALUES (:UID,:VERSION,:REV,:LANG,:CATEGORIES,:PRODID,:SORTSTRING)";
                 } else {
-                    if(isset ($vcard_data_array['FLAG']))
+                    if(isset ($vcard_data_array['FLAG'])){
                         if($vcard_data_array['FLAG']=='CHANGED') {
                             $store_sql = "UPDATE " . self::$vCard_Explanatory_Properties . " SET `VERSION` = :VERSION,`REV` = :REV,`LANG` = :LANG,`CATEGORIES` = :CATEGORIES,`PRODID` = :PRODID,`SORT-STRING` = :SORTSTRING  WHERE UID = :UID";
                             debugLog(__FILE__,__METHOD__,__LINE__,var_export($store_sql,true));
@@ -482,6 +482,9 @@ class class_vcard_storage {
                              */
                             return false;
                         }
+                    }else{
+                        return ;
+                    }
                 }
                 try {
                     $sth = $this->dbh->prepare($store_sql);
@@ -529,6 +532,8 @@ class class_vcard_storage {
                         }elseif($vcard_data_array['FLAG'] == 'DELETED') {
                             $store_sql = 'DELETE FROM '.self::$vCard_Identification_Properties . ' WHERE  `idvCard_Identification_Properties` = :RESOURCEID';
                         }
+                    }else{
+                        return ;
                     }
 
                 } elseif ((!isset($vcard_data_array['RESOURCE_ID']) && isset($vcard_data_array['V_ID']))) {
@@ -628,6 +633,8 @@ class class_vcard_storage {
                         $store_sql = "UPDATE " . self::$vCard_Organizational_Properties . " SET `TITLE` = :TITLE ,`ROLE` = :ROLE ,`LOGO` = :LOGO ,`LogoType` = :LogoType ,`ORG` = :ORG WHERE idvCard_Organizational_Properties = :RESOURCEID";
                     }elseif(isset ($vcard_data_array['FLAG']) && $vcard_data_array['FLAG'] == 'DELETED') {
                         $store_sql = 'DELETE FROM '. self::$vCard_Organizational_Properties . ' WHERE idvCard_Organizational_Properties = :RESOURCEID';
+                    }else{
+                        return;
                     }
                 }
                 debugLog(__FILE__, __METHOD__, __LINE__, $store_sql);
