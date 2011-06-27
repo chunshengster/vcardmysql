@@ -100,7 +100,6 @@ class vCard_Duplicate_Lib {
                         unset($re_array[$k]);
                         continue;
                     }
-//                    $re_array[$k] = $t;
                     unset($re_array[$k]);
                     $re_array[$v['FN']] = $t;
                 }
@@ -114,7 +113,7 @@ class vCard_Duplicate_Lib {
         if ($key === 'EMAIL') {
             $SQL_FIND_DUPLICATE = "SELECT 
                 group_concat(`vCard_Explanatory_Properties_idvCard_Explanatory_Properties`) 
-                as 'result_group',EMAIL  
+                as `result_group`,`EMAIL`,group_concat(`EmailType`) as `EmailType`   
                 FROM " . self::$vCard_Telecommunications_Addressing_Properties_Email .
                     " WHERE `vCard_Explanatory_Properties_idvCard_Explanatory_Properties`
                 IN (" . $id_list . ") GROUP BY `EMAIL`;";
@@ -128,9 +127,12 @@ class vCard_Duplicate_Lib {
                         unset($re_array[$k]);
                         continue;
                     }
-//                    $re_array[$k] = $t;
+                    $et = explode(',', $v['EmailType']);
+                    
                     unset($re_array[$k]);
+                    
                     $re_array[$v['EMAIL']] = $t;
+                    $re_array[$v['EMAIL']]['EmailType'] = array_unique($et);
                 }
 
                 return $re_array;
@@ -148,20 +150,24 @@ class vCard_Duplicate_Lib {
         } elseif ($key === 'TEL') {
             $SQL_FIND_DUPLICATE = "SELECT 
                 group_concat(`vCard_Explanatory_Properties_idvCard_Explanatory_Properties`)
-                as 'result_group', TEL
+                as `result_group`, TEL , group_concat(`TelType`) as `TelType` 
                 FROM " . self::$vCard_Telecommunications_Addressing_Properties_Tel
                     . " WHERE `vCard_Explanatory_Properties_idvCard_Explanatory_Properties`
                 IN (" . $id_list . ") GROUP BY `TEL`";
             try {
                 $sth = $this->dbh->query($SQL_FIND_DUPLICATE);
                 $re_array = $sth->fetchAll(PDO::FETCH_ASSOC);
+//                var_export($re_array);
                 foreach ($re_array as $k => $v) {
                     $t = explode(',', $v['result_group']);
 //                    if(count($t)<2){
 //                        unset($re_array[$k]);
 //                        continue;
 //                    }
+                    $tt = explode(',', $v['TelType']);
+                    
                     $re_array[$v['TEL']] = $t;
+                    $re_array[$v['TEL']]['TelType'] = array_unique($tt);
                     unset($re_array[$k]);
                 }
 //                echo var_export($re_array, true);
