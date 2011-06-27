@@ -905,7 +905,7 @@ class class_vCard {
     }
 
     public function store_vCard_Organizational_Properties() {
-        if(count($this->vCard_Organizational_Properties) <=1 ){
+        if(count($this->vCard_Organizational_Properties) <= 0 ){
             return true;
         }
         $this->_get_storage_resource();
