@@ -16,6 +16,7 @@ class vCard_Diff_Lib {
         $a1 = $old;
         $b1 = $new;
         $c1 = array();
+        $a11 = array();
 
         foreach ($a1 as $key => $value) {
             if ($value[$fields[0]] != '') {
@@ -29,25 +30,27 @@ class vCard_Diff_Lib {
             if ($value[$fields[0]] != '') {//去掉值为空的字段
                 $b11[$value[$fields[0]]]['TYPE'] = $value[$fields[1]];
 
-                if (array_key_exists($value[$fields[0]], $a11)) {//字段1存在
+                if (isset($a11)) {
+                    if (array_key_exists($value[$fields[0]], $a11)) {//字段1存在
 //                    echo $value[$fields[1]].'<-->'.var_export($a11[$value[$fields[0]]]['TYPE'],true)."\n";
-                    if ($value[$fields[1]] == $a11[$value[$fields[0]]]['TYPE']) {//字段2内容没变
+                        if ($value[$fields[1]] == $a11[$value[$fields[0]]]['TYPE']) {//字段2内容没变
 //                        $c1[$i]['FLAG'] = 'KEEP';
 //                        $c1[$i][$fields[0]] =$value[$fields[0]];
 //                        $c1[$i][$fields[1]] = $value[$fields[1]];
 //                        $i++;
+                        } else {
+                            $c1[$i]['FLAG'] = 'CHANGED';
+                            $c1[$i][$fields[0]] = $value[$fields[0]];
+                            $c1[$i][$fields[1]] = $value[$fields[1]];
+                            $c1[$i]['RESOURCE_ID'] = $a11[$value[$fields[0]]]['RESOURCE_ID'];
+                            $i++;
+                        }
                     } else {
-                        $c1[$i]['FLAG'] = 'CHANGED';
+                        $c1[$i]['FLAG'] = 'NEW';
                         $c1[$i][$fields[0]] = $value[$fields[0]];
                         $c1[$i][$fields[1]] = $value[$fields[1]];
-                        $c1[$i]['RESOURCE_ID'] = $a11[$value[$fields[0]]]['RESOURCE_ID'];
                         $i++;
                     }
-                } else {
-                    $c1[$i]['FLAG'] = 'NEW';
-                    $c1[$i][$fields[0]] = $value[$fields[0]];
-                    $c1[$i][$fields[1]] = $value[$fields[1]];
-                    $i++;
                 }
             }
         }
@@ -67,6 +70,7 @@ class vCard_Diff_Lib {
     public static function show_dimension($key) {
 //        $a = count($array,COUNT_RECURSIVE);
 //        $b =  count($array);
+        debugLog(__FILE__, __METHOD__, __LINE__, var_export($key, true));
         $one = array('vCard_Explanatory_Properties', 'vCard_Identification_Properties',
             'vCard_Geographical_Properties', 'vCard_Organizational_Properties');
         $two = array('vCard_Delivery_Addressing_Properties_ADR',
@@ -90,7 +94,11 @@ class vCard_Diff_Lib {
      * @return 比对结果
      */
     public static function vCard_Diff($vcard_a, $vcard_b) {
+//        $c = array();
+        var_export($vcard_a);
+        var_export($vcard_b);
         foreach ($vcard_a as $key => $value) {
+            debugLog(__FILE__, __METHOD__, __LINE__, var_export($value, true));
             $rs = self::show_dimension($key);
             //$delfields = 'UID,REV,RESOURCE_ID';
 
@@ -118,7 +126,7 @@ class vCard_Diff_Lib {
 
         $is_changed = FALSE;
         foreach ($c as $key => $val) {
-            if($is_changed){
+            if ($is_changed) {
                 continue;
             }
             if (is_array($val)) {
