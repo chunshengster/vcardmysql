@@ -242,5 +242,5 @@ print_r($vb);
 $re = vCard_Diff_Lib::vCard_Diff($v->get_vCard_Data(), $vb->get_vCard_Data());
 print_r($re);
 
-
+echo "hello";
 ?>
