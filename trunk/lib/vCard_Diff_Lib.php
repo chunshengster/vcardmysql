@@ -17,6 +17,8 @@ class vCard_Diff_Lib {
         $b1 = $new;
         $c1 = array();
         $a11 = array();
+        sort($fields);
+        debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($old, true), var_export($new, true), var_export($fields, true));
 
         foreach ($a1 as $key => $value) {
             if ($value[$fields[0]] != '') {
@@ -24,7 +26,7 @@ class vCard_Diff_Lib {
                 $a11[$value[$fields[0]]]['RESOURCE_ID'] = $value['RESOURCE_ID'];
             }
         }
-
+        debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($a11, true));
         $i = 0;
         foreach ($b1 as $key => $value) {
             if ($value[$fields[0]] != '') {//去掉值为空的字段
@@ -64,6 +66,7 @@ class vCard_Diff_Lib {
                 $i++;
             }
         }
+        debugLog(__FILE__, __METHOD__, __LINE__, var_export($c1, true));
         return $c1;
     }
 
@@ -95,22 +98,20 @@ class vCard_Diff_Lib {
      */
     public static function vCard_Diff($vcard_a, $vcard_b) {
 //        $c = array();
-        var_export($vcard_a);
-        var_export($vcard_b);
+//        var_export($vcard_a);
+//        var_export($vcard_b);
         foreach ($vcard_a as $key => $value) {
             debugLog(__FILE__, __METHOD__, __LINE__, var_export($value, true));
             $rs = self::show_dimension($key);
             //$delfields = 'UID,REV,RESOURCE_ID';
-
-
             if ($rs == 'onedimension') {
-                debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($value, true), var_export($vcard_b[$key], true));
+                debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($value, true), var_export($vcard_b, true));
                 if ($key === 'vCard_Explanatory_Properties') {
                     $vcard_b[$key]['UID'] = $value['UID'];
                 }
                 $c[$key] = self::diff_onedimension($value, $vcard_b[$key]);
             } elseif ($rs == 'twodimension') {
-                debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($value, true), var_export($vcard_b[$key], true));
+                debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($value, true), var_export($vcard_b, true));
                 if (count($vcard_b[$key]) > 0) {
                     $fields = array_keys($vcard_b[$key][0]);
                 } else {
@@ -119,7 +120,7 @@ class vCard_Diff_Lib {
 
                 $c[$key] = self::diff_twodimension($value, $vcard_b[$key], $fields);
             } elseif ($rs == 'Extension') {
-                debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($value, true), var_export($vcard_b[$key], true));
+                debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($value, true), var_export($vcard_b, true));
                 $c[$key] = self::diff_extension($value, $vcard_b[$key]);
             }
         }
@@ -180,15 +181,21 @@ class vCard_Diff_Lib {
         $is_changed = false;
         $resource_id = $old['RESOURCE_ID'];
         unset($old['RESOURCE_ID']);
-        foreach ($old as $key => $value) {
-            debugLog(__FILE__, __LINE__, var_export($key, true), var_export($value, TRUE));
-            if (isset($new[$key]) && ($value != $new[$key])) {
-                $old[$key] = $new[$key];
-                $old['FLAG'] = 'CHANGED';
-                $is_changed = TRUE;
+        if (isset($old)) {
+            if (is_array($old)) {
+                foreach ($old as $key => $value) {
+                    debugLog(__FILE__, __LINE__, var_export($key, true), var_export($value, TRUE));
+                    if (isset($new[$key]) && ($value != $new[$key])) {
+                        $old[$key] = $new[$key];
+                        $old['FLAG'] = 'CHANGED';
+                        $is_changed = TRUE;
+                    }
+                    unset($new[$key]);
+                    debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($old, TRUE), var_export($new, True));
+                }
             }
-            unset($new[$key]);
-            debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($old, TRUE), var_export($new, True));
+        } else {
+            $old = array();
         }
         if (count($new) >= 1) {
             $old = array_merge($old, $new);
