@@ -17,9 +17,12 @@ class vCard_Diff_Lib {
         $b1 = $new;
         $c1 = array();
         $a11 = array();
-        sort($fields);
         debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($old, true), var_export($new, true), var_export($fields, true));
-
+        if (is_array($fields)) {
+            sort($fields);
+        } else {
+            $fields = array();
+        }
         foreach ($a1 as $key => $value) {
             if ($value[$fields[0]] != '') {
                 $a11[$value[$fields[0]]]['TYPE'] = $value[$fields[1]];
