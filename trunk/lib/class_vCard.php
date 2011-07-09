@@ -33,7 +33,7 @@ class class_vCard {
     function __construct($v = null) {
         if (isset($v) and self::varify_vCard_data($v) and is_array($v)) {
 //            if (isset($v['vCard_Explanatory_Properties'])) {
-            var_export($v);
+            //var_export($v);
 
             $this->set_vCard_Explanatory_Properties($v['vCard_Explanatory_Properties']);
 //            }
