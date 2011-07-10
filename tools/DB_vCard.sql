@@ -200,7 +200,7 @@ CREATE  TABLE IF NOT EXISTS `DB_vCard`.`vCard_Telecommunications_Addressing_Prop
   `idvCard_Telecommunications_Addressing_Properties_Email` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT ,
   `vCard_Explanatory_Properties_idvCard_Explanatory_Properties` BIGINT(20) UNSIGNED NOT NULL ,
   `EMAIL` CHAR(64) NOT NULL ,
-  `EmailType` SET('AOL','AppleLink','POWERSHARE','ATTMail','CIS','eWorld','INTERNET','IBMMail','MCIMail','PRODIGY','TLX','X400') NULL DEFAULT NULL ,
+  `EmailType` SET('AOL','AppleLink','POWERSHARE','ATTMail','CIS','eWorld','INTERNET','IBMMail','MCIMail','PRODIGY','TLX','X400','HOME','WORK','OTHER') NULL DEFAULT 'INTERNET' ,
   PRIMARY KEY (`idvCard_Telecommunications_Addressing_Properties_Email`, `vCard_Explanatory_Properties_idvCard_Explanatory_Properties`) ,
   CONSTRAINT `fk_vCard_Telecommunications_Addressing_Properties_Email_vCard1`
     FOREIGN KEY (`vCard_Explanatory_Properties_idvCard_Explanatory_Properties` )
