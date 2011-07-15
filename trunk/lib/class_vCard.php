@@ -369,7 +369,7 @@ class class_vCard {
                 $key = array(
                     'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' => $this->vCard_Explanatory_Properties['RESOURCE_ID'],
                 );
-            } elseif ($this->vCard_Organizational_Properties['RESOURCE_ID'] !== '' && isset($this->vCard_Organizational_Properties['RESOURCE_ID'])) {
+            } elseif (isset($this->vCard_Organizational_Properties['RESOURCE_ID']) && $this->vCard_Organizational_Properties['RESOURCE_ID'] !== '') {
                 $key = array(
                     'idvCard_Organizational_Properties' => $this->vCard_Organizational_Properties['RESOURCE_ID'],
                 );
