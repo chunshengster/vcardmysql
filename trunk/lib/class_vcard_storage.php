@@ -159,15 +159,15 @@ class class_vcard_storage {
             );
         }
         return array(
-                'N' => $re[0]['N'],
-                'FN' => $re[0]['FN'],
+                'N' => stripcslashes($re[0]['N']),
+                'FN' => stripcslashes($re[0]['FN']),
                 'PHOTO' => $re[0]['PHOTO'],
                 'PhotoType' => $re[0]['PhotoType'],
                 'BDAY' => $re[0]['BDAY'],
                 'URL' => $re[0]['URL'],
                 'SOUND' => $re[0]['SOUND'],
                 'NOTE' => stripslashes($re[0]['NOTE']),
-                'NICKNAME' => $re[0]['NICKNAME'],
+                'NICKNAME' => stripcslashes($re[0]['NICKNAME']),
                 'RESOURCE_ID' => $re[0]['idvCard_Identification_Properties']
         );
     }
@@ -231,12 +231,12 @@ class class_vcard_storage {
             'ORG' => '息通网络',
          */
         return array(
-                'TITLE' => $re[0]['TITLE'],
-                'ROLE' => $re[0]['ROLE'],
+                'TITLE' => stripcslashes($re[0]['TITLE']),
+                'ROLE' => stripcslashes($re[0]['ROLE']),
                 'LOGO' => $re[0]['LOGO'],
                 'LogoType' => $re[0]['LogoType'],
                 'AGENT' => $re[0]['AGENT'],
-                'ORG' => $re[0]['ORG'],
+                'ORG' => stripcslashes($re[0]['ORG']),
                 'RESOURCE_ID' => $re[0]['idvCard_Organizational_Properties']
         );
     }
@@ -260,7 +260,7 @@ class class_vcard_storage {
 
         $re_array = array();
         foreach ($re as $k => $val) {
-            $re_array[$k]['ADR'] = $val['ADR'];
+            $re_array[$k]['ADR'] = stripcslashes($val['ADR']);
             $re_array[$k]['AdrType'] = $val['AdrType'];
             $re_array[$k]['RESOURCE_ID'] = $val['idvCard_Delivery_Addressing_Properties_ADR'];
         }
@@ -286,7 +286,7 @@ class class_vcard_storage {
         }
         $re_array = array();
         foreach ($re as $k => $val) {
-            $re_array[$k]['LABEL'] = $val['LABEL'];
+            $re_array[$k]['LABEL'] = stripcslashes($val['LABEL']);
             $re_array[$k]['LabelType'] = $val['LabelType'];
             $re_array[$k]['RESOURCE_ID'] = $val['idvCard_Delivery_Addressing_Properties_LABEL'];
         }
@@ -367,7 +367,7 @@ class class_vcard_storage {
          * @todo 同一种类型的 extension 只能出现一次，对此，需要增加冲突解决机制
          */
         foreach ($re as $k => $val) {
-            $re_array[$val['ExtensionName']]['Value'] = $val['ExtensionValue'];
+            $re_array[$val['ExtensionName']]['Value'] = stripcslashes($val['ExtensionValue']);
             $re_array[$val['ExtensionName']]['RESOURCE_ID'] = $val['idvCard_Extension_Properties'];
         }
         debugLog(__FILE__, __METHOD__, __LINE__, var_export($re_array, true));
