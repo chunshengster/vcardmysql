@@ -6,6 +6,7 @@
  */
 require_once 'my_vcard_parse.php';
 require_once 'my_vcard_build.php';
+require_once 'class_get_img.php';
 require_once 'class_vcard_storage.php';
 
 if (!function_exists('debugLog')) {
@@ -1131,13 +1132,17 @@ class class_vCard {
             if ($this->vCard_Identification_Properties['NICKNAME'] != '')
                 $re_lines[] = 'NICKNAME:' . $this->vCard_Identification_Properties['NICKNAME'];
         }
-        if ($this->vCard_Identification_Properties['PHOTO'] != '') {
+        if (isset ($this->vCard_Identification_Properties['PHOTO']) and $this->vCard_Identification_Properties['PHOTO'] != '') {
             if ($this->vCard_Identification_Properties['PhotoType'] != 'URL') {
                 $pt = 'ENCODING=BASE64;TYPE=' . $this->vCard_Identification_Properties['PhotoType'];
+                $re_lines[] = 'PHOTO;' . $pt . ':' . $this->vCard_Identification_Properties['PHOTO'];
             } else {
-                $pt = 'TYPE=' . $this->vCard_Identification_Properties['PhotoType'];
+                $t = getImg::get_url_img($this->vCard_Identification_Properties['PHOTO']);
+                $pt = 'ENCODING=BASE64;TYPE=' . $t['type'];
+                $re_lines[] = 'PHOTO;' . $pt . ':' . $t['data'];
+                //$pt = 'VALUE=' . $this->vCard_Identification_Properties['PhotoType'].';TYPE=JPG';
             }
-            $re_lines[] = 'PHOTO;' . $pt . ':' . $this->vCard_Identification_Properties['PHOTO'];
+            
         }
 
         if ($this->vCard_Identification_Properties['BDAY'] != '')
