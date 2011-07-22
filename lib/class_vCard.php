@@ -581,7 +581,7 @@ class class_vCard {
                   ) */
         );
         $this->set_vCard_Identification_Properties(array(
-            'FN' => $this->_builder->getFormattedName(),
+            'FN' => (strlen($this->_builder->getFormattedName())>0) ? $this->_builder->getFormattedName() : implode('', explode(';',$this->_builder->getName())),
             'N' => $this->_builder->getName(),
             'NICKNAME' => $this->_builder->getNickname(),
             'PHOTO' => $this->_builder->getPhoto(),
