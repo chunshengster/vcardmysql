@@ -1126,11 +1126,11 @@ class class_vCard {
                 $re_lines[] = 'SORT-STRING:' . $this->vCard_Explanatory_Properties['SORT-STRING'];
         }
 
-        $re_lines[] = 'FN:CHARSET=UTF-8:' . $this->vCard_Identification_Properties['FN'];
-        $re_lines[] = 'N:CHARSET=UTF-8:' . $this->vCard_Identification_Properties['N'];
+        $re_lines[] = 'FN;CHARSET=UTF-8:' . $this->vCard_Identification_Properties['FN'];
+        $re_lines[] = 'N;CHARSET=UTF-8:' . $this->vCard_Identification_Properties['N'];
         if ($this->vCard_Explanatory_Properties['VERSION'] == '3.0') {
             if ($this->vCard_Identification_Properties['NICKNAME'] != '')
-                $re_lines[] = 'NICKNAME:CHARSET=UTF-8:' . $this->vCard_Identification_Properties['NICKNAME'];
+                $re_lines[] = 'NICKNAME;CHARSET=UTF-8:' . $this->vCard_Identification_Properties['NICKNAME'];
         }
         if (isset ($this->vCard_Identification_Properties['PHOTO']) and $this->vCard_Identification_Properties['PHOTO'] != '') {
             if ($this->vCard_Identification_Properties['PhotoType'] != 'URL') {
@@ -1158,15 +1158,15 @@ class class_vCard {
 
 
         if ($this->vCard_Organizational_Properties['TITLE'] != '')
-            $re_lines[] = 'TITLE:CHARSET=UTF-8:' . $this->vCard_Organizational_Properties['TITLE'];
+            $re_lines[] = 'TITLE;CHARSET=UTF-8:' . $this->vCard_Organizational_Properties['TITLE'];
         if ($this->vCard_Organizational_Properties['ROLE'] != '')
-            $re_lines[] = 'ROLE:CHARSET=UTF-8:' . $this->vCard_Organizational_Properties['ROLE'];
+            $re_lines[] = 'ROLE;CHARSET=UTF-8:' . $this->vCard_Organizational_Properties['ROLE'];
         if ($this->vCard_Organizational_Properties['LOGO'] != '')
             $re_lines[] = 'LOGO;' . 'TYPE=' . $this->vCard_Organizational_Properties['LogoType'] . ':' . $this->vCard_Organizational_Properties['LOGO'];
         if (isset($this->vCard_Organizational_Properties['AGENT']) and ($this->vCard_Organizational_Properties['AGENT'] != ''))
             $re_lines[] = 'AGENT:' . $this->vCard_Organizational_Properties['AGENT'];
         if ($this->vCard_Organizational_Properties['ORG'] != '')
-            $re_lines[] = 'ORG:CHARSET=UTF-8:' . $this->vCard_Organizational_Properties['ORG'];
+            $re_lines[] = 'ORG;CHARSET=UTF-8:' . $this->vCard_Organizational_Properties['ORG'];
 
 //        $re_lines[] = ."\n";
         if (isset($this->vCard_Geographical_Properties['TZ']) and ($this->vCard_Geographical_Properties['TZ'] != ''))
@@ -1178,14 +1178,14 @@ class class_vCard {
         if (count($this->vCard_Delivery_Addressing_Properties_ADR) > 0) {
             foreach ($this->vCard_Delivery_Addressing_Properties_ADR as $v) {
                 debugLog(__FILE__, __METHOD__, __LINE__, var_export($v, true));
-                $re_lines[] = 'ADR;TYPE=' . $v['AdrType'] . ':CHARSET=UTF-8:' . $v['ADR'];
+                $re_lines[] = 'ADR;TYPE=' . $v['AdrType'] . ';CHARSET=UTF-8:' . $v['ADR'];
             }
         }
 
         if (count($this->vCard_Delivery_Addressing_Properties_LABEL) > 0) {
             foreach ($this->vCard_Delivery_Addressing_Properties_LABEL as $v) {
                 debugLog(__FILE__, __METHOD__, __LINE__, var_export($v, true));
-                $re_lines[] = 'LABEL;TYPE=' . $v['LabelType'] . ':CHARSET=UTF-8:' . $v['LABEL'];
+                $re_lines[] = 'LABEL;TYPE=' . $v['LabelType'] . ';CHARSET=UTF-8:' . $v['LABEL'];
             }
         }
 
