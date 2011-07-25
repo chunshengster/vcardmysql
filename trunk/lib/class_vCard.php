@@ -1152,7 +1152,7 @@ class class_vCard {
         if ($this->vCard_Identification_Properties['SOUND'] != '')
             $re_lines[] = 'SOUND:' . $this->vCard_Identification_Properties['SOUND'];
         if ($this->vCard_Identification_Properties['NOTE'] != '')
-            $re_lines[] = 'NOTE:' . $this->vCard_Identification_Properties['NOTE'];
+            $re_lines[] = 'NOTE;CHARSET=UTF-8:' . $this->vCard_Identification_Properties['NOTE'];
 //        $re_lines[] = ."\n";
 
 
