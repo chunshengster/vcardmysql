@@ -1233,10 +1233,10 @@ class class_vCard {
         $regex = "(.{1,75})";
         foreach ($re_lines as $key => $val) {
             $re_lines[$key] = stripslashes($val);
-            if (strlen($val) > 75) {
+            if (mb_strlen($val) > 75) {
                 // we trim to drop the last newline, which will be added
                 // again by the implode function at the end of fetch()
-                $re_lines[$key] = trim(preg_replace("/$regex/i", "\\1$newline ", $val));
+                $re_lines[$key] = trim(preg_replace("/$regex/iu", "\\1$newline ", $val));
             }
         }
 
