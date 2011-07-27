@@ -396,7 +396,7 @@ class class_vcard_storage {
         if ($uid == '' or !isset($uid)) {
             return false;
         }
-        if (strlen($uid) == 36) {
+        if (mb_strlen($uid,'utf8') == 36) {
             /**
              * todo: 调整检查$uid的算法
              */
@@ -489,7 +489,7 @@ class class_vcard_storage {
                 try {
                     $sth = $this->dbh->prepare($store_sql);
 
-                    if(!isset($vcard_data_array['REV']) or strlen($vcard_data_array['REV'])<=0) {
+                    if(!isset($vcard_data_array['REV']) or mb_strlen($vcard_data_array['REV'],'utf8')<=0) {
                         $vcard_data_array['REV'] = date("Y-m-d H:i:s");
                     }
 
