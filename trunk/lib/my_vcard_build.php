@@ -27,20 +27,20 @@ final class my_vcard_build extends File_IMC_Build_Vcard {
     public function getType($comp, $iter = 0) {
         $type = $this->getParam($comp, $iter);
         $type = explode('=', $type, 2);
-        if($comp == 'TEL'){
+        if ($comp == 'TEL') {
             $this->parseTelType($type);
         }
-        if($comp == 'PHOTO'){
+        if ($comp == 'PHOTO') {
             $this->parsePhotoType($type);
         }
         return $type[1];
     }
-    
+
     public function parseTelType($type) {
 //        $type = $this->getType($comp);
         $pattern = '/(PREF|WORK|HOME|VOICE|FAX|MSG|CELL|PAGER|BBS|CAR|VIDEO)/i';
-        if(preg_match_all($pattern, $type, $matchesarray)){
-            $type = strtoupper( implode(',', $matchesarray[0]));
+        if (preg_match_all($pattern, $type, $matchesarray)) {
+            $type = strtoupper(implode(',', $matchesarray[0]));
             return $type;
         }
         return 'OTHER';
@@ -70,18 +70,18 @@ final class my_vcard_build extends File_IMC_Build_Vcard {
     public function getValue($comp, $iter = 0, $part = 0, $rept = null) {
         if ($comp === 'ADR') {
             return $this->getAdrValue($iter);
-        }elseif($comp === 'TEL'){
+        } elseif ($comp === 'TEL') {
             $telValue = parent::getValue($comp, $iter, $part, $rept);
-            debugLog(__FILE__,__CLASS__,__METHOD__,__LINE__,  var_export($telValue,true));
+            debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($telValue, true));
 //            $telValue = $this->parseTelValue($telValue);
             return $telValue;
         }
         return parent::getValue($comp, $iter, $part, $rept);
     }
-    
+
     public function parseTelValue($telValue) {
         $telValue = preg_replace('/\+|\s+|\-|\(|\)/', '', $telValue);
-        debugLog(__FILE__,__CLASS__,__METHOD__,__LINE__,  var_export($telValue,true));
+        debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($telValue, true));
         return $telValue;
     }
 
@@ -117,7 +117,6 @@ final class my_vcard_build extends File_IMC_Build_Vcard {
                     }
                 }
                 return $r_array;
-                
             } else {
                 return array();
             }
@@ -153,11 +152,11 @@ final class my_vcard_build extends File_IMC_Build_Vcard {
      *
      */
     public function getTitle() {
-        return (mb_strlen($this->getValue('TITLE', 0, 0)) > 0) ? $this->getValue('TITLE', 0, 0) : $this->getValue('ROLE', 0, 0);
+        return (mb_strlen($this->getValue('TITLE', 0, 0), 'utf-8') > 0) ? $this->getValue('TITLE', 0, 0) : $this->getValue('ROLE', 0, 0);
     }
 
     public function getRole() {
-        return (mb_strlen($this->getValue('ROLE', 0, 0)) > 0) ? $this->getValue('ROLE', 0, 0) : $this->getValue('TITLE', 0, 0) ;
+        return (mb_strlen($this->getValue('ROLE', 0, 0), 'utf-8') > 0) ? $this->getValue('ROLE', 0, 0) : $this->getValue('TITLE', 0, 0);
     }
 
     public function getAgent() {
@@ -184,22 +183,22 @@ final class my_vcard_build extends File_IMC_Build_Vcard {
         return $this->getValue('PHOTO', 0, 0);
     }
 
-      public function parsePhotoType($pt) {
+    public function parsePhotoType($pt) {
 //        $pt = $this->getType('PHOTO');
-        if(preg_match("/base64/i", $pt)){
-            if(preg_match("/jpg|jpeg/i", $pt)){
+        if (preg_match("/base64/i", $pt)) {
+            if (preg_match("/jpg|jpeg/i", $pt)) {
                 return 'JPEG';
-            }  elseif (preg_match('/bmp/i', $pt)) {
+            } elseif (preg_match('/bmp/i', $pt)) {
                 return 'BMP';
             } elseif (preg_match('/gif/i', $pt)) {
                 return 'GIF';
-            }else{
+            } else {
                 return 'UNKNOWN';
             }
-        }  elseif (preg_match('/url|uri/i', $pt)) {
+        } elseif (preg_match('/url|uri/i', $pt)) {
             return 'URL';
         }
-      }
+    }
 
     public function getURL() {
         return $this->getValue('URL', 0, 0);
@@ -246,7 +245,7 @@ final class my_vcard_build extends File_IMC_Build_Vcard {
     }
 
     public function get_x_microblog() {
-        if(($microblog = $this->getValue('X-MICROBLOG',0,0))!= NULL){
+        if (($microblog = $this->getValue('X-MICROBLOG', 0, 0)) != NULL) {
             return explode('@', $microblog);
         }
         return NULL;
