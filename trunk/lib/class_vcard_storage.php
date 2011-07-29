@@ -230,6 +230,13 @@ class class_vcard_storage {
             'AGENT' => NULL,
             'ORG' => '息通网络',
          */
+        if( mb_strlen($re[0]['TITLE'],'utf-8') > 0 and mb_strlen($re[0]['ROLE'],'utf-8') < 1){
+            $re[0]['ROLE'] = $re[0]['TITLE'];
+        }
+        if( mb_strlen($re[0]['ROLE'],'utf-8') > 0 and mb_strlen($re[0]['TITLE'],'utf-8') < 1){
+            $re[0]['TITLE'] = $re[0]['ROLE'];
+        }
+        
         return array(
                 'TITLE' => stripcslashes($re[0]['TITLE']),
                 'ROLE' => stripcslashes($re[0]['ROLE']),
