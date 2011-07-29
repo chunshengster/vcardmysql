@@ -153,11 +153,11 @@ final class my_vcard_build extends File_IMC_Build_Vcard {
      *
      */
     public function getTitle() {
-        return $this->getValue('TITLE', 0, 0);
+        return (mb_strlen($this->getValue('TITLE', 0, 0)) > 0) ? $this->getValue('TITLE', 0, 0) : $this->getValue('ROLE', 0, 0);
     }
 
     public function getRole() {
-        return $this->getValue('ROLE', 0, 0);
+        return (mb_strlen($this->getValue('ROLE', 0, 0)) > 0) ? $this->getValue('ROLE', 0, 0) : $this->getValue('TITLE', 0, 0) ;
     }
 
     public function getAgent() {
