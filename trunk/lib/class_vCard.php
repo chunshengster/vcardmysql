@@ -240,7 +240,7 @@ class class_vCard {
 //                        break;
                     }
                 }
-            } elseif ((isset ($this->vCard_Explanatory_Properties['RESOURCE_ID'])) and ($this->vCard_Explanatory_Properties['RESOURCE_ID'] !== '')) {
+            } elseif ((isset($this->vCard_Explanatory_Properties['RESOURCE_ID'])) and ($this->vCard_Explanatory_Properties['RESOURCE_ID'] !== '')) {
                 $key = array(
                     'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' => $this->vCard_Explanatory_Properties['RESOURCE_ID'],
                 );
@@ -295,7 +295,7 @@ class class_vCard {
                         return $this->vCard_Delivery_Addressing_Properties_LABEL[$k];
                     }
                 }
-            } elseif ((isset ($this->vCard_Explanatory_Properties['RESOURCE_ID'])) and ($this->vCard_Explanatory_Properties['RESOURCE_ID'] !== '')) {
+            } elseif ((isset($this->vCard_Explanatory_Properties['RESOURCE_ID'])) and ($this->vCard_Explanatory_Properties['RESOURCE_ID'] !== '')) {
                 $key = array(
                     'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' => $this->vCard_Explanatory_Properties['RESOURCE_ID'],
                 );
@@ -327,7 +327,7 @@ class class_vCard {
             $key = array();
             debugLog(__FILE__, __METHOD__, __LINE__, var_export($this->vCard_Explanatory_Properties, true));
             debugLog(__FILE__, __METHOD__, __LINE__, var_export($this->vCard_Geographical_Properties, true));
-            if ((isset ($this->vCard_Explanatory_Properties['RESOURCE_ID'])) and ($this->vCard_Explanatory_Properties['RESOURCE_ID'] !== '')) {
+            if ((isset($this->vCard_Explanatory_Properties['RESOURCE_ID'])) and ($this->vCard_Explanatory_Properties['RESOURCE_ID'] !== '')) {
                 $key = array(
                     'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' => $this->vCard_Explanatory_Properties['RESOURCE_ID'],
                 );
@@ -366,7 +366,7 @@ class class_vCard {
             $key = array();
             debugLog(__FILE__, __METHOD__, __LINE__, var_export($this->vCard_Explanatory_Properties, true));
             debugLog(__FILE__, __METHOD__, __LINE__, var_export($this->vCard_Organizational_Properties, true));
-            if ((isset ($this->vCard_Explanatory_Properties['RESOURCE_ID'])) and ($this->vCard_Explanatory_Properties['RESOURCE_ID'] !== '')) {
+            if ((isset($this->vCard_Explanatory_Properties['RESOURCE_ID'])) and ($this->vCard_Explanatory_Properties['RESOURCE_ID'] !== '')) {
                 $key = array(
                     'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' => $this->vCard_Explanatory_Properties['RESOURCE_ID'],
                 );
@@ -421,7 +421,7 @@ class class_vCard {
                         return $this->vCard_Telecommunications_Addressing_Properties_Email[$k];
                     }
                 }
-            } elseif ((isset ($this->vCard_Explanatory_Properties['RESOURCE_ID'])) and  ($this->vCard_Explanatory_Properties['RESOURCE_ID'] !== '')) {
+            } elseif ((isset($this->vCard_Explanatory_Properties['RESOURCE_ID'])) and ($this->vCard_Explanatory_Properties['RESOURCE_ID'] !== '')) {
                 $key = array(
                     'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' => $this->vCard_Explanatory_Properties['RESOURCE_ID'],
                 );
@@ -469,7 +469,7 @@ class class_vCard {
                         return $this->vCard_Telecommunications_Addressing_Properties_Tel[$k];
                     }
                 }
-            } elseif ((isset ($this->vCard_Explanatory_Properties['RESOURCE_ID'])) and ($this->vCard_Explanatory_Properties['RESOURCE_ID'] !== '')) {
+            } elseif ((isset($this->vCard_Explanatory_Properties['RESOURCE_ID'])) and ($this->vCard_Explanatory_Properties['RESOURCE_ID'] !== '')) {
                 $key = array(
                     'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' => $this->vCard_Explanatory_Properties['RESOURCE_ID'],
                 );
@@ -514,7 +514,7 @@ class class_vCard {
                         return $this->vCard_Extension_Properties[$k];
                     }
                 }
-            } elseif ((isset ($this->vCard_Explanatory_Properties['RESOURCE_ID'])) and ($this->vCard_Explanatory_Properties['RESOURCE_ID'] !== '')) {
+            } elseif ((isset($this->vCard_Explanatory_Properties['RESOURCE_ID'])) and ($this->vCard_Explanatory_Properties['RESOURCE_ID'] !== '')) {
                 $key = array(
                     'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' => $this->vCard_Explanatory_Properties['RESOURCE_ID'],
 //                    'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' => 190,
@@ -581,7 +581,7 @@ class class_vCard {
                   ) */
         );
         $this->set_vCard_Identification_Properties(array(
-            'FN' => (strlen($this->_builder->getFormattedName())>0) ? $this->_builder->getFormattedName() : implode('', explode(';',$this->_builder->getName())),
+            'FN' => (mb_strlen($this->_builder->getFormattedName(), 'utf-8') > 0) ? $this->_builder->getFormattedName() : implode('', explode(';', $this->_builder->getName())),
             'N' => $this->_builder->getName(),
             'NICKNAME' => $this->_builder->getNickname(),
             'PHOTO' => $this->_builder->getPhoto(),
@@ -828,10 +828,10 @@ class class_vCard {
         $re_array = $this->obj_vcard_storage->store_data('vCard_Explanatory_Properties', $this->vCard_Explanatory_Properties, $gen_uid);
         debugLog(__FILE__, __METHOD__, __LINE__, var_export($re_array, true));
         if ($re_array !== false) {
-            if ($re_array['UID'] !== '' 
-                    and (!isset($this->vCard_Explanatory_Properties['UID']) 
-                            or ((isset($this->vCard_Explanatory_Properties['UID']) 
-                                    and ($this->vCard_Explanatory_Properties['UID'] == ''))))) {
+            if ($re_array['UID'] !== ''
+                    and (!isset($this->vCard_Explanatory_Properties['UID'])
+                    or ((isset($this->vCard_Explanatory_Properties['UID'])
+                    and ($this->vCard_Explanatory_Properties['UID'] == ''))))) {
                 $this->vCard_Explanatory_Properties['UID'] = $re_array['UID'];
             }
 
@@ -1094,10 +1094,12 @@ class class_vCard {
 
     /**
      * 取得一个完整的vcard text
+     * @param <bool> true | false
      * @param <UUID> $uid
+     * @param <string> $mobile_type | 'nokia'
      * $uid 在设计中，$uid为保存在 USER 表中的 user_vcard 的 vcard_name 字段，该字段被设计为vcard标准中的UID
      */
-    public function get_vCard_Text($from_storage=false, $uid='') {
+    public function get_vCard_Text($from_storage=false, $uid='', $mobile_type=null) {
 
         if ($from_storage == true) {
             $this->get_Full_vCard_From_Storage($uid);
@@ -1132,17 +1134,26 @@ class class_vCard {
             if ($this->vCard_Identification_Properties['NICKNAME'] != '')
                 $re_lines[] = 'NICKNAME;CHARSET=UTF-8:' . $this->vCard_Identification_Properties['NICKNAME'];
         }
-        if (isset ($this->vCard_Identification_Properties['PHOTO']) and $this->vCard_Identification_Properties['PHOTO'] != '') {
-            if ($this->vCard_Identification_Properties['PhotoType'] != 'URL') {
-                $pt = 'ENCODING=BASE64;TYPE=' . $this->vCard_Identification_Properties['PhotoType'];
-                $re_lines[] = 'PHOTO;' . $pt . ':' . $this->vCard_Identification_Properties['PHOTO'];
-            } else {
+
+        if (isset($this->vCard_Identification_Properties['PHOTO']) and $this->vCard_Identification_Properties['PHOTO'] != '') {
+            if ($this->vCard_Identification_Properties['PhotoType'] === 'URL') {
                 $t = getImg::get_url_img($this->vCard_Identification_Properties['PHOTO']);
-                $pt = 'ENCODING=BASE64;TYPE=' . $t['type'];
-                $re_lines[] = 'PHOTO;' . $pt . ':' . $t['data'];
-                //$pt = 'VALUE=' . $this->vCard_Identification_Properties['PhotoType'].';TYPE=JPG';
+                $this->vCard_Identification_Properties['PHOTO'] = isset($t['data']) ? $t['data'] : '';
+                $this->vCard_Identification_Properties['PhotoType'] = isset($t['type']) ? $t['type'] : '';
+            }
+            /**
+             * 修改，针对nokia手机不能接收大头像的问题，将大于30k的头像设成空
+             */
+            if (isset($mobile_type) and strtolower($mobile_type) === 'nokia') {
+                if (mb_strlen(base64_decode($this->vCard_Identification_Properties['PHOTO'])) < 30000) {
+                    $this->vCard_Identification_Properties['PHOTO'] = '';
+                    $this->vCard_Identification_Properties['PhotoType'] = '';
+                }
             }
             
+            $pt = 'ENCODING=BASE64;TYPE=' . $this->vCard_Identification_Properties['PhotoType'];
+            $re_lines[] = 'PHOTO;' . $pt . ':' . $this->vCard_Identification_Properties['PHOTO'];
+
         }
 
         if ($this->vCard_Identification_Properties['BDAY'] != '')
@@ -1233,7 +1244,7 @@ class class_vCard {
         $regex = "(.{1,75})";
         foreach ($re_lines as $key => $val) {
             $re_lines[$key] = stripslashes($val);
-            if (mb_strlen($val,'utf8') > 75) {
+            if (mb_strlen($val, 'utf8') > 75) {
                 // we trim to drop the last newline, which will be added
                 // again by the implode function at the end of fetch()
                 $re_lines[$key] = trim(preg_replace("/$regex/iu", "\\1$newline ", $val));
