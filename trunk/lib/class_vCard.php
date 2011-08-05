@@ -162,7 +162,6 @@ class class_vCard {
 
     /**
      * @param array $vCard_Explanatory_Properties
-     * @param field_type $vCard_Explanatory_Properties
      */
     public function set_vCard_Explanatory_Properties($vCard_Explanatory_Properties) {
         $this->vCard_Explanatory_Properties = $vCard_Explanatory_Properties;
