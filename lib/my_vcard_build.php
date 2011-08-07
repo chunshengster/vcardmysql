@@ -26,22 +26,25 @@ final class my_vcard_build extends File_IMC_Build_Vcard {
 
     public function getType($comp, $iter = 0) {
         $type = $this->getParam($comp, $iter);
-        $type = explode('=', $type, 2);
+        
         if ($comp == 'TEL') {
-            $this->parseTelType($type);
+            return $this->parseTelType($type);
         }
         if ($comp == 'PHOTO') {
-            $this->parsePhotoType($type);
+            return $this->parsePhotoType($type);
         }
         if($comp == 'ADR'){
-            $this->parseAdrType($type);
+            
+            return $this->parseAdrType($type);
         }
+        $type = explode('=', $type, 2);
         return $type[1];
     }
     
     public function parseAdrType($type) {
         $pattern = '/(DOM|INTL|POSTAL|PARCEL|HOME|WORK)/i';
         if (preg_match_all($pattern, $type, $matchesarray)) {
+            var_export($matchesarray);
             $type = strtoupper(implode(',', $matchesarray[0]));
             return $type;
         }
