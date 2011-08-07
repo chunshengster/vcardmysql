@@ -44,7 +44,6 @@ final class my_vcard_build extends File_IMC_Build_Vcard {
     public function parseAdrType($type) {
         $pattern = '/(DOM|INTL|POSTAL|PARCEL|HOME|WORK)/i';
         if (preg_match_all($pattern, $type, $matchesarray)) {
-            var_export($matchesarray);
             $type = strtoupper(implode(',', $matchesarray[0]));
             return $type;
         }
