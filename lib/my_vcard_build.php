@@ -33,7 +33,19 @@ final class my_vcard_build extends File_IMC_Build_Vcard {
         if ($comp == 'PHOTO') {
             $this->parsePhotoType($type);
         }
+        if($comp == 'ADR'){
+            $this->parseAdrType($type);
+        }
         return $type[1];
+    }
+    
+    public function parseAdrType($type) {
+        $pattern = '/(DOM|INTL|POSTAL|PARCEL|HOME|WORK)/i';
+        if (preg_match_all($pattern, $type, $matchesarray)) {
+            $type = strtoupper(implode(',', $matchesarray[0]));
+            return $type;
+        }
+        return 'POSTAL';
     }
 
     public function parseTelType($type) {
