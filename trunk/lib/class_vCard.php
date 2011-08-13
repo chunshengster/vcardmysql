@@ -585,7 +585,7 @@ class class_vCard {
             'NICKNAME' => $this->_builder->getNickname(),
             'PHOTO' => $this->_builder->getPhoto(),
             'PhotoType' => $this->_builder->getType('PHOTO'),
-            'BDAY' => ($this->_builder->getBirthday() == '') ? '0000-00-00' : $this->_builder->getBirthday(),
+            'BDAY' => ($this->_builder->getBirthday() == '') ? '1970-01-01' : $this->_builder->getBirthday(),
             'URL' => $this->_builder->getURL(),
             'SOUND' => $this->_builder->getSound(),
             'NOTE' => $this->_builder->getNote()
@@ -1095,16 +1095,23 @@ class class_vCard {
      * 取得一个完整的vcard text
      * @param <bool> true | false
      * @param <UUID> $uid
-     * @param <string> $mobile_type | 'nokia'
+     * @param <int> $max_size 
      * $uid 在设计中，$uid为保存在 USER 表中的 user_vcard 的 vcard_name 字段，该字段被设计为vcard标准中的UID
      */
-    public function get_vCard_Text($from_storage=false, $uid='', $mobile_type=null) {
+    public function get_vCard_Text($from_storage=false, $uid='', $max_size=null) {
 
         if ($from_storage == true) {
             $this->get_Full_vCard_From_Storage($uid);
         }
         debugLog(__FILE__, __METHOD__, __LINE__, var_export($this, true));
 
+        // version 3.0 uses \n for new lines,
+        // version 2.1 uses \r\n
+        $newline = "\n";
+        if ($this->vCard_Explanatory_Properties['VERSION'] == '3.0') {
+            $newline = "\r\n";
+        }
+        
         $re_lines = array();
         $re_lines[] = "BEGIN:VCARD";
 
@@ -1134,26 +1141,7 @@ class class_vCard {
                 $re_lines[] = 'NICKNAME;CHARSET=UTF-8:' . $this->vCard_Identification_Properties['NICKNAME'];
         }
 
-        if (isset($this->vCard_Identification_Properties['PHOTO']) and $this->vCard_Identification_Properties['PHOTO'] != '') {
-            if ($this->vCard_Identification_Properties['PhotoType'] === 'URL') {
-                $t = getImg::get_url_img($this->vCard_Identification_Properties['PHOTO']);
-                $this->vCard_Identification_Properties['PHOTO'] = isset($t['data']) ? $t['data'] : '';
-                $this->vCard_Identification_Properties['PhotoType'] = isset($t['type']) ? $t['type'] : '';
-            }
-            /**
-             * 修改，针对nokia手机不能接收大头像的问题，将大于30k的头像设成空
-             */
-            if (isset($mobile_type) and strtolower($mobile_type) === 'nokia') {
-                if (mb_strlen(base64_decode($this->vCard_Identification_Properties['PHOTO'])) < 30000) {
-                    $this->vCard_Identification_Properties['PHOTO'] = '';
-                    $this->vCard_Identification_Properties['PhotoType'] = '';
-                }
-            }
-            
-            $pt = 'ENCODING=BASE64;TYPE=' . $this->vCard_Identification_Properties['PhotoType'];
-            $re_lines[] = 'PHOTO;' . $pt . ':' . $this->vCard_Identification_Properties['PHOTO'];
-
-        }
+        
 
         if ($this->vCard_Identification_Properties['BDAY'] != '')
             $re_lines[] = 'BDAY:' . $this->vCard_Identification_Properties['BDAY'];
@@ -1212,7 +1200,20 @@ class class_vCard {
                 $re_lines[] = 'EMAIL;TYPE=' . $v['EmailType'] . ':' . $v['EMAIL'];
             }
         }
+        
+        
+        if (isset($this->vCard_Identification_Properties['PHOTO']) and $this->vCard_Identification_Properties['PHOTO'] != '') {
+            if ($this->vCard_Identification_Properties['PhotoType'] === 'URL') {
+                $t = getImg::get_url_img($this->vCard_Identification_Properties['PHOTO']);
+                $this->vCard_Identification_Properties['PHOTO'] = isset($t['data']) ? $t['data'] : '';
+                $this->vCard_Identification_Properties['PhotoType'] = isset($t['type']) ? $t['type'] : '';
+            }
+            
+            $pt = 'ENCODING=BASE64;TYPE=' . $this->vCard_Identification_Properties['PhotoType'];
+            $re_lines_photo[] = 'PHOTO;' . $pt . ':' . $this->vCard_Identification_Properties['PHOTO'];
 
+        }
+        
         if (count($this->vCard_Extension_Properties) > 0) {
             foreach ($this->vCard_Extension_Properties as $k => $v) {
                 if (isset($v['RESOURCE_ID'])) {
@@ -1223,8 +1224,17 @@ class class_vCard {
                 if (is_array($v)) {
                     $re_lines[] = $k . ':' . implode('@', $v);
                 } else {
-                    $re_lines[] = $k . ':' . $v;
+                    $re_lines_ext[] = $k . ':' . $v;
                 }
+            }
+        }
+
+        if(!isset ($max_size) or (isset ($max_size) and mb_strlen(implode($newline, $re_lines),'utf8') + mb_strlen(implode($newline, $re_lines_photo), 'utf8')<($max_size-10))){
+            foreach($re_lines_photo as $_p){
+                $re_lines[] = $_p; 
+            }
+            foreach ($re_lines_ext as $_e) {
+                $re_lines[] = $_e;
             }
         }
 
@@ -1232,12 +1242,7 @@ class class_vCard {
 
         $re_lines[] = "END:VCARD";
 
-        // version 3.0 uses \n for new lines,
-        // version 2.1 uses \r\n
-        $newline = "\n";
-        if ($this->vCard_Explanatory_Properties['VERSION'] == '3.0') {
-            $newline = "\r\n";
-        }
+        
 
         // fold lines at 75 characters
         $regex = "(.{1,75})";
