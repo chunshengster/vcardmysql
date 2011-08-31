@@ -21,8 +21,8 @@ class vCard_Diff_Lib {
         if (is_array($fields)) {
             if (in_array('EMAIL', $fields) or in_array('ADR', $fields) or in_array('LABEL', $fields)) {
                 sort($fields);
-            } elseif(in_array('TEL', $fields)) {
-                $fields = array('TEL','TelType','RESOURCE_ID');
+            } elseif (in_array('TEL', $fields)) {
+                $fields = array('TEL', 'TelType', 'RESOURCE_ID');
             }
         } else {
             $fields = array();
@@ -66,7 +66,7 @@ class vCard_Diff_Lib {
         }
 
         foreach ($a1 as $key => $value) {
-            if (!isset($b11) or  !is_array($b11) or !array_key_exists($value[$fields[0]], $b11)) {
+            if (!isset($b11) or !is_array($b11) or !array_key_exists($value[$fields[0]], $b11)) {
                 $c1[$i]['FLAG'] = 'DELETED';
                 $c1[$i][$fields[0]] = $value[$fields[0]];
                 $c1[$i][$fields[1]] = $value[$fields[1]];
@@ -120,11 +120,11 @@ class vCard_Diff_Lib {
                 $c[$key] = self::diff_onedimension($value, $vcard_b[$key]);
             } elseif ($rs == 'twodimension') {
                 debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($value, true), var_export($vcard_b, true));
-                if ((count($vcard_b[$key]) > 0) or (count($vcard_a[$key]) > 0))  {
+                if ((count($vcard_b[$key]) > 0) or (count($vcard_a[$key]) > 0)) {
                     debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export(array_keys($vcard_a[$key][0]), true), var_export(array_keys($vcard_b[$key][0]), true));
-                    $fields_a = (isset($vcard_a[$key][0]) or is_array($vcard_a[$key][0]))?array_keys($vcard_a[$key][0]):array();
-                    $fields_b = (isset($vcard_b[$key][0]) or is_array($vcard_b[$key][0]))?array_keys($vcard_b[$key][0]):array();
-                    $fields = array_unique(array_merge($fields_a,$fields_b));
+                    $fields_a = (isset($vcard_a[$key][0]) or is_array($vcard_a[$key][0])) ? array_keys($vcard_a[$key][0]) : array();
+                    $fields_b = (isset($vcard_b[$key][0]) or is_array($vcard_b[$key][0])) ? array_keys($vcard_b[$key][0]) : array();
+                    $fields = array_unique(array_merge($fields_a, $fields_b));
                 } else {
                     $fields = '';
                 }
