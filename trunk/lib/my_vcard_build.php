@@ -50,6 +50,8 @@ final class my_vcard_build extends File_IMC_Build_Vcard {
         return 'POSTAL';
     }
 
+    
+    
     public function parseTelType($type) {
 //        $type = $this->getType($comp);
         $pattern = '/(PREF|WORK|HOME|VOICE|FAX|MSG|CELL|PAGER|BBS|CAR|VIDEO)/i';
