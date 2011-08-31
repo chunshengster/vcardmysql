@@ -1143,7 +1143,7 @@ class class_vCard {
 
         
 
-        if ($this->vCard_Identification_Properties['BDAY'] != '')
+        if ($this->vCard_Identification_Properties['BDAY'] != '' and $this->vCard_Identification_Properties['BDAY'] != '1970-01-01')
             $re_lines[] = 'BDAY:' . $this->vCard_Identification_Properties['BDAY'];
         if ($this->vCard_Identification_Properties['URL'] != '')
             $re_lines[] = 'URL:' . $this->vCard_Identification_Properties['URL'];
