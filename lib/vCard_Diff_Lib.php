@@ -19,7 +19,11 @@ class vCard_Diff_Lib {
         $a11 = array();
         debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($old, true), var_export($new, true), var_export($fields, true));
         if (is_array($fields)) {
-            sort($fields);
+            if (in_array('EMAIL', $fields)) {
+                sort($fields);
+            } else {
+                rsort($fields);
+            }
         } else {
             $fields = array();
         }
@@ -54,6 +58,7 @@ class vCard_Diff_Lib {
                         $c1[$i]['FLAG'] = 'NEW';
                         $c1[$i][$fields[0]] = $value[$fields[0]];
                         $c1[$i][$fields[1]] = $value[$fields[1]];
+                        unset($c1[$i]['RESOURCE_ID']);
                         $i++;
                     }
                 }
@@ -120,7 +125,6 @@ class vCard_Diff_Lib {
                 } else {
                     $fields = '';
                 }
-
                 $c[$key] = self::diff_twodimension($value, $vcard_b[$key], $fields);
             } elseif ($rs == 'Extension') {
                 debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($value, true), var_export($vcard_b, true));
@@ -182,7 +186,7 @@ class vCard_Diff_Lib {
 //            return $old;
 //        }
         $is_changed = false;
-        $resource_id = $old['RESOURCE_ID'];
+        $resource_id = isset($old['RESOURCE_ID']) ? $old['RESOURCE_ID'] : null;
         unset($old['RESOURCE_ID']);
         if (isset($old)) {
             if (is_array($old)) {
