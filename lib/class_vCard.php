@@ -1033,8 +1033,8 @@ class class_vCard {
 
     /**
      *  通过 UID () 取得某个vcard的摘要信息
-     * @param <UID> $uid
-     * @return <array> $vacar_summary{ 'Rev'=>,……}
+     * @param UID $uid UUID
+     * @return array $vacar_summary  { 'Rev'=>,……}
      */
     public function get_vCard_Summary($uid) {
         $this->_get_storage_resource();
