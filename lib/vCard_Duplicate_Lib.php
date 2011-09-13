@@ -101,7 +101,7 @@ class vCard_Duplicate_Lib {
                 as 'result_group',replace(TRIM(FN),' ','') as FN_O  
                 FROM " . self::$vCard_Identification_Properties .
                     " WHERE `vCard_Explanatory_Properties_idvCard_Explanatory_Properties`
-                IN (" . $id_list . ") GROUP BY FN_O;";
+                IN (" . $id_list . ") and FN <> '' GROUP BY FN_O;";
 
             try {
                 $sth = $this->dbh->query($SQL_FIND_DUPLICATE);
