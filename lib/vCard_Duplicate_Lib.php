@@ -85,13 +85,25 @@ class vCard_Duplicate_Lib {
         $this->_gen_mysql_resource();
 
         if ($key === 'FN') {
+            /** 原始SQL
+              $SQL_FIND_DUPLICATE = "SELECT
+              group_concat(`vCard_Explanatory_Properties_idvCard_Explanatory_Properties`)
+              as 'result_group',FN
+              FROM " . self::$vCard_Identification_Properties .
+              " WHERE `vCard_Explanatory_Properties_idvCard_Explanatory_Properties`
+              IN (" . $id_list . ") GROUP BY `FN`;";
+             */
+            /**
+             * 对FN字段中的空格进行过滤
+             */
             $SQL_FIND_DUPLICATE = "SELECT 
                 group_concat(`vCard_Explanatory_Properties_idvCard_Explanatory_Properties`) 
-                as 'result_group',FN  
+                as 'result_group',replace(TRIM(FN),' ','') as FN_O  
                 FROM " . self::$vCard_Identification_Properties .
                     " WHERE `vCard_Explanatory_Properties_idvCard_Explanatory_Properties`
-                IN (" . $id_list . ") GROUP BY `FN`;";
-            try{
+                IN (" . $id_list . ") GROUP BY FN_O;";
+
+            try {
                 $sth = $this->dbh->query($SQL_FIND_DUPLICATE);
                 $re_array = $sth->fetchAll(PDO::FETCH_ASSOC);
                 foreach ($re_array as $k => $v) {
@@ -101,11 +113,10 @@ class vCard_Duplicate_Lib {
                         continue;
                     }
                     unset($re_array[$k]);
-                    $re_array[$v['FN']] = $t;
+                    $re_array[$v['FN_O']] = $t;
                 }
                 return $re_array;
-                
-            }  catch (PDOException $e) {
+            } catch (PDOException $e) {
                 debugLog(__FILE__, __CLASS__, __METHOD__, var_export($e->getMessage(), true));
             }
         }
@@ -128,9 +139,9 @@ class vCard_Duplicate_Lib {
                         continue;
                     }
                     $et = explode(',', $v['EmailType']);
-                    
+
                     unset($re_array[$k]);
-                    
+
                     $re_array[$v['EMAIL']] = $t;
                     $re_array[$v['EMAIL']]['EmailType'] = array_unique($et);
                 }
@@ -165,7 +176,7 @@ class vCard_Duplicate_Lib {
 //                        continue;
 //                    }
                     $tt = explode(',', $v['TelType']);
-                    
+
                     $re_array[$v['TEL']] = $t;
                     $re_array[$v['TEL']]['TelType'] = array_unique($tt);
                     unset($re_array[$k]);
