@@ -1111,7 +1111,7 @@ class class_vCard {
         if ($this->vCard_Explanatory_Properties['VERSION'] == '3.0') {
             $newline = "\r\n";
         }
-        
+
         $re_lines = array();
         $re_lines[] = "BEGIN:VCARD";
 
@@ -1141,7 +1141,7 @@ class class_vCard {
                 $re_lines[] = 'NICKNAME;CHARSET=UTF-8:' . $this->vCard_Identification_Properties['NICKNAME'];
         }
 
-        
+
 
         if ($this->vCard_Identification_Properties['BDAY'] != '' and $this->vCard_Identification_Properties['BDAY'] != '1970-01-01')
             $re_lines[] = 'BDAY:' . $this->vCard_Identification_Properties['BDAY'];
@@ -1200,20 +1200,19 @@ class class_vCard {
                 $re_lines[] = 'EMAIL;TYPE=' . $v['EmailType'] . ':' . $v['EMAIL'];
             }
         }
-        
-        
+
+
         if (isset($this->vCard_Identification_Properties['PHOTO']) and $this->vCard_Identification_Properties['PHOTO'] != '') {
             if ($this->vCard_Identification_Properties['PhotoType'] === 'URL') {
                 $t = getImg::get_url_img($this->vCard_Identification_Properties['PHOTO']);
                 $this->vCard_Identification_Properties['PHOTO'] = isset($t['data']) ? $t['data'] : '';
                 $this->vCard_Identification_Properties['PhotoType'] = isset($t['type']) ? $t['type'] : '';
             }
-            
+
             $pt = 'ENCODING=BASE64;TYPE=' . $this->vCard_Identification_Properties['PhotoType'];
             $re_lines_photo[] = 'PHOTO;' . $pt . ':' . $this->vCard_Identification_Properties['PHOTO'];
-
         }
-        
+
         if (count($this->vCard_Extension_Properties) > 0) {
             foreach ($this->vCard_Extension_Properties as $k => $v) {
                 if (isset($v['RESOURCE_ID'])) {
@@ -1229,12 +1228,18 @@ class class_vCard {
             }
         }
 
-        if(!isset ($max_size) or (isset ($max_size) and mb_strlen(implode($newline, $re_lines),'utf8') + mb_strlen(implode($newline, $re_lines_photo), 'utf8')<($max_size-10))){
-            foreach($re_lines_photo as $_p){
-                $re_lines[] = $_p; 
+        if (isset($re_lines_photo)) {
+            if (!isset($max_size) or (isset($max_size) and mb_strlen(implode($newline, $re_lines), 'utf8') + mb_strlen(implode($newline, $re_lines_photo), 'utf8') < ($max_size - 10))) {
+                foreach ($re_lines_photo as $_p) {
+                    $re_lines[] = $_p;
+                }
             }
-            foreach ($re_lines_ext as $_e) {
-                $re_lines[] = $_e;
+        }
+        if (isset($re_lines_ext)) {
+            if (!isset($max_size) or (isset($max_size) and mb_strlen(implode($newline, $re_lines), 'utf8') + mb_strlen(implode($newline, $re_lines_ext), 'utf8') < ($max_size - 10))) {
+                foreach ($re_lines_ext as $_e) {
+                    $re_lines[] = $_e;
+                } 
             }
         }
 
@@ -1242,7 +1247,7 @@ class class_vCard {
 
         $re_lines[] = "END:VCARD";
 
-        
+
 
         // fold lines at 75 characters
         $regex = "(.{1,75})";
