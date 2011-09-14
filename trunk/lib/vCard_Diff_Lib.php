@@ -121,9 +121,9 @@ class vCard_Diff_Lib {
             } elseif ($rs == 'twodimension') {
                 debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($value, true), var_export($vcard_b, true));
                 if ((count($vcard_b[$key]) > 0) or (count($vcard_a[$key]) > 0)) {
-                    debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export(array_keys($vcard_a[$key][0]), true), var_export(array_keys($vcard_b[$key][0]), true));
-                    $fields_a = (isset($vcard_a[$key][0]) or is_array($vcard_a[$key][0])) ? array_keys($vcard_a[$key][0]) : array();
-                    $fields_b = (isset($vcard_b[$key][0]) or is_array($vcard_b[$key][0])) ? array_keys($vcard_b[$key][0]) : array();
+                    debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, is_array($vcard_a[$key]) ? var_export(array_keys($vcard_a[$key]), true) : '', is_array($vcard_b[$key]) ? var_export(array_keys($vcard_b[$key]), true) : '');
+                    $fields_a = (isset($vcard_a[$key][0]) and is_array($vcard_a[$key][0])) ? array_keys($vcard_a[$key][0]) : array();
+                    $fields_b = (isset($vcard_b[$key][0]) and is_array($vcard_b[$key][0])) ? array_keys($vcard_b[$key][0]) : array();
                     $fields = array_unique(array_merge($fields_a, $fields_b));
                 } else {
                     $fields = '';
