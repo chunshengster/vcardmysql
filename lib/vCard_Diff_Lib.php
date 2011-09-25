@@ -224,8 +224,9 @@ class vCard_Diff_Lib {
         debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($old, true));
         debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($new, true));
         foreach ($old as $k => $v) {
-            if (!isset($new[$k]['Value'])) {
+            if (!isset($new[$k]['Value']) or ($new[$k]['Value'] == '')) {
                 $old[$k]['FLAG'] = 'DELETED';
+                unset($new[$k]);
             } elseif ($v['Value'] == $new[$k]['Value']) {
                 unset($old[$k]);
                 unset($new[$k]);
@@ -237,8 +238,10 @@ class vCard_Diff_Lib {
         }
         if (count($new) > 0) {
             foreach ($new as $k => $v) {
-                $old[$k] = $new[$k];
-                $old[$k]['FLAG'] = 'NEW';
+                if ($new[$k]['Value'] != '') {
+                    $old[$k] = $new[$k];
+                    $old[$k]['FLAG'] = 'NEW';
+                }
             }
         }
         debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($old, true));
