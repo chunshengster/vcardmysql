@@ -227,13 +227,15 @@ class vCard_Diff_Lib {
             if (!isset($new[$k]['Value']) or ($new[$k]['Value'] == '')) {
                 $old[$k]['FLAG'] = 'DELETED';
                 unset($new[$k]);
-            } elseif ($v['Value'] == $new[$k]['Value']) {
+            } elseif (isset($v['Value']) and isset($new[$k]['Value']) and ($v['Value'] == $new[$k]['Value'])) {
                 unset($old[$k]);
                 unset($new[$k]);
             } else {
-                $old[$k]['Value'] = $new[$k]['Value'];
-                $old[$k]['FLAG'] = 'CHANGED';
-                unset($new[$k]);
+                if (isset($new[$k]['Value'])) {
+                    $old[$k]['Value'] = $new[$k]['Value'];
+                    $old[$k]['FLAG'] = 'CHANGED';
+                    unset($new[$k]);
+                }
             }
         }
         if (count($new) > 0) {
