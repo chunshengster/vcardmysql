@@ -180,7 +180,7 @@ final class my_vcard_build extends File_IMC_Build_Vcard {
     }
 
     public function getFormattedName() {
-        return $this->getValue('FN', 0, 0);
+        return str_replace(',',' ',  $this->getValue('FN', 0, 0));
     }
 
     public function getName() {
