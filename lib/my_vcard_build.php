@@ -91,6 +91,8 @@ final class my_vcard_build extends File_IMC_Build_Vcard {
             debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($telValue, true));
 //            $telValue = $this->parseTelValue($telValue);
             return $telValue;
+        } elseif($comp === 'EMAIL'){
+            return $this->parseEmailValue(parent::getValue($comp, $iter, $part, $rept));
         }
         return parent::getValue($comp, $iter, $part, $rept);
     }
@@ -99,6 +101,14 @@ final class my_vcard_build extends File_IMC_Build_Vcard {
         $telValue = preg_replace('/\+|\s+|\-|\(|\)/', '', $telValue);
         debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($telValue, true));
         return $telValue;
+    }
+    
+    public function parseEmailValue($emailValue){
+        if(preg_match('/<?(([.0-9a-z_+-]+)@(([0-9a-z-]+\.)+[0-9a-z]{2,}))>?/i', $emailValue, $matches)){
+            return $matches[1];
+        }else{
+            return addslashes(($emailValue));
+        }
     }
 
     /**
