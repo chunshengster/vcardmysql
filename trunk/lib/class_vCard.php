@@ -564,7 +564,7 @@ class class_vCard {
 
         $this->set_vCard_Explanatory_Properties(array(
             'UID' => $this->_builder->getUniqueID(),
-            'REV' => (strlen($this->_builder->getRevision()) <= 1) ? date("c") : $this->_builder->getRevision(),
+            'REV' => (strlen($this->_builder->getRevision()) <= 1) ? date('Y-m-d H:i:s') : $this->_builder->getRevision(),
             'VERSION' => $this->_parser->getVersion(),
             'LANG' => $this->_builder->getLanguage(),
             'CATEGORIES' => $this->_builder->getCategories(),
