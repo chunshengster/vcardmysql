@@ -1169,7 +1169,7 @@ class class_vCard {
 //        $re_lines[] = ."\n";
         if (isset($this->vCard_Geographical_Properties['TZ']) and ($this->vCard_Geographical_Properties['TZ'] != ''))
             $re_lines[] = 'TZ:' . $this->vCard_Geographical_Properties['TZ'];
-        if (isset($this->vCard_Geographical_Properties['GEO']) and ($this->vCard_Geographical_Properties['GEO'] != ''))
+        if (isset($this->vCard_Geographical_Properties['GEO']) and (strlen($this->vCard_Geographical_Properties['GEO'])>2))
             $re_lines[] = 'GEO:' . $this->vCard_Geographical_Properties['GEO'];
 
 
