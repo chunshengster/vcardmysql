@@ -104,7 +104,7 @@ final class my_vcard_build extends File_IMC_Build_Vcard {
     }
     
     public function parseEmailValue($emailValue){
-        if(preg_match('/<?(([.0-9a-z_+-]+)@(([0-9a-z-]+\.)+[0-9a-z]{2,}))>?/i', $emailValue, $matches)){
+        if(preg_match('/<?(([.0-9a-z_-]+)@(([.0-9a-z_-]+\.)+[0-9a-z]{2,}))>?/i', $emailValue, $matches)){
             return $matches[1];
         }else{
             return addslashes(($emailValue));
