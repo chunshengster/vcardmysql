@@ -190,7 +190,8 @@ class vCard_Diff_Lib {
 //        }
         $is_changed = false;
         $resource_id = isset($old['RESOURCE_ID']) ? $old['RESOURCE_ID'] : null;
-        unset($old['RESOURCE_ID']);
+        if($old === FALSE) $old = array();
+        if(isset ($old['RESOURCE_ID'])) unset($old['RESOURCE_ID']);
         if (isset($old)) {
             if (is_array($old)) {
                 foreach ($old as $key => $value) {
