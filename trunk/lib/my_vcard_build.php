@@ -6,6 +6,7 @@
  *
  */
 require_once 'File/IMC.php';
+require_once dirname(__FILE__).'/pinyin_lib.php';
 
 final class my_vcard_build extends File_IMC_Build_Vcard {
 
@@ -259,6 +260,11 @@ final class my_vcard_build extends File_IMC_Build_Vcard {
     }
 
     public function getSortString() {
+        if(strlen($this->getValue('SORT-STRING', 0, 0))<=0){
+            $name = strlen($this->getFormattedName()) > 2 ? $this->getFormattedName(): $this->getName();
+            $sortstring = Pinyin($name, 'utf-8');
+            $this->setSortString($sortstring);
+        }
         return $this->getValue('SORT-STRING', 0, 0);
     }
 

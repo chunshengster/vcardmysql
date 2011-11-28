@@ -20,6 +20,10 @@ class class_vCard {
      */
     private $obj_vcard_storage;
     private $_parser;
+    /**
+     *
+     * @var my_vcard_build
+     */
     private $_builder;
     private $vCard_Explanatory_Properties = array();
     private $vCard_Identification_Properties = array();
