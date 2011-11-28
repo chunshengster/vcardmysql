@@ -20,6 +20,7 @@ class class_vCard {
      */
     private $obj_vcard_storage;
     private $_parser;
+
     /**
      *
      * @var my_vcard_build
@@ -210,6 +211,17 @@ class class_vCard {
      */
     public function set_vCard_Identification_Properties($vCard_Identification_Properties) {
         $this->vCard_Identification_Properties = $vCard_Identification_Properties;
+        /**
+         * 增加对 vCard_Explanatory_Properties['SORT-STRING']内容的填充
+         */
+        try {
+            require_once dirname(__FILE__) . '/pinyin_lib.php';
+            $name = strlen($vCard_Identification_Properties['FN']) > 1 ? $vCard_Identification_Properties['FN'] : $vCard_Identification_Properties['N'];
+            $pinyin = Pinyin($name, 'utf-8');
+            $this->vCard_Explanatory_Properties['SORT-STRING'] = $pinyin;
+        } catch (Exception $e) {
+            debugLog(__FILE__, __METHOD__, __LINE__, var_export($e->getTraceAsString(), true));
+        }
     }
 
     /**
@@ -1173,7 +1185,7 @@ class class_vCard {
 //        $re_lines[] = ."\n";
         if (isset($this->vCard_Geographical_Properties['TZ']) and ($this->vCard_Geographical_Properties['TZ'] != ''))
             $re_lines[] = 'TZ:' . $this->vCard_Geographical_Properties['TZ'];
-        if (isset($this->vCard_Geographical_Properties['GEO']) and (strlen($this->vCard_Geographical_Properties['GEO'])>2))
+        if (isset($this->vCard_Geographical_Properties['GEO']) and (strlen($this->vCard_Geographical_Properties['GEO']) > 2))
             $re_lines[] = 'GEO:' . $this->vCard_Geographical_Properties['GEO'];
 
 
@@ -1243,7 +1255,7 @@ class class_vCard {
             if (!isset($max_size) or (isset($max_size) and mb_strlen(implode($newline, $re_lines), 'utf8') + mb_strlen(implode($newline, $re_lines_ext), 'utf8') < ($max_size - 10))) {
                 foreach ($re_lines_ext as $_e) {
                     $re_lines[] = $_e;
-                } 
+                }
             }
         }
 
