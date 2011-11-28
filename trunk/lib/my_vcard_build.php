@@ -260,11 +260,14 @@ final class my_vcard_build extends File_IMC_Build_Vcard {
     }
 
     public function getSortString() {
-        if(strlen($this->getValue('SORT-STRING', 0, 0))<=0){
-            $name = strlen($this->getFormattedName()) > 2 ? $this->getFormattedName(): $this->getName();
-            $sortstring = Pinyin($name, 'utf-8');
-            $this->setSortString($sortstring);
-        }
+        /**
+         * 取消此处对Sort-String 内容的填充，统一在 class_vCard 的 set_vCard_Identification_Properties 方法中进行处理
+         */
+//        if(strlen($this->getValue('SORT-STRING', 0, 0))<=0){
+//            $name = strlen($this->getFormattedName()) > 1 ? $this->getFormattedName(): $this->getName();
+//            $sortstring = Pinyin($name, 'utf-8');
+//            $this->setSortString($sortstring);
+//        }
         return $this->getValue('SORT-STRING', 0, 0);
     }
 
