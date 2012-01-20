@@ -216,9 +216,16 @@ class class_vCard {
          */
         try {
             require_once dirname(__FILE__) . '/pinyin_lib.php';
-            $name = strlen($vCard_Identification_Properties['FN']) > 1 ? $vCard_Identification_Properties['FN'] : $vCard_Identification_Properties['N'];
-            $pinyin = Pinyin($name, 'utf-8');
-            $this->vCard_Explanatory_Properties['SORT-STRING'] = $pinyin;
+            $name = '';
+            if (isset($vCard_Identification_Properties['FN']) and (strlen($vCard_Identification_Properties['FN']) > 1)) {
+                $name = $vCard_Identification_Properties['FN'];
+            } elseif (isset($vCard_Identification_Properties['N'])) {
+                $name = $vCard_Identification_Properties['N'];
+            }
+            if ($name !== '') {
+                $pinyin = Pinyin($name, 'utf-8');
+                $this->vCard_Explanatory_Properties['SORT-STRING'] = $pinyin;
+            }
         } catch (Exception $e) {
             debugLog(__FILE__, __METHOD__, __LINE__, var_export($e->getTraceAsString(), true));
         }
