@@ -110,7 +110,7 @@ final class my_vcard_build extends File_IMC_Build_Vcard {
         if (substr_count($telValue, '-') === 2) {
             $telValue = preg_replace('/\+|\s+|\-|\(|\)/', '', $telValue);
         }else{
-            $telValue = preg_filter('/\s+/', '', $telValue);
+            $telValue = preg_replace('/\s+/', '', $telValue);
         }
         debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($telValue, true));
         return $telValue;
