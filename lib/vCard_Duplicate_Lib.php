@@ -164,7 +164,7 @@ class vCard_Duplicate_Lib {
                 as `result_group`, TEL , group_concat(`TelType`) as `TelType` 
                 FROM " . self::$vCard_Telecommunications_Addressing_Properties_Tel
                     . " WHERE `vCard_Explanatory_Properties_idvCard_Explanatory_Properties`
-                IN (" . $id_list . ") and length(TEL) > 5 GROUP BY `TEL`";
+                IN (" . $id_list . ") and length(TEL) > 10 GROUP BY `TEL`";
             try {
                 $sth = $this->dbh->query($SQL_FIND_DUPLICATE);
                 $re_array = $sth->fetchAll(PDO::FETCH_ASSOC);
