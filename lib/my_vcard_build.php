@@ -6,7 +6,7 @@
  *
  */
 require_once 'File/IMC.php';
-require_once dirname(__FILE__).'/pinyin_lib.php';
+require_once dirname(__FILE__) . '/pinyin_lib.php';
 
 final class my_vcard_build extends File_IMC_Build_Vcard {
 
@@ -21,27 +21,37 @@ final class my_vcard_build extends File_IMC_Build_Vcard {
         return false;
     }
 
+    /**
+     * 替换换行符:  Nokia 手机在同步时使用 QP 编码,同时会在增加换行
+     * @param string $input
+     * @return string $input 
+     */
+    private function _removeNewline($input) {
+        $order = array("\r\n", "\n", "\r");
+        return str_replace($order, '', $input);
+    }
+
     public function getLanguage() {
         return $this->getValue('LANGUAGE', 0, 0);
     }
 
     public function getType($comp, $iter = 0) {
         $type = $this->getParam($comp, $iter);
-        
+
         if ($comp == 'TEL') {
             return $this->parseTelType($type);
         }
         if ($comp == 'PHOTO') {
             return $this->parsePhotoType($type);
         }
-        if($comp == 'ADR'){
-            
+        if ($comp == 'ADR') {
+
             return $this->parseAdrType($type);
         }
         $type = explode('=', $type, 2);
         return $type[1];
     }
-    
+
     public function parseAdrType($type) {
         $pattern = '/(DOM|INTL|POSTAL|PARCEL|HOME|WORK)/i';
         if (preg_match_all($pattern, $type, $matchesarray)) {
@@ -51,8 +61,6 @@ final class my_vcard_build extends File_IMC_Build_Vcard {
         return 'POSTAL';
     }
 
-    
-    
     public function parseTelType($type) {
 //        $type = $this->getType($comp);
         $pattern = '/(PREF|WORK|HOME|VOICE|FAX|MSG|CELL|PAGER|BBS|CAR|VIDEO)/i';
@@ -76,38 +84,42 @@ final class my_vcard_build extends File_IMC_Build_Vcard {
 
     public function getAdrValue($iter = 0) {
         return parent::getValue('ADR', $iter, FILE_IMC::VCARD_ADR_POB) . ';' .
-        parent::getValue('ADR', $iter, FILE_IMC::VCARD_ADR_EXTEND) . ';' .
-        parent::getValue('ADR', $iter, FILE_IMC::VCARD_ADR_STREET) . ';' .
-        parent::getValue('ADR', $iter, FILE_IMC::VCARD_ADR_LOCALITY) . ';' .
-        parent::getValue('ADR', $iter, FILE_IMC::VCARD_ADR_REGION) . ';' .
-        parent::getValue('ADR', $iter, FILE_IMC::VCARD_ADR_POSTCODE) . ';' .
-        parent::getValue('ADR', $iter, FILE_IMC::VCARD_ADR_COUNTRY);
+                parent::getValue('ADR', $iter, FILE_IMC::VCARD_ADR_EXTEND) . ';' .
+                parent::getValue('ADR', $iter, FILE_IMC::VCARD_ADR_STREET) . ';' .
+                parent::getValue('ADR', $iter, FILE_IMC::VCARD_ADR_LOCALITY) . ';' .
+                parent::getValue('ADR', $iter, FILE_IMC::VCARD_ADR_REGION) . ';' .
+                parent::getValue('ADR', $iter, FILE_IMC::VCARD_ADR_POSTCODE) . ';' .
+                parent::getValue('ADR', $iter, FILE_IMC::VCARD_ADR_COUNTRY);
     }
 
     public function getValue($comp, $iter = 0, $part = 0, $rept = null) {
         if ($comp === 'ADR') {
-            return $this->getAdrValue($iter);
+            return $this->_removeNewline($this->getAdrValue($iter));
         } elseif ($comp === 'TEL') {
             $telValue = parent::getValue($comp, $iter, $part, $rept);
             debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($telValue, true));
-//            $telValue = $this->parseTelValue($telValue);
+            $telValue = $this->parseTelValue($telValue);
             return $telValue;
-        } elseif($comp === 'EMAIL'){
+        } elseif ($comp === 'EMAIL') {
             return $this->parseEmailValue(parent::getValue($comp, $iter, $part, $rept));
         }
         return parent::getValue($comp, $iter, $part, $rept);
     }
 
     public function parseTelValue($telValue) {
-        $telValue = preg_replace('/\+|\s+|\-|\(|\)/', '', $telValue);
+        if (substr_count($telValue, '-') === 2) {
+            $telValue = preg_replace('/\+|\s+|\-|\(|\)/', '', $telValue);
+        }else{
+            $telValue = preg_filter('/\s+/', '', $telValue);
+        }
         debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($telValue, true));
         return $telValue;
     }
-    
-    public function parseEmailValue($emailValue){
-        if(preg_match('/<?(([.0-9a-z_-]+)@(([.0-9a-z_-]+\.)+[0-9a-z]{2,}))>?/i', $emailValue, $matches)){
+
+    public function parseEmailValue($emailValue) {
+        if (preg_match('/<?(([.0-9a-z_-]+)@(([.0-9a-z_-]+\.)+[0-9a-z]{2,}))>?/i', $emailValue, $matches)) {
             return $matches[1];
-        }else{
+        } else {
             return $emailValue;
         }
     }
@@ -161,7 +173,7 @@ final class my_vcard_build extends File_IMC_Build_Vcard {
     public function getGeo() {
 
         return $this->getValue('GEO', 0, FILE_IMC::VCARD_GEO_LAT, 0) . ';' .
-        $this->getValue('GEO', 0, FILE_IMC::VCARD_GEO_LON, 0);
+                $this->getValue('GEO', 0, FILE_IMC::VCARD_GEO_LON, 0);
     }
 
     public function getLogo() {
@@ -169,7 +181,7 @@ final class my_vcard_build extends File_IMC_Build_Vcard {
     }
 
     public function getOrg() {
-        return $this->getValue('ORG', 0, 0);
+        return $this->_removeNewline($this->getValue('ORG', 0, 0));
     }
 
     /**
@@ -179,11 +191,11 @@ final class my_vcard_build extends File_IMC_Build_Vcard {
      *
      */
     public function getTitle() {
-        return (mb_strlen($this->getValue('TITLE', 0, 0), 'utf-8') > 0) ? $this->getValue('TITLE', 0, 0) : $this->getValue('ROLE', 0, 0);
+        return $this->_removeNewline(mb_strlen($this->getValue('TITLE', 0, 0), 'utf-8') > 0) ? $this->getValue('TITLE', 0, 0) : $this->getValue('ROLE', 0, 0);
     }
 
     public function getRole() {
-        return (mb_strlen($this->getValue('ROLE', 0, 0), 'utf-8') > 0) ? $this->getValue('ROLE', 0, 0) : $this->getValue('TITLE', 0, 0);
+        return $this->_removeNewline(mb_strlen($this->getValue('ROLE', 0, 0), 'utf-8') > 0) ? $this->getValue('ROLE', 0, 0) : $this->getValue('TITLE', 0, 0);
     }
 
     public function getAgent() {
@@ -191,15 +203,15 @@ final class my_vcard_build extends File_IMC_Build_Vcard {
     }
 
     public function getFormattedName() {
-        return str_replace(',',' ',  $this->getValue('FN', 0, 0));
+        return str_replace(',', ' ', $this->getValue('FN', 0, 0));
     }
 
     public function getName() {
         return $this->getValue('N', 0, FILE_IMC::VCARD_N_FAMILY) . ';' .
-        $this->getValue('N', 0, FILE_IMC::VCARD_N_GIVEN) . ';' .
-        $this->getValue('N', 0, FILE_IMC::VCARD_N_ADDL) . ';' .
-        $this->getValue('N', 0, FILE_IMC::VCARD_N_PREFIX) . ';' .
-        $this->getValue('N', 0, FILE_IMC::VCARD_N_SUFFIX);
+                $this->getValue('N', 0, FILE_IMC::VCARD_N_GIVEN) . ';' .
+                $this->getValue('N', 0, FILE_IMC::VCARD_N_ADDL) . ';' .
+                $this->getValue('N', 0, FILE_IMC::VCARD_N_PREFIX) . ';' .
+                $this->getValue('N', 0, FILE_IMC::VCARD_N_SUFFIX);
     }
 
     public function getNickname() {
@@ -236,7 +248,7 @@ final class my_vcard_build extends File_IMC_Build_Vcard {
     }
 
     public function getNote() {
-        return $this->getValue('NOTE', 0, 0);
+        return $this->_removeNewline($this->getValue('NOTE', 0, 0));
     }
 
     public function getCategories() {
