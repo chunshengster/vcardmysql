@@ -91,7 +91,7 @@ class class_vcard_storage {
         }catch (PDOException $e) {
             debugLog(__FILE__,__METHOD__,__LINE__,var_export($e->getMessage(),true));
         }
-        debugLog(__FILE__,__METHOD__,__LINE__,var_export($re,true));
+//        debugLog(__FILE__,__METHOD__,__LINE__,var_export($re,true));
 
         return $re;
     }
@@ -109,7 +109,7 @@ class class_vcard_storage {
             return NULL;
         }
         $re = $this->_get_vcard_data_from_db('vCard_Explanatory_Properties', $key);
-        debugLog(__FILE__, __METHOD__, __LINE__, var_export($re, true));
+//        debugLog(__FILE__, __METHOD__, __LINE__, var_export($re, true));
         if (count($re) > 1 or $re === FALSE) {
             /**
              * @todo 系统中应该只存在一份 Explanatory properties，如果有多份，需要…………
@@ -141,7 +141,7 @@ class class_vcard_storage {
      */
 
     public function get_vCard_Identification_Properties($key) {
-        debugLog(__FILE__, __METHOD__, __LINE__, var_export($key, true));
+//        debugLog(__FILE__, __METHOD__, __LINE__, var_export($key, true));
         if (key($key) !== 'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' and key($key) !== 'idvCard_Identification_Properties') {
             return NULL;
         }
@@ -173,7 +173,7 @@ class class_vcard_storage {
     }
 
     public function get_vCard_Geographical_Properties($key) {
-        debugLog(__FILE__, __METHOD__, __LINE__, var_export($key, true));
+//        debugLog(__FILE__, __METHOD__, __LINE__, var_export($key, true));
         if (key($key) !== 'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' and key($key) !== 'idvCard_Geographical_Properties') {
             return NULL;
         }
@@ -186,7 +186,7 @@ class class_vcard_storage {
             return false;
         }
 
-        debugLog(__FILE__, __METHOD__, __LINE__, var_export($re, true));
+//        debugLog(__FILE__, __METHOD__, __LINE__, var_export($re, true));
         if(count($re) == 0){
             return array(
             );
@@ -202,7 +202,7 @@ class class_vcard_storage {
     }
 
     public function get_vCard_Organizational_Properties($key) {
-        debugLog(__FILE__, __METHOD__, __LINE__, var_export($key, true));
+//        debugLog(__FILE__, __METHOD__, __LINE__, var_export($key, true));
         if (key($key) !== 'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' and key($key) !== 'idvCard_Organizational_Properties') {
             return NULL;
         }
@@ -213,7 +213,7 @@ class class_vcard_storage {
              */
             return FALSE;
         }
-        debugLog(__FILE__, __METHOD__, __LINE__, var_export($re, true));
+//        debugLog(__FILE__, __METHOD__, __LINE__, var_export($re, true));
 
         if(count($re) == 0){
             return array(
@@ -249,12 +249,12 @@ class class_vcard_storage {
     }
 
     public function get_vCard_Delivery_Addressing_Properties_ADR($key) {
-        debugLog(__FILE__, __METHOD__, __LINE__, var_export($key, true));
+//        debugLog(__FILE__, __METHOD__, __LINE__, var_export($key, true));
         if (key($key) !== 'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' and key($key) !== 'idvCard_Delivery_Addressing_Properties_ADR') {
             return NULL;
         }
         $re = $this->_get_vcard_data_from_db('vCard_Delivery_Addressing_Properties_ADR', $key);
-        debugLog(__FILE__, __METHOD__, __LINE__, var_export($re, true));
+//        debugLog(__FILE__, __METHOD__, __LINE__, var_export($re, true));
 
         if($re === false){
             return FALSE;
@@ -271,17 +271,17 @@ class class_vcard_storage {
             $re_array[$k]['AdrType'] = $val['AdrType'];
             $re_array[$k]['RESOURCE_ID'] = $val['idvCard_Delivery_Addressing_Properties_ADR'];
         }
-        debugLog(__FILE__, __METHOD__, __LINE__, var_export($re_array, true));
+//        debugLog(__FILE__, __METHOD__, __LINE__, var_export($re_array, true));
         return $re_array;
     }
 
     public function get_vCard_Delivery_Addressing_Properties_LABEL($key) {
-        debugLog(__FILE__, __METHOD__, __LINE__, var_export($key, true));
+//        debugLog(__FILE__, __METHOD__, __LINE__, var_export($key, true));
         if (key($key) !== 'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' and key($key) !== 'idvCard_Delivery_Addressing_Properties_LABEL') {
             return NULL;
         }
         $re = $this->_get_vcard_data_from_db('vCard_Delivery_Addressing_Properties_LABEL', $key);
-        debugLog(__FILE__, __METHOD__, __LINE__, var_export($re, true));
+//        debugLog(__FILE__, __METHOD__, __LINE__, var_export($re, true));
         
         if($re === FALSE){
             return FALSE;
@@ -297,17 +297,17 @@ class class_vcard_storage {
             $re_array[$k]['LabelType'] = $val['LabelType'];
             $re_array[$k]['RESOURCE_ID'] = $val['idvCard_Delivery_Addressing_Properties_LABEL'];
         }
-        debugLog(__FILE__, __METHOD__, __LINE__, var_export($re_array, true));
+//        debugLog(__FILE__, __METHOD__, __LINE__, var_export($re_array, true));
         return $re_array;
     }
 
     public function get_vCard_Telecommunications_Addressing_Properties_Tel($key) {
-        debugLog(__FILE__, __METHOD__, __LINE__, var_export($key, true));
+//        debugLog(__FILE__, __METHOD__, __LINE__, var_export($key, true));
         if (key($key) !== 'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' and key($key) !== 'idvCard_Telecommunications_Addressing_Properties_Tel') {
             return NULL;
         }
         $re = $this->_get_vcard_data_from_db('vCard_Telecommunications_Addressing_Properties_Tel', $key);
-        debugLog(__FILE__, __METHOD__, __LINE__, var_export($re, true));
+//        debugLog(__FILE__, __METHOD__, __LINE__, var_export($re, true));
 
         if($re === FALSE){
             return FALSE;
@@ -323,17 +323,17 @@ class class_vcard_storage {
             $re_array[$k]['TelType'] = $val['TelType'];
             $re_array[$k]['RESOURCE_ID'] = $val['idvCard_Telecommunications_Addressing_Properties_Tel'];
         }
-        debugLog(__FILE__, __METHOD__, __LINE__, var_export($re_array, true));
+//        debugLog(__FILE__, __METHOD__, __LINE__, var_export($re_array, true));
         return $re_array;
     }
 
     public function get_vCard_Telecommunications_Addressing_Properties_Email($key) {
-        debugLog(__FILE__, __METHOD__, __LINE__, var_export($key, true));
+//        debugLog(__FILE__, __METHOD__, __LINE__, var_export($key, true));
         if (key($key) !== 'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' and key($key) !== 'idvCard_Telecommunications_Addressing_Properties_Email') {
             return NULL;
         }
         $re = $this->_get_vcard_data_from_db('vCard_Telecommunications_Addressing_Properties_Email', $key);
-        debugLog(__FILE__, __METHOD__, __LINE__, var_export($re, true));
+//        debugLog(__FILE__, __METHOD__, __LINE__, var_export($re, true));
         
         if($re === FALSE){
             return FALSE;
@@ -349,17 +349,17 @@ class class_vcard_storage {
             $re_array[$k]['EmailType'] = $val['EmailType'];
             $re_array[$k]['RESOURCE_ID'] = $val['idvCard_Telecommunications_Addressing_Properties_Email'];
         }
-        debugLog(__FILE__, __METHOD__, __LINE__, var_export($re_array, true));
+//        debugLog(__FILE__, __METHOD__, __LINE__, var_export($re_array, true));
         return $re_array;
     }
 
     public function get_vCard_Extension_Properties($key) {
-        debugLog(__FILE__,__METHOD__,__LINE__,  var_export($key, true));
+//        debugLog(__FILE__,__METHOD__,__LINE__,  var_export($key, true));
         if (key($key) !== 'vCard_Explanatory_Properties_idvCard_Explanatory_Properties' and key($key) !== 'idvCard_Extension_Properties') {
             return NULL;
         }
         $re = $this->_get_vcard_data_from_db('vCard_Extension_Properties', $key);
-        debugLog(__FILE__, __METHOD__, __LINE__, var_export($re, true));
+//        debugLog(__FILE__, __METHOD__, __LINE__, var_export($re, true));
 
         if($re === FALSE){
             return FALSE;
@@ -377,7 +377,7 @@ class class_vcard_storage {
             $re_array[$val['ExtensionName']]['Value'] = stripcslashes($val['ExtensionValue']);
             $re_array[$val['ExtensionName']]['RESOURCE_ID'] = $val['idvCard_Extension_Properties'];
         }
-        debugLog(__FILE__, __METHOD__, __LINE__, var_export($re_array, true));
+//        debugLog(__FILE__, __METHOD__, __LINE__, var_export($re_array, true));
         return $re_array;
 
     }
@@ -388,14 +388,14 @@ class class_vcard_storage {
         try {
             $sth = $this->dbh->prepare($sql);
             $sth->bindParam(':KEY', $key[key($key)]);
-            debugLog(__FILE__, __METHOD__, __LINE__, var_export($sth, true), var_export($key, true));
+//            debugLog(__FILE__, __METHOD__, __LINE__, var_export($sth, true), var_export($key, true));
             $sth->execute();
         } catch (PDOException $e) {
-            debugLog(__FILE__, __METHOD__, __LINE__, $e->getMessage());
+//            debugLog(__FILE__, __METHOD__, __LINE__, $e->getMessage());
             return FALSE;
         }
         $re = $sth->fetchAll(PDO::FETCH_ASSOC);
-        debugLog(__FILE__, __METHOD__, __LINE__, var_export($re, true));
+//        debugLog(__FILE__, __METHOD__, __LINE__, var_export($re, true));
         return $re;
     }
 

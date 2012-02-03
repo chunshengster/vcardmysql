@@ -17,7 +17,7 @@ class vCard_Diff_Lib {
         $b1 = $new;
         $c1 = array();
         $a11 = array();
-        debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($old, true), var_export($new, true), var_export($fields, true));
+//        debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($old, true), var_export($new, true), var_export($fields, true));
         if (is_array($fields)) {
             if (in_array('EMAIL', $fields) or in_array('ADR', $fields) or in_array('LABEL', $fields)) {
                 sort($fields);
@@ -33,7 +33,7 @@ class vCard_Diff_Lib {
                 $a11[$value[$fields[0]]]['RESOURCE_ID'] = $value['RESOURCE_ID'];
             }
         }
-        debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($a11, true));
+//        debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($a11, true));
         $i = 0;
         foreach ($b1 as $key => $value) {
             if ($value[$fields[0]] != '') {//去掉值为空的字段
@@ -74,14 +74,14 @@ class vCard_Diff_Lib {
                 $i++;
             }
         }
-        debugLog(__FILE__, __METHOD__, __LINE__, var_export($c1, true));
+//        debugLog(__FILE__, __METHOD__, __LINE__, var_export($c1, true));
         return $c1;
     }
 
     public static function show_dimension($key) {
 //        $a = count($array,COUNT_RECURSIVE);
 //        $b =  count($array);
-        debugLog(__FILE__, __METHOD__, __LINE__, var_export($key, true));
+//        debugLog(__FILE__, __METHOD__, __LINE__, var_export($key, true));
         $one = array('vCard_Explanatory_Properties', 'vCard_Identification_Properties',
             'vCard_Geographical_Properties', 'vCard_Organizational_Properties');
         $two = array('vCard_Delivery_Addressing_Properties_ADR',
@@ -109,19 +109,19 @@ class vCard_Diff_Lib {
 //        var_export($vcard_a);
 //        var_export($vcard_b);
         foreach ($vcard_a as $key => $value) {
-            debugLog(__FILE__, __METHOD__, __LINE__, var_export($value, true));
+//            debugLog(__FILE__, __METHOD__, __LINE__, var_export($value, true));
             $rs = self::show_dimension($key);
             //$delfields = 'UID,REV,RESOURCE_ID';
             if ($rs == 'onedimension') {
-                debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($value, true), var_export($vcard_b, true));
+//                debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($value, true), var_export($vcard_b, true));
                 if ($key === 'vCard_Explanatory_Properties') {
                     $vcard_b[$key]['UID'] = $value['UID'];
                 }
                 $c[$key] = self::diff_onedimension($value, $vcard_b[$key]);
             } elseif ($rs == 'twodimension') {
-                debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($value, true), var_export($vcard_b, true));
+//                debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($value, true), var_export($vcard_b, true));
                 if ((count($vcard_b[$key]) > 0) or (count($vcard_a[$key]) > 0)) {
-                    debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, is_array($vcard_a[$key]) ? var_export(array_keys($vcard_a[$key]), true) : '', is_array($vcard_b[$key]) ? var_export(array_keys($vcard_b[$key]), true) : '');
+//                    debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, is_array($vcard_a[$key]) ? var_export(array_keys($vcard_a[$key]), true) : '', is_array($vcard_b[$key]) ? var_export(array_keys($vcard_b[$key]), true) : '');
                     $fields_a = (isset($vcard_a[$key][0]) and is_array($vcard_a[$key][0])) ? array_keys($vcard_a[$key][0]) : array();
                     $fields_b = (isset($vcard_b[$key][0]) and is_array($vcard_b[$key][0])) ? array_keys($vcard_b[$key][0]) : array();
                     $fields = array_unique(array_merge($fields_a, $fields_b));
@@ -130,7 +130,7 @@ class vCard_Diff_Lib {
                 }
                 $c[$key] = self::diff_twodimension($value, $vcard_b[$key], $fields);
             } elseif ($rs == 'Extension') {
-                debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($value, true), var_export($vcard_b, true));
+//                debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($value, true), var_export($vcard_b, true));
                 $c[$key] = self::diff_extension($value, $vcard_b[$key]);
             }
         }
@@ -158,7 +158,7 @@ class vCard_Diff_Lib {
                 }
             }
         }
-        debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($c, true));
+//        debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($c, true));
         return $c;
     }
 
@@ -166,7 +166,7 @@ class vCard_Diff_Lib {
         /**
          * $old 可能为空， $new 不可能为空。
          */
-        debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($old, true), var_export($new, true));
+//        debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($old, true), var_export($new, true));
 //        $is_changed = false;
 //        foreach ($new as $key => $value) {
 //            if (isset($value) && $value <> '') {
@@ -179,7 +179,7 @@ class vCard_Diff_Lib {
 //        }
 
         if (count($new) < 1) {
-            debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($old, TRUE), var_export($new, True), "Error !");
+//            debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($old, TRUE), var_export($new, True), "Error !");
             return array();
         }
 
@@ -195,14 +195,14 @@ class vCard_Diff_Lib {
         if (isset($old)) {
             if (is_array($old)) {
                 foreach ($old as $key => $value) {
-                    debugLog(__FILE__, __LINE__, var_export($key, true), var_export($value, TRUE));
+//                    debugLog(__FILE__, __LINE__, var_export($key, true), var_export($value, TRUE));
                     if (isset($new[$key]) && ($value != $new[$key])) {
                         $old[$key] = $new[$key];
                         $old['FLAG'] = 'CHANGED';
                         $is_changed = TRUE;
                     }
                     unset($new[$key]);
-                    debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($old, TRUE), var_export($new, True));
+//                    debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($old, TRUE), var_export($new, True));
                 }
             }
         } else {
@@ -217,13 +217,13 @@ class vCard_Diff_Lib {
         } else {
             return array();
         }
-        debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($old, true));
+//        debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($old, true));
         return $old;
     }
 
     public static function diff_extension($old, $new) {
-        debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($old, true));
-        debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($new, true));
+//        debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($old, true));
+//        debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($new, true));
         foreach ($old as $k => $v) {
             if (!isset($new[$k]['Value']) or ($new[$k]['Value'] == '')) {
                 $old[$k]['FLAG'] = 'DELETED';
@@ -247,7 +247,7 @@ class vCard_Diff_Lib {
                 }
             }
         }
-        debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($old, true));
+//        debugLog(__FILE__, __CLASS__, __METHOD__, __LINE__, var_export($old, true));
         return $old;
     }
 
